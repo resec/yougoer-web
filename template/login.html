@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+    <head>
+
+
+    </head>
+    <script type="text/javascript" src="static/forge/jsbn.js"></script> 
+    <script type="text/javascript" src="static/forge/util.js"></script>  
+    <script type="text/javascript" src="static/forge/prng.js"></script>  
+    <script type="text/javascript" src="static/forge/hmac.js"></script>  
+    <script type="text/javascript" src="static/forge/sha256.js"></script>  
+    <script type="text/javascript" src="static/forge/asn1.js"></script>  
+    <script type="text/javascript" src="static/forge/pbe.js"></script>  
+    <script type="text/javascript" src="static/forge/debug.js"></script>  
+    <script type="text/javascript" src="static/forge/task.js"></script>  
+    <script type="text/javascript" src="static/forge/tls.js"></script>  
+    <script type="text/javascript" src="static/forge/cipher.js"></script> 
+    <script type="text/javascript" src="static/forge/cipherModes.js"></script>  
+    <script type="text/javascript" src="static/forge/aesCipherSuites.js"></script>  
+    <script type="text/javascript" src="static/forge/aes.js"></script>  
+    <script type="text/javascript" src="static/forge/http.js"></script>  
+    <script type="text/javascript" src="static/forge/pbkdf2.js"></script>  
+    <script type="text/javascript" src="static/forge/pss.js"></script>  
+    <script type="text/javascript" src="static/forge/pem.js"></script>  
+    <script type="text/javascript" src="static/forge/random.js"></script>  
+    <script type="text/javascript" src="static/forge/kem.js"></script>  
+    <script type="text/javascript" src="static/forge/pkcs12.js"></script>  
+    <script type="text/javascript" src="static/forge/rc2.js"></script>  
+    <script type="text/javascript" src="static/forge/log.js"></script>  
+    <script type="text/javascript" src="static/forge/pkcs1.js"></script>  
+    <script type="text/javascript" src="static/forge/rsa.js"></script>  
+    <script type="text/javascript" src="static/forge/oids.js"></script>  
+    <script type="text/javascript" src="static/forge/x509.js"></script>  
+    <script type="text/javascript" src="static/forge/md5.js"></script>  
+    <script type="text/javascript" src="static/forge/pkcs7asn1.js"></script>  
+    <script type="text/javascript" src="static/forge/sha1.js"></script>  
+    <script type="text/javascript" src="static/forge/md.js"></script>  
+    <script type="text/javascript" src="static/forge/pkcs7.js"></script>  
+    <script type="text/javascript" src="static/forge/des.js"></script>  
+    <script type="text/javascript" src="static/forge/mgf1.js"></script>  
+    <script type="text/javascript" src="static/forge/pki.js"></script>  
+    <script type="text/javascript" src="static/forge/sha512.js"></script>  
+    <script type="text/javascript" src="static/forge/mgf.js"></script>  
+    <script type="text/javascript" src="static/forge/ssh.js"></script>  
+    <script type="text/javascript" src="static/forge/forge.js"></script>  
+    <script language="JavaScript" type="text/javascript">
+        function get_token(){
+            return "{{token}}"
+        }
+
+        function get_rsa_key(){
+            var token = get_token();
+            var splits = token.split("$", 2);
+            var n = new forge.jsbn.BigInteger(splits[0]);
+            var e = new forge.jsbn.BigInteger(splits[1]);
+            var rsa = forge.pki.setRsaPublicKey(n, e);
+            return rsa
+        }
+
+        function do_encrypt(){
+            var pwd = document.getElementById("encrypt_text").value;
+            var rsa = get_rsa_key();
+            document.getElementById("encrypted").value = forge.util.encode64(rsa.encrypt(pwd, 'RSA-OAEP'));  
+        }
+
+        function doRSA(stringToBeEncrypted, pubkey) {
+            var publicKey = forge.pki.publicKeyFromPem(pubkey);
+            var buffer = forge.util.createBuffer(stringToBeEncrypted, 'utf8');
+            var binaryString = buffer.getBytes();
+            var encrypted = publicKey.encrypt(binaryString, 'RSA-OAEP', {
+            md: forge.md.sha256.create(),
+            mgf1: {
+                md: forge.md.sha256.create()
+            }
+            });
+            return forge.util.encode64(encrypted);
+        }
+
+        function encrypt_submit(){
+            var user = document.getElementById("submit_user").value;
+            var pwd = document.getElementById("submit_password").value;
+            var rsa = get_rsa_key();
+            var encrypted = forge.util.encode64(rsa.encrypt(pwd, 'RSA-OAEP'));
+            document.getElementById("submit_password").value = encrypted;
+            document.getElementById("submit_token").value = get_token();
+            document.getElementById("submit_form").submit();
+        }
+    </script>
+
+    <body>
+        <p>token:</p>
+        <p>{{token}}</p>
+        <p>encrypt</p>
+        <form>
+            <input name="text" type="text" id="encrypt_text"/>
+            <button type="button" onclick="do_encrypt()">encrypt</button>
+        </form>
+        <p>encrypted:</p>
+        <textarea id="encrypted"></textarea>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <p>submit</p>
+        <form id="submit_form" action="#" method="post">
+            <input name="user" type="text" id="submit_user" />
+            <input name="password" type="password" id="submit_password" />
+            <input name="token" type="hidden" id="submit_token" />
+            <button type="button" onclick="encrypt_submit()">submit</button>
+            {% module xsrf_form_html() %}
+        </form>
+    </body>
+</html>

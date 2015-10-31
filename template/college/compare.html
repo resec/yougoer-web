@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Compare {{ college_indexes }} | YOUGOER</title>{% end %}
+
+{% block meta %}
+<meta name="college_indexes" content="{{ college_indexes }}">
+{% end %}
+
+{% block js %}
+<script type='text/javascript' src='/static/js/yougoer.college_post.js'></script>
+<script type="text/javascript">
+$(window).ready(function() {
+    college_compare_basic('cp');
+    college_compare_logo('logo');
+});
+</script>
+{% end %}
+
+{% block mainrow %}
+<div class="row">
+    <div class="content col-left" style="width: 25%">
+        <div class="entry-left">
+            <div class="entry-left-sidebar"><a href="#" class="active">Logo</a></div>
+            <div class="entry-left-sidebar"><a href="#">Title</a></div>
+            <div class="entry-left-sidebar"><a href="#">Map</a></div>
+            <div class="entry-left-sidebar"><a href="#">Basic</a></div>
+        </div>
+    </div>
+
+    <div class="content col-right" style="width: 75%">
+        <div class="c-row">
+
+            <div class="c-img-wrap" style="left: 0px;">
+                <div class="c-image-cell">
+                    <div class="c-img-swipe-wrapper">
+                        <div class="c-img-overview-wrap">
+                            <table><tr></tr></table>
+                            <!-- show college logo in here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.c-img-wrap Duplicate -->
+            <div class="c-title-wrap" style="left: 0px;">
+                <div class="c-compare-title"><table><tr></tr></table></div>
+            </div>
+            <!-- /.c-title-wrap Duplicate -->
+
+            <div id="c-rows-detail" class="c-rows-and-nav">
+                <div class="c-rows-wrap">
+
+                    <div class="stnd-sec" style="left: 0px;">
+                        <h2 class="stnd-sec-title">
+                            <span class="stnd-sec-title-txt">Map</span>
+                        </h2>
+                        <div class="stnd-sec-body"><table><tr></tr></table></div>
+                    </div>
+                    <!-- /.sec-comp Duplicate -->
+                    <div class="stnd-sec" style="left: 0px;">
+                        <h2 class="stnd-sec-title">
+                            <span class="stnd-sec-title-txt">Basic info</span>
+                        </h2>
+                        <div class="stnd-sec-body"><table><tr></tr></table></div>
+                    </div>
+                    <!-- /.sec-comp Duplicate -->
+
+                </div>
+            </div>
+            <!-- /.c-rows-and-nav -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.col-right -->
+</div>
+
+{% end %}

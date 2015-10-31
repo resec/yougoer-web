@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block meta %}
+<meta name="college_index" content="{{ college_index }}">
+{% end %}
+
+{% block title %}<title>{{college_name}}| YOUGOER</title>{% end %}
+
+{% block js %}
+<script type='text/javascript' src="/static/js/angular.min.js"></script>
+<script type='text/javascript' src="/static/js/angular-cookies.min.js"></script>
+<script type='text/javascript' src='/static/js/college_post.js'></script>
+<script type='text/javascript' src='/static/js/college_details.js'></script>
+<script type="text/javascript">
+app.directive('stickUp', function($window) {
+    var last_scroll_top = 0;
+    var scroll_dir = '';
+    var vartop = 0;
+
+    angular.element($window).bind("scroll", function() {
+        var st = $window.pageYOffset;
+        scroll_dir = st > last_scroll_top ? 'down' : 'up';
+        last_scroll_top = st;
+    });
+
+    function link(scope, element, attrs) {
+        var vartop = parseInt(element.offset().top);
+
+        angular.element($window).bind("scroll", function() {
+            varscroll = parseInt($window.pageYOffset);
+            if (vartop < varscroll) {
+                element.css({
+                    position: "fixed",
+                    top: '0px'
+                });
+            } else {
+                element.css("position", "relative");
+            };
+        });
+    }
+
+    return {
+        restrict: 'A',
+        link: link
+    };
+});
+</script>
+
+{% end %}
+
+{% block body %}
+<body ng-app="app">
+    <div class="page-wrapper">
+        {% include "header.html" %}
+        <div class="main">
+            <div class="container">
+                {% block mainrow %}
+                <div class="row">
+                    {% block mainbar %}
+                    <div class="content col-sm-8 col-md-9">
+                        <article>
+                            {% include "index_img.html" %}
+                            <!-- /.property-gallery -->
+                            <div class="entry-content" >
+                                <div stick class="entry-left" >
+                                    <div class="entry-left-sidebar"><a href="#" class="active">Ratings & Ranking</a></div>
+                                    <div class="entry-left-sidebar"><a href="#">Fast Facts</a></div>
+                                    <div class="entry-left-sidebar"><a href="#">Admission Information</a></div>
+                                    <div class="entry-left-sidebar"><a href="#">Students Information</a></div>
+                                    <div class="entry-left-sidebar"><a href="#">Tuition</a></div>
+                                    <!--
+                                    <div class="entry-left-sidebar"><a href="">Academic Information</a></div>
+                                    <div class="entry-left-sidebar"><a href="">Recommand</a></div>
+                                    -->
+                                </div>
+                                <div class="entry-right">
+                                    <div id="scroll_rr" class="Ranking" ng-controller="RankingController as ranking">
+                                        {% include "index_rr.html" %}
+                                    </div>
+                                    <div id="scroll_ff" class="FastFacts" ng-controller="FastFactsController as fastfacts">
+                                        {% include "index_ff.html" %}
+                                    </div>
+                                    <div id="scroll_ai" class="Admission invisible" ng-controller="AdmissionController as admission">
+                                        {% include "index_ai.html" %}
+                                    </div>
+                                    <div id="scroll_si" class="Students invisible" ng-controller="StudentsController as students">
+                                        {% include "index_si.html" %}
+                                    </div>
+                                    <div id="scroll_tui" class="Tuition invisible" ng-controller="TuitionController as tuition">
+                                        {% include "index_tui.html" %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- .entry-content -->
+                        </article>
+                    </div>
+                    {% end %}
+                    {% block sidebar %} {% include "sidebar.html" %} {% end %}
+                </div>
+                {% end %}
+            </div>
+        </div>
+        <!-- /.main -->
+        {% include "../footer.html" %}
+    </div>
+    <!-- /.page-wrapper -->
+</body>
+{% end %}
+
+{% block endjs %}
+<script type="text/javascript">
+
+
+
+
+</script>
+
+{% end %}

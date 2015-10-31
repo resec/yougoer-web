@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- saved from url=http://www.yougoer.com/ -->
+<html lang="en-US">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta %}{% end %}
+
+    {% block title %}<title>YOUGOER | know the best abord platform</title>{% end %}
+    <link rel="stylesheet" id="global-css" href="/static/style/style.css" type="text/css" media="all">
+    <link rel="stylesheet" id="yougoer-css" href="/static/style/yougoer.css" type="text/css" media="all">
+
+    <script type='text/javascript' src='/static/js/jquery-1.11.3.min.js'></script>
+    {% block js %}{% end %}
+</head>
+
+{% block body %}
+<body>
+    <div class="page-wrapper">
+        {% include "header.html" %}
+        <div class="main">
+            <div class="container">
+                <div class="row">
+                {% block mainrow %}
+                {% end %}
+            </div>
+        </div>
+        <!-- /.main -->
+        {% include "footer.html" %}
+    </div>
+    <!-- /.page-wrapper -->
+</body>
+{% end %}
+
+{% block endjs %}{% end %}
+</html>
