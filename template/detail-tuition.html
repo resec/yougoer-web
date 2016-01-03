@@ -1,0 +1,80 @@
+<section class="detail-section" data-section-id="tuition">
+    <div class="ds-wrapper">
+        <div class="ds-title">
+            <h1>学费</h1>
+        </div>
+        <div class="ds-contents clearfix">
+            <div class="ds-content clearfix">
+                <div class="tabnav-wrapper">
+                    <div class="dsc-tabnav tabnav">
+                        <nav class="tabnav-tabs">
+                            <a href="#" class="tabnav-tab selected" data-tabnav="tui-basic">基本费用</a>
+                            <a href="#" class="tabnav-tab" data-tabnav="tui-compare" style="display: none">费用对比</a>
+                        </nav>
+                    </div>
+                    <div class="tabnav-content">
+                        <div class="dsc-content-table">
+                            <div class="half-col left">
+                                <table class="data-block-body">
+                                    <tbody>
+                                        <tr class="data-block-tr">
+                                            <td colspan="2" class="data-block-td">
+                                                <div class="chart" id="tui-basic-chart" style="height:300px">
+                                                    <!--<img src="{{ static_url('img/cost-example.jpeg') }}" style="width:100%;">-->
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="half-col right">
+                                <table class="data-block-body">
+                                    <tbody>
+                                        <tr class="data-block-tr">
+                                            <td colspan="2" class="data-block-td">
+                                                <div class="data-block-in-td">
+                                                    <table class="dbt-widget" cellspacing="0" cellpadding="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="dbt-widget-th">费用</th>
+                                                                <th class="dbt-widget-th">金额</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id='data-fee-row' class="text-right">
+                                                                <td class="dbt-cell">~fee.label~</td>
+                                                                <td class="dbt-cell">~fee.amount~</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="data-block-tr">
+                                            <td colspan="2" class="data-block-td">
+                                                <p class="dbt-p">在哈佛总费用为<span id='data-fee-total'></span>美元, which is significantly more expensive than other top tier private (not-for-profit) institutions in the country.</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ds-content ">
+                <div class="dsc-title">
+                    <h3><span>申请费用</span></h3>
+                </div>
+                <div class="dsc-content-content">
+                    <div class="property-list">
+                        <ul>
+                            <li id='data-application-row'>~application.label~<span class="right cblue">~application.amount~</span></li>
+                        </ul>
+                    </div>
+                    <!-- End property-list -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

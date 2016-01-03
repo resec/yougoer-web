@@ -1,0 +1,107 @@
+<section class="detail-section" data-section-id="student">
+    <div class="ds-wrapper">
+        <div class="ds-title">
+            <h1>学生情况</h1>
+        </div>
+        <div class="ds-contents clearfix">
+            <div class="ds-content">
+                <div class="dsc-title">
+                    <h3><span>招生明细</span></h3>
+                </div>
+                <div class="dsc-content">
+                    <div class="dsc-content-table">
+                        <div class="half-col left">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="chart" id="student-enrollment-chart" style="height:300px">
+                                                <!--<img src="{{ static_url('img/student-enrollment-example.jpeg') }}" style="width:100%;">-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="half-col right">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="data-block-text">
+                                                <div class="dbt-title">哈佛大部分学生为研究生</div>
+                                                <p class="dbt-p">There are <span class="text-bold" id="data-enrollment-total"></span> students enrolled at Harvard. This is <span class="text-bold">significantly larger</span> than the average enrollment at other top tier private (not-for-profit) institutions.</p>
+                                                <p class="dbt-p">Out of <span class="text-bold" id="data-enrollment-total"></span> students enrolled, <span class="text-bold" id="data-enrollment-graduate">17,763</span> are graduate students (<span class="text-bold" id="data-enrollment-graduate-precentage">62.8%</span>) and <span class="text-bold" id="data-enrollment-undergraduate">10,534</span> are undergraduate students (<span class="text-bold" id="data-enrollment-undergraduate-precentage">37.2%</span>).</p>
+                                                <p class="dbt-p">This year, Harvard admitted <span class="text-bold" id="data-enrollment-freshmen">1,659</span> freshmen out of <span class="text-bold" id="data-application">35,023</span> applicants. This new starting class will account for <span class="text-bold" id="data-enrollment-freshmen-precentage">16%</span> of total undergraduates at Harvard.</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ds-content">
+                <div class="dsc-title">
+                    <h3><span>学生统计</span></h3>
+                </div>
+                <div class="dsc-tabnav tabnav">
+                    <nav class="tabnav-tabs">
+                        <div id='data-category-lable' class="tabnav-tab" data-bind-tab="student">~category.lable~</div>
+                    </nav>
+                </div>
+                <div class="dsc-content">
+                    <div id='data-category-content' class="dsc-content-table hidden" data-bind-content="student">
+                        <div class="half-col left">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="chart" id="~category.chartid~" style="height:300px">
+                                                <!--<img src="{{ static_url('img/ethnicity-example.jpeg') }}" style="width:100%;">-->
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="half-col right">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="text-bold text-center">学校 &amp; ~category.lable~比例</div>
+                                            <div class="db-table-widget">
+                                                <div class="db-table-inner">
+                                                    <div class="db-table-div scrollbar-style scroll-light">
+                                                        <table class="dbt-widget" style="width: 100%; table-layout: auto;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="dbt-widget-th">~category.lable~</th>
+                                                                    <th class="dbt-widget-th">本校</th>
+                                                                    <th class="dbt-widget-th">同城学校平均</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr id='data-detail-row-~category.hash~' class="item_row">
+                                                                    <td class="dbt-cell">~detail.lable~</td>
+                                                                    <td class="dbt-cell">~detail.school~</td>
+                                                                    <td class="dbt-cell">~detail.city~</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

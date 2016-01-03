@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="robots" content="noindex, follow" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
+    <link href="{{ static_url('css/basic.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ static_url('css/animation.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ static_url('css/primer.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ static_url('css/college.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <script src="{{ static_url('js/jquery.js') }}"></script>
+    <script type="text/javascript">
+    $(window).load(function() {});
+    </script>
+</head>
+
+<body>
+    <div id="main-top">
+        {% include "header.html" %}
+    </div>
+    <!-- END detail top -->
+    <div id="map-body">
+        <div id="map-right">
+            {% include "map-right.html" %}
+        </div>
+        <div id="map-left">
+            <div id="map-left-top">
+                {% include "map-filter.html" %}
+            </div>
+            <div id="map-left-content">
+                <div id="map">
+                    <!--<div id="map_canvas"></div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block javascript %}
+    <script type="text/javascript">
+    var map_styles = [{
+        "featureType": "water",
+        "stylers": [{
+            "saturation": 43
+        }, {
+            "lightness": -11
+        }, {
+            "hue": "#0088ff"
+        }]
+    }, {
+        "featureType": "road.highway",
+        "stylers": [{
+            "visibility": "off"
+        }]
+    }, {
+        "featureType": "poi.business",
+        "elementType": "geometry",
+        "stylers": [{
+            "visibility": "on"
+        }, {
+            "color": "#fff0c4"
+        }]
+    }, {
+        "featureType": "poi.business",
+        "elementType": "labels",
+        "stylers": [{
+            "visibility": "on"
+        }, {
+            "Weight": 8
+        }]
+    }, {
+        "featureType": "poi.school",
+        "elementType": "geometry",
+        "stylers": [{
+            "visibility": "on"
+        }, {
+            "weight": 8
+        }, {
+            'hue': '#ff0000'
+        }, {
+            'saturation': 100
+        }]
+    }, {
+        "featureType": "poi.school",
+        "elementType": "labels.text",
+        "stylers": [{
+            "visibility": "on"
+        }, {
+            "weight": 8
+        }]
+    }, {
+        "featureType": "road.arterial",
+        "elementType": "labels",
+        "stylers": [{
+            "visibility": "off"
+        }]
+    }, {
+        "featureType": "road.local",
+        "elementType": "labels",
+        "stylers": [{
+            "visibility": "off"
+        }]
+    }];
+
+    var map;
+    var center_american = {
+        lat: 39.615638,
+        lng: -100.033789,
+    };
+
+    function CenterControl(controlDiv, map) {
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(77, 77, 77)';
+        controlText.style.fontFamily = 'SimHei,Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '15px';
+        controlText.style.paddingRight = '15px';
+        controlText.innerHTML = '有果儿';
+        controlUI.appendChild(controlText);
+
+        controlUI.addEventListener('click', function() {
+            map.setCenter(center_american);
+        });
+    }
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map_canvas'), {
+            center: center_american,
+            zoom: 4,
+            mapTypeControl: false,
+            zoomControl: true,
+            zoomControlOptions: {
+                position: google.maps.ControlPosition.RIGHT_CENTER
+            },
+        });
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map);
+
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+        map.setOptions({
+            styles: map_styles
+        });
+    };
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS-kxPndBgKczNzE4eSXgzfslPFL2fJ_M&callback=initMap"></script>
+    {% end %}
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="robots" content="noindex, follow" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
+    <link href="{{ static_url('css/basic.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ static_url('css/animation.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ static_url('css/primer.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ static_url('css/college.css') }}" media="all" rel="stylesheet" type="text/css" />
+    <script src="{{ static_url('js/jquery.js') }}"></script>
+    <script src="{{ static_url('js/stickTop.js') }}"></script>
+    <script src="{{ static_url('js/echarts-all.js') }}"></script>
+    <script src="{{ static_url('js/charts.js') }}"></script>
+    <script src="{{ static_url('js/yougoer.js') }}"></script>
+    <script type="text/javascript">
+    jQuery(function($) {
+        $(document).ready(function() {
+            yougoer.getColllegeInfo({
+                type: 'basic'
+            }, yougoer.fillBasicInfo).always(function() {
+                $('#detail-nav-sidebar').stickUp({
+                    parts: {
+                        0: 'ffect',
+                        1: 'rank',
+                        2: 'admission',
+                        3: 'tuition',
+                        4: 'major',
+                        5: 'student',
+                        6: 'local',
+                    },
+                    itemClass: 'dd-nav-item',
+                    itemHover: 'active'
+                });
+            }).always(yougoer.getColllegeInfo({
+                type: 'introduction'
+            }, yougoer.fillIntroductionInfo)).always(yougoer.getColllegeInfo({
+                type: 'rank'
+            }, yougoer.fillRankInfo)).always(yougoer.getColllegeInfo({
+                type: 'admission'
+            }, yougoer.fillAdmissionInfo)).always(yougoer.getColllegeInfo({
+                type: 'tution'
+            }, yougoer.fillTuitionInfo)).always(yougoer.getColllegeInfo({
+                type: 'major'
+            }, yougoer.fillMajorInfo)).always(yougoer.getColllegeInfo({
+                type: 'student'
+            }, yougoer.fillStudentInfo)).always(yougoer.getColllegeInfo({
+                type: 'local'
+            }, yougoer.fillLocalInfo));
+        });
+    });
+    </script>
+</head>
+
+<body>
+    <div id="main-top">
+        {% include "header.html" %}
+    </div>
+    <!-- END detail top -->
+    <div id="main-body">
+        <div id="main-right">
+            {% include "sidebar.html" %}
+        </div>
+        <div id="main-left">
+            <div id="detail-top">
+                {% include "detail-top.html" %}
+            </div>
+            <div id="detail-container">
+                <div id="detail-sidebar">
+                    {% include "main-left.html" %}
+                </div>
+                <div id="detail-main">
+                    <div class="detail-sections">
+                        {% include "detail-ffect.html" %}
+                    </div>
+                    <div class="detail-sections">
+                        {% include "detail-rank.html" %}
+                    </div>
+                    <div class="detail-sections">
+                        {% include "detail-admission.html" %}
+                    </div>
+                    <div class="detail-sections">
+                        {% include "detail-tuition.html" %}
+                    </div>
+                    <div class="detail-sections">
+                        {% include "detail-major.html" %}
+                    </div>
+                    <div class="detail-sections">
+                        {% include "detail-student.html" %}
+                    </div>
+                    <div class="detail-sections">
+                        {% include "detail-local.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="main-footer" class="clearfix">
+        {% include "footer.html" %}
+    </div>
+</body>
+
+</html>

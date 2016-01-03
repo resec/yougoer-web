@@ -1,0 +1,115 @@
+<section class="detail-section" data-section-id="major">
+    <div class="ds-wrapper">
+        <div class="ds-title">
+            <h1>专业</h1>
+        </div>
+        <div class="ds-contents ">
+            <div class="ds-content ">
+                <div class="dsc-title">
+                    <h3><span>专业情况</span></h3>
+                </div>
+                <div class="dsc-content">
+                    <div class="dsc-content-table">
+                        <div class="half-col left">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div style="width:100%" class="overview-box">
+                                                <div class="overview-label-wrap">
+                                                    <div class="overview-label">专业数</div>
+                                                </div>
+                                                <div class="viz-temp">
+                                                    <div class="viz-wrap">
+                                                        <div class="viz meter-viz">
+                                                            <div class="color" style="width:60%;"></div>
+                                                        </div>
+                                                        <div class="top-val" id="data-amount"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="data-block-in-td">
+                                                <table class="dbt-widget">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="dbt-widget-th">排名</th>
+                                                            <th class="dbt-widget-th">最热专业</th>
+                                                            <th class="dbt-widget-th">最冷专业</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id='data-left-row' class="item_row">
+                                                            <td class="dbt-cell">~$index + 1~</td>
+                                                            <td class="dbt-cell">~left.hot~</td>
+                                                            <td class="dbt-cell">~left.cold~</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="half-col right">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <span class="data-block-title">前<span id='data-top-amount'></span>热门专业列表</span>
+                                            <div class="data-block-in-td db-table-div scrollbar-style scroll-light">
+                                                <table class="dbt-widget" style="width: 100%; table-layout: auto;">
+                                                    <tbody>
+                                                        <tr class="item_row" id='data-top-row'>
+                                                            <td class="dbt-cell" >~major.name~</td>
+                                                            <td class="dbt-cell" >~major.amount~</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ds-content " style="display: none">
+                <div class="dsc-title">
+                    <h3><span>研究支出</span></h3>
+                </div>
+                <div class="dsc-content">
+                    <div class="dsc-content-table">
+                        <div class="full-col">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="data-block-text">
+                                                <div class="dbt-title">总学术与研发支出 ($682M)</div>
+                                                <p class="dbt-p"><span class="text-bold">最多支出研究领域: Life Sciences</span></p>
+                                                <p class="dbt-p">Out of the total $682M R&amp;D budget, Harvard University invested $480M in Life Sciences (70.5% of the total fund). This is <span class="text-bold">8.3 times more</span> than an average research university's investment size in the field of Life Sciences (平均. $57.9百万).</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div id="major-cost-chart">
+                                                <img src="{{ static_url('img/research-expenditure-example.jpeg') }}" style="width:100%;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,228 @@
+<section class="detail-section admission-section" data-section-id="admission">
+    <div class="ds-wrapper">
+        <div class="ds-title">
+            <h1>录取</h1>
+        </div>
+        <div class="ds-contents ">
+            <div class="ds-content ">
+                <div class="tabnav-wrapper">
+                    <div class="dsc-tabnav tabnav">
+                        <nav class="tabnav-tabs">
+                            <a href="#" class="tabnav-tab selected" data-tabnav="ad-basic">录取情况</a>
+                            <a href="#" class="tabnav-tab" data-tabnav="ad-history" style="display: none">历史录取情况</a>
+                        </nav>
+                    </div>
+                    <div class="tabnav-content">
+                        <div class="dsct-table-wrapper">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="table-overview">
+                                                <div style="width:25%" class="table-overview-box">
+                                                    <div class="table-overview-label-wrap">
+                                                        <div class="table-overview-label">申请人数</div>
+                                                    </div>
+                                                    <div class="viz-temp">
+                                                        <div class="viz-wrap">
+                                                            <div class="viz stack-viz">
+                                                                <div class="color" style="height:30%;"></div>
+                                                            </div>
+                                                            <div class="val" id="data-apply-num">-</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="width:25%" class="table-overview-box">
+                                                    <div class="table-overview-label-wrap">
+                                                        <div class="table-overview-label">录取人数</div>
+                                                    </div>
+                                                    <div class="viz-temp">
+                                                        <div class="viz-wrap">
+                                                            <div class="viz stack-viz" style="">
+                                                                <div class="color" style="height:60%;"></div>
+                                                            </div>
+                                                            <div class="val" id="data-admission-num">-</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="width:25%" class="table-overview-box">
+                                                    <div class="table-overview-label-wrap">
+                                                        <div class="table-overview-label">录取率</div>
+                                                    </div>
+                                                    <div class="viz-wrap">
+                                                        <svg class="viz ring-viz" width="90" height="90">
+                                                            <g transform="scale(0.9)">
+                                                                <circle cx="50" cy="50" r="40" stroke-width="9" stroke="#e9e9e9" fill="none"></circle>
+                                                                <path class="color" d="M 50 10 A 40 40 0 1 1 12 35" stroke="#a8d76f" stroke-width="9" fill="none"></path>
+                                                            </g>
+                                                        </svg>
+                                                        <div class="val" id="data-accept-rate">- %</div>
+                                                    </div>
+                                                </div>
+                                                <div style="width:25%" class="table-overview-box">
+                                                    <div class="table-overview-label-wrap">
+                                                        <div class="table-overview-label">入学人数</div>
+                                                    </div>
+                                                    <div class="viz-temp">
+                                                        <div class="viz-wrap">
+                                                            <div class="viz stack-viz" style="">
+                                                                <div class="color" style="height:60%;"></div>
+                                                            </div>
+                                                            <div class="val" id="data-enrollment-num">-</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="data-block-td">
+                                            <div id="admission-enrollment-chart">
+                                                <img src="{{ static_url('img/admission-enrollment-example.jpeg') }}" style="max-width: 100%;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.dsct-table-wrapper -->
+                    </div>
+                </div>
+            </div>
+            <div class="ds-content " style="display: none;">
+                <div class="dsc-title">
+                    <h3><span>录取要求</span></h3>
+                </div>
+                <div class="dsc-content-content">
+                    <div class="property-list">
+                        <ul>
+                            <li>TOEFL成绩<i class="demo-icon icon-ok-circled">&#xe800;</i></li>
+                            <li>雅思成绩<i class="demo-icon icon-cancel-circled">&#xe801;</i></li>
+                            <li>TOEFL成绩<i class="demo-icon icon-ok-circled">&#xe800;</i></li>
+                            <li>推荐信<i class="demo-icon icon-ok-circled">&#xe800;</i></li>
+                            <li>在校证明<i class="demo-icon icon-cancel-circled">&#xe801;</i></li>
+                            <li>成绩单<i class="demo-icon icon-cancel-circled">&#xe801;</i></li>
+                        </ul>
+                    </div>
+                    <!-- End property-list -->
+                </div>
+            </div>
+            <div class="ds-content " style="display: none">
+                <div class="dsc-title">
+                    <h3><span>录取时间</span></h3>
+                </div>
+                <div class="dsc-content-content">
+                    <div class="property-list">
+                        <ul>
+                            <li>申请开通<strong class="right">11月1号</strong></li>
+                            <li>截止日期<strong class="right">2月1号</strong></li>
+                            <li>通知时间<strong class="right">4月1号</strong></li>
+                            <li>确定录取<strong class="right">5月1号</strong></li>
+                            <li>延期入学<strong class="right">可延期入学</strong></li>
+                            <li>录取方式<strong class="right">统一审核</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="ds-content ">
+                <div class="dsc-title">
+                    <h3><span>申请信息</span></h3>
+                </div>
+                <div class="dsc-content-content">
+                    <div class="property-list">
+                        <ul>
+                            <li>网申地址<i class="demo-icon icon-link cblue">&#xe80c;</i><a href="#" class="right cblue"><span id="data-application_url">www.yougoer.com</span></a></li>
+                            <li>录取要求<i class="demo-icon icon-link cblue">&#xe80c;</i><a href="#" class="right cblue"><span id="data-requirement_url">www.yougoer.com</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- End property-list -->
+                </div>
+            </div>
+            <div class="ds-content " style="display: none">
+                <div class="dsc-title">
+                    <h3><span>成绩</span></h3>
+                </div>
+                <div class="dsc-content">
+                    <div class="dsc-tabnav tabnav">
+                        <nav class="tabnav-tabs">
+                            <a href="#" class="tabnav-tab selected" data-tabnav="ad-gpa">GPA 绩点</a>
+                            <a href="#" class="tabnav-tab" data-tabnav="ad-sat">SAT</a>
+                        </nav>
+                    </div>
+                    <div class="dsc-content-table">
+                        <div class="half-col left">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div id="admission-score-graphy">
+                                                <img src="{{ static_url('img/gpa-example.jpeg') }}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="half-col right">
+                            <table class="data-block-body">
+                                <tbody>
+                                    <tr class="data-block-tr">
+                                        <td colspan="2" class="data-block-td">
+                                            <div class="data-block-title">被哈佛录取的学生大部分 GPA 高于 3.75</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="odd">
+                                        <td colspan="2" class="fullrow fdata">
+                                            <div class="text-center">2014-2015 学年</div>
+                                            <div class="ftb-widget srp-widget">
+                                                <div class="db-table-inner">
+                                                    <div>
+                                                        <div class="db-table-div scrollbar-style scroll-light scrollbar-x">
+                                                            <table class="dbt-widget">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="dbt-widget-th"></th>
+                                                                        <th class="dbt-widget-th">&gt; 3.75</th>
+                                                                        <th class="dbt-widget-th">3.50 - 3.75</th>
+                                                                        <th class="dbt-widget-th">3.25 - 3.50</th>
+                                                                        <th class="dbt-widget-th">3.00 - 3.25</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr class="item_row">
+                                                                        <td class="dbt-cell">哈佛大学</td>
+                                                                        <td class="dbt-cell">87.0%</td>
+                                                                        <td class="dbt-cell">9.0%</td>
+                                                                        <td class="dbt-cell">2.0%</td>
+                                                                        <td class="dbt-cell">1.0%</td>
+                                                                    </tr>
+                                                                    <tr class="item_row">
+                                                                        <td class="dbt-cell">常春藤联盟</td>
+                                                                        <td class="dbt-cell">88.8%</td>
+                                                                        <td class="dbt-cell">8.2%</td>
+                                                                        <td class="dbt-cell">2.0%</td>
+                                                                        <td class="dbt-cell">1.0%</td>
+                                                                    </tr>
+                                                                    <tr class="item_row">
+                                                                        <td class="dbt-cell">马圣洲</td>
+                                                                        <td class="dbt-cell">23.8%</td>
+                                                                        <td class="dbt-cell">15.8%</td>
+                                                                        <td class="dbt-cell">13.9%</td>
+                                                                        <td class="dbt-cell">14.9%</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
