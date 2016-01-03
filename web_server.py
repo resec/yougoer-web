@@ -1,11 +1,15 @@
 # coding: utf-8
 import tornado.ioloop
 import tornado.web
+import tornado.httpserver
 import os.path
+from tornado.options import define, options
+
 import media
-
-
 from urls import handlers_list
+
+
+define("port", default=8888, help="run on the given port", type=int)
 
 
 class Application(tornado.web.Application):
@@ -30,8 +34,9 @@ class Application(tornado.web.Application):
 
 
 def main():
-    application = Application()
-    application.listen(8888)
+    tornado.options.parse_command_line()
+    http_server = tornado.httpserver.HTTPServer(Application())
+    http_server.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
 
 

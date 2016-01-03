@@ -1,12 +1,16 @@
 function serialize(obj) {
-    var str = [];
-    for (var p in obj)
-        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-    return str.join("&");
+    if (obj != null) {
+        var str = [];
+        for (var p in obj)
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        return str.join("&");
+    } else {
+        return "";
+    }
 }
 
-function getColllegeInfo(params, callback) {
-    var url = '/college/info?' + serialize(params);
+function getColllegeInfo(slug, type, params, callback) {
+    var url = '/college/' + slug + '/info/' + type + serialize(params);
     return $.getJSON(url, callback);
 }
 
@@ -31,7 +35,7 @@ function fillMajorInfo(data) {
 
     var hot = (topLable.length > 3) ? topLable.slice(0, 3) : topLable;
 
-    session = $('section[data-section-id="major"]');
+    var session = $('section[data-section-id="major"]');
     session.find('#data-amount').text(amount);
 
     var lefts = [];
@@ -243,9 +247,9 @@ function fillRankInfo(data) {
         var rankline_temp = [];
 
         if (timeline.length != timelineAll.length) {
-            for (j = 0; j < timelineAll.length; j++) {
+            for (var j = 0; j < timelineAll.length; j++) {
                 rankline_temp[j] = '-';
-                for (k = 0; k < timeline.length; k++) {
+                for (var k = 0; k < timeline.length; k++) {
 
                     if (timeline[k] == timelineAll[j]) {
                         rankline_temp[j] = rankline[k];
@@ -262,7 +266,7 @@ function fillRankInfo(data) {
 
     var categories = [];
     var details = [];
-    for (i = 0; i < rankType.length; i++) {
+    for (var i = 0; i < rankType.length; i++) {
         categories[i] = {lable:rankType[i]};
 
         var rankTop = rankData[i]['top'];
@@ -270,7 +274,7 @@ function fillRankInfo(data) {
         var rank = '#' + rankData[i]['rank'][1][rankData[i]['rank'][1].length - 1];
         var rankLabel = rankData[i]['rank'][0][rankData[i]['rank'][0].length - 1] + '综排';
         details[i] = {rank:rank, rankLabel:rankLabel}
-        for (j = 0; j < rankTopType.length; j++) {
+        for (var j = 0; j < rankTopType.length; j++) {
             details[i]['top' + (j + 1)] = '#' + rankTop[1][j];
             details[i]['topLabel' + (j + 1)] = rankTopType[j];
         };
@@ -332,7 +336,8 @@ function fillBasicInfo(data) {
         tutionAmount = data['tution_amount'],
         tutionAmountLocal = data['tution_amount_local'];
 
-
+    $('#data-title').text(name + ' - 有果儿');
+    
     var session = $('section[data-section-id="top"]');
 
     session.find('#data-cover').css("background-image", "url('" + cover + "')");

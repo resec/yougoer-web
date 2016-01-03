@@ -5,13 +5,12 @@ import tornado.web
 
 import os.path
 
-_SLUG_POOL = {}
 
 class CollegeBaseHandler(tornado.web.RequestHandler):
 
 
     _UNMAPPED_ID = -1
-
+    _SLUG_POOL = {}
 
     def slug2id(self, slug):
         if slug in _SLUG_POOL:
@@ -27,208 +26,112 @@ class CollegeBaseHandler(tornado.web.RequestHandler):
         return id
 
 
-class CollegeInfoHandler(CollegeBaseHandler):
+class CollegeHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        id = self.slug2id(slug)
-
-        if id == self._UNMAPPED_ID:
-            self.write('error: college not found!')
-            return
-
         mservice = self.application.settings["media_service"]
         param = dict(
-            college_name=client.submit('CollegeNameTask', {'UNITID':id})['NAME'],
-            college_index=slug,
-            cover_src=mservice.college_cover_src(slug),
-            logo_src=mservice.college_logo_src(slug, mservice.SIZE_COLLEGE_LOGO_BIG)
+            slug=slug
         )
 
-        self.render("college/index.html", error=None, **param)
+        self.render("college.html", error=None, **param)
 
 
-class CollegeInfoSharpHandler(CollegeBaseHandler):
+class CollegeInfoBasicHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        id = self.slug2id(slug)
-
-        if id == self._UNMAPPED_ID:
-            self.write('error: college not found!')
-            return
-
-        mservice = self.application.settings["media_service"]
-        result = dict(
-            college_name=client.submit('CollegeNameTask', {'UNITID':id})['NAME'],
-            logo_small=mservice.college_logo_src(slug, mservice.SIZE_COLLEGE_LOGO_SMALL),
-            logo_middle=mservice.college_logo_src(slug, mservice.SIZE_COLLEGE_LOGO_MIDDLE),
-            logo_big=mservice.college_logo_src(slug, mservice.SIZE_COLLEGE_LOGO_BIG)
-        )
-
-        self.write(result)
-
-
-class CollegeInfoMultipleSharpHandler(CollegeBaseHandler):
-
-
-    def get(self):
-        slugs_str = self.get_argument('slugs', None)
-
-        if slugs_str is None:
-            self.write(dict(error="slugs is not existed"))
-            return
-
-        slugs = slugs_str.split('|')
-
-        id_list = set()
-        for slug in slugs:
-            id = self.slug2id(slug)
-            if id == self._UNMAPPED_ID:
-                return self.write(dict(error="unrecognized slug %s" % slug))
-            id_list.add((id, slug))
-
-        results = dict(sharps=list())
-        mservice = self.application.settings["media_service"]
-
-        for id, slug in id_list:
-            result = dict(
-                college_name=client.submit('CollegeNameTask', {'UNITID':id})['NAME'],
-                logo_small=mservice.college_logo_src(slug, mservice.SIZE_COLLEGE_LOGO_SMALL),
-                logo_middle=mservice.college_logo_src(slug, mservice.SIZE_COLLEGE_LOGO_MIDDLE),
-                logo_big=mservice.college_logo_src(slug, mservice.SIZE_COLLEGE_LOGO_BIG)
-            )
-
-            results['sharps'].append(result)
-
-        self.write(results)
-
-
-class CollegeCompareDetailHandler(CollegeBaseHandler):
-
-    _type_task_map = {
-        'cp':'CollegeCompareTask',
-        'rr':'CollegeRankTask'
-    }
-
-    def get(self):
-        slugs_str = self.get_argument('slugs', None)
-
-        if slugs_str is None:
-            self.write(dict(error="slugs is not existed"))
-            return
-
-        slugs = slugs_str.split('|')
-
-        if len(slugs) < 2:
-            return self.write(dict(error="slug list has too little items"))
-
-        id_list = set()
-        for slug in slugs:
-            id = self.slug2id(slug)
-            if id == self._UNMAPPED_ID:
-                return self.write(dict(error="unrecognized slug %s" % slug))
-
-            id_list.add(self.slug2id(slug))
-
-        detail_type = self.get_argument('type', None)
-
-        if detail_type is None or detail_type not in self._type_task_map:
-            return self.write(dict(error='unrecognized detail type!'))
-
-        if detail_type == 'rr':
-            rank_type = self.get_argument('rank_type', None)
-            if rank_type is None:
-                return self.write(dict(error='rank type is not specified!'))
-
-            field_type = self.get_argument('field_type', None)
-            if field_type is None:
-                return self.write(dict(error='field type is not specified!'))
-
-        task = self._type_task_map[detail_type]
-        param = {'UNITID':id}
-        if detail_type == 'rr':
-            param['TYPE'] = rank_type
-            param['FIELD_TYPE'] = field_type
-
-        result = dict(infos=list())
-        for id in id_list:
-            result['infos'].append(client.submit(task, param))
-
-        return self.write(result)
-
-
-class CollegeCompareHandler(CollegeBaseHandler):
-
-
-    def get(self):
-        slugs_str = self.get_argument('slugs', None)
-
-        if slugs_str is None:
-            self.write(dict(error="slugs is not existed"))
-            return
-
-        slugs = slugs_str.split('|')
-
-        if len(slugs) < 2:
-            return self.write(dict(error="slug list has too little items"))
-
-        id_list = set()
-        for slug in slugs:
-            id = self.slug2id(slug)
-            if id == self._UNMAPPED_ID:
-                return self.write(dict(error="unrecognized slug %s" % slug))
-
-            id_list.add(self.slug2id(slug))
-
-        param=dict(college_indexes='|'.join(slugs))
-
-        return self.render("college/compare.html", error=None, **param)
-
-
-class CollegeInfoDetailHandler(CollegeBaseHandler):
-
-
-    _type_task_map = {
-        'ff':'CollegeFastFactsTask',
-        'ai':'CollegeAdmiInfoTask',
-        'si':'CollegeStuInfoKFTask',
-        'si_eth':'CollegeStuInfoETHTask',
-        'tui':'CollegeTuiFeeUnTask',
-        'rr':'CollegeRankTask'
-    }
-
-
-    def get(self, slug):
-        result = None
-
-        id = self.slug2id(slug)
-        if id == self._UNMAPPED_ID:
-            result = dict(error='college not found!')
-
-        detail_type = self.get_argument('type', None)
-
-        if detail_type is None or detail_type not in self._type_task_map:
-            result = dict(error='unrecognized detail type!')
-
-        if detail_type == 'rr':
-            rank_type = self.get_argument('rank_type', None)
-            if rank_type is None:
-                result = dict(error='rank type is not specified!')
-
-            field_type = self.get_argument('field_type', None)
-            if field_type is None:
-                result = dict(error='field type is not specified!')
-
-        if result is None:
-            task = self._type_task_map[detail_type]
-
-            param = {'UNITID':id}
-            if detail_type == 'rr':
-                param['TYPE'] = rank_type
-                param['FIELD_TYPE'] = field_type
-
-            result = client.submit(task, param)
+        result = {'cover': self.static_url('img/college-header-example.jpg'),
+                      'logo': self.static_url('img/college-logo-example.png'),
+                      'name': '哥伦比亚大学',
+                      'name_local': 'Columbia University in the City of New York',
+                      'acceptance_rate': 0.074,
+                      'student_amount': 26957,
+                      'tution_amount': 3000000,
+                      'tution_amount_local': 51008,
+                      }
         
         self.write(result)
 
+
+class CollegeInfoIntroductionHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        result = {}
+        
+        self.write(result)
+    
+class CollegeInfoAdmissionHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        result = {'application': 1655, 'admission': 655, 'acceptance_rate': 0.06, 'enrollment': 655, 'application_url': 'www.yougoer.com/apply', 'requirement_url': 'www.yougoer.com/require'}
+        
+        self.write(result)
+
+class CollegeInfoTutionHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        result = {'fee':[['学费', '水电费', '交通费', '伙食费'], [1200, 300, 200, 900]],'application':[['学士','硕士或以上'],[300, 350]]}
+        
+        self.write(result)
+
+class CollegeInfoMajorHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        result = {'amount': 38, 'cold': ['Science Social Sciences', 'History', 'Economics'], 'top': [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]}
+        
+        self.write(result)
+
+class CollegeInfoStudentHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        result = {
+                        'category':['人种', '性别'],
+                        'detail': [[['白人', '黑人', '亚洲人', '其他'], [33, 22, 33, 22], [33, 22, 33, 22]], [['男', '女', '未知'], [11, 22, 33], [11, 22, 33]]],
+                        'enrollment': [['Graduates', 'Undergraduates', 'Enrolled Freshmen'], [30000, 20000, 1000]],
+                        'applicant': 35023
+                        }
+        
+        self.write(result)
+
+class CollegeInfoLocalHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        result = {'coordinate': [123, 213], 'address': 'Massachusetts Hall Cambridge, Massachusetts 02138', 'telephone': '(617) 495-1000'}
+        
+        self.write(result)
+    
+class CollegeInfoRankHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        result = {'rank': [
+                ['USnews', 'QS', '世界学术', 'TIMES'],
+                [{
+                    'rank': [[2009, 2010, 2011, 2012, 2013, 2014, 2015], [1, 2, 3, 4, 5, 6, 7]],
+                    'top':[['商科', '计算机', '电子'], [123, 22, 88]]
+                },
+                    {
+                    'rank': [[2009, 2010, 2011, 2013, 2014, 2015], [1, 2, 3, 5, 6, 7]],
+                    'top':[['计算机', '电子', '商科'], [432, 11, 77]]
+                },
+                    {
+                    'rank': [[2009, 2010, 2011, 2012, 2013, 2014, 2015], [10, 21, 11, 12, 15, 16, 12]],
+                    'top':[['电子', '计算机', '商科'], [23, 22, 66]]
+                },
+                    {
+                    'rank': [[2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015], [6, 10, 2, 4, 3, 5, 6, 7, 10]],
+                    'top':[['电子', '商科', '计算机'], [123, 33, 55]]
+                }]
+            ]
+            }
+        
+        self.write(result)
+    

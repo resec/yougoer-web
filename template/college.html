@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title></title>
+    <title id='data-title'>有果儿</title>
     <meta name="description" content="">
     <meta name="robots" content="noindex, follow" />
     <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
+    <meta name="slug" content="{{slug}}" />
     <link href="{{ static_url('css/basic.css') }}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{ static_url('css/animation.css') }}" media="all" rel="stylesheet" type="text/css" />
     <link href="{{ static_url('css/primer.css') }}" media="all" rel="stylesheet" type="text/css" />
@@ -18,11 +19,12 @@
     <script src="{{ static_url('js/charts.js') }}"></script>
     <script src="{{ static_url('js/yougoer.js') }}"></script>
     <script type="text/javascript">
-    jQuery(function($) {
+        jQuery(function($) {
         $(document).ready(function() {
-            yougoer.getColllegeInfo({
-                type: 'basic'
-            }, yougoer.fillBasicInfo).always(function() {
+            var slug = $('meta[name="slug"]').attr('content');
+            
+            yougoer.getColllegeInfo(slug, 'basic', {}, yougoer.fillBasicInfo)
+            .always(function() {
                 $('#detail-nav-sidebar').stickUp({
                     parts: {
                         0: 'ffect',
@@ -36,21 +38,14 @@
                     itemClass: 'dd-nav-item',
                     itemHover: 'active'
                 });
-            }).always(yougoer.getColllegeInfo({
-                type: 'introduction'
-            }, yougoer.fillIntroductionInfo)).always(yougoer.getColllegeInfo({
-                type: 'rank'
-            }, yougoer.fillRankInfo)).always(yougoer.getColllegeInfo({
-                type: 'admission'
-            }, yougoer.fillAdmissionInfo)).always(yougoer.getColllegeInfo({
-                type: 'tution'
-            }, yougoer.fillTuitionInfo)).always(yougoer.getColllegeInfo({
-                type: 'major'
-            }, yougoer.fillMajorInfo)).always(yougoer.getColllegeInfo({
-                type: 'student'
-            }, yougoer.fillStudentInfo)).always(yougoer.getColllegeInfo({
-                type: 'local'
-            }, yougoer.fillLocalInfo));
+            })
+            .always(yougoer.getColllegeInfo(slug, 'introduction', {}, yougoer.fillIntroductionInfo))
+            .always(yougoer.getColllegeInfo(slug, 'rank', {}, yougoer.fillRankInfo))
+            .always(yougoer.getColllegeInfo(slug, 'admission', {}, yougoer.fillAdmissionInfo))
+            .always(yougoer.getColllegeInfo(slug, 'tution', {}, yougoer.fillTuitionInfo))
+            .always(yougoer.getColllegeInfo(slug, 'major', {}, yougoer.fillMajorInfo))
+            .always(yougoer.getColllegeInfo(slug, 'student', {}, yougoer.fillStudentInfo))
+            .always(yougoer.getColllegeInfo(slug, 'local', {}, yougoer.fillLocalInfo));
         });
     });
     </script>
