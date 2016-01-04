@@ -13,18 +13,18 @@ class CollegeBaseHandler(tornado.web.RequestHandler):
     _SLUG_POOL = {}
 
     def slug2id(self, slug):
-        if slug in _SLUG_POOL:
-            id = _SLUG_POOL[slug]
+        if slug in self._SLUG_POOL:
+            cid = self._SLUG_POOL[slug]
         else:
             try:
-                id = client.submit('CollegeSlugTask', {'SLUG':slug})['UNITID']
+                cid = client.submit('UnivSlugTask', {'SLUG':slug})['UNITID']
             except KeyError as ke:
                 return self._UNMAPPED_ID
 
-            _SLUG_POOL[slug] = id
+            self._SLUG_POOL[slug] = cid
 
-        return id
-
+        return cid
+    
 
 class CollegeHandler(CollegeBaseHandler):
 
@@ -91,12 +91,38 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        result = {
-                        'category':['人种', '性别'],
-                        'detail': [[['白人', '黑人', '亚洲人', '其他'], [33, 22, 33, 22], [33, 22, 33, 22]], [['男', '女', '未知'], [11, 22, 33], [11, 22, 33]]],
-                        'enrollment': [['Graduates', 'Undergraduates', 'Enrolled Freshmen'], [30000, 20000, 1000]],
-                        'applicant': 35023
-                        }
+        cid = self.slug2id(slug)
+        
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+            
+        enrollment = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
+        ethnicity = client.submit('UnivEthnicityTask', dict(UNITID=cid))
+        ethnicity_state = client.submit('UnivEthnicityStateTask', dict(UNITID=cid))
+        gender = client.submit('UnivGenderTask', dict(UNITID=cid))
+        gender_state = client.submit('UnivGenderStateTask', dict(UNITID=cid))
+        
+        eth_white = ethnicity['EFWHITT']
+        eth_black = ethnicity['EFBKAAT']
+        eth_asian = ethnicity['EFASIAT']
+        eth_other = ethnicity['EFTOTLT_TOTAL'] - eth_white - eth_black - eth_asian
+        eth_state_white = eth_state['EFWHITT']
+        eth_state_black = eth_state['EFBKAAT']
+        eth_state_asian = eth_state['EFASIAT']
+        eth_state_other = eth_state['EFTOTLT_TOTAL'] - eth_state_white - eth_state_black - eth_state_asian
+        
+        
+        result = dict(category=["人种", "性别"],
+                      detail=[[['白人', '黑人', '亚洲人', '其他'], 
+                               [ethnicity_white, ethnicity_black, ethnicity_asian, ethnicity_other], 
+                               [ethnicity_state_white, ethnicity_state_black, ethnicity_state_asian, ethnicity_state_other]], 
+                              [['男', '女'], 
+                               [11, 22], 
+                               [11, 22]]
+                             ],
+                      enrollment=[['研究生', '本科生', '新生入学'], [enrollment['EFTOTLT_UNGR'], enrollment['EFTOTLT_GR'], enrollment['ENRLT']]],
+                      applicant=35023
+        )
         
         self.write(result)
 
@@ -104,7 +130,17 @@ class CollegeInfoLocalHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        result = {'coordinate': [123, 213], 'address': 'Massachusetts Hall Cambridge, Massachusetts 02138', 'telephone': '(617) 495-1000'}
+        cid = self.slug2id(slug)
+        
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+        
+        local = client.submit('UnivLocateTask', dict(UNITID=cid))
+        #{'coordinate': [123, 213], 'address': 'Massachusetts Hall Cambridge, Massachusetts 02138', 'telephone': '(617) 495-1000'}
+        result = dict(coordinate=[local['LONGITUD'], local['LATITUDE']],
+                      address=local['ADDR'] + ', ' + local['CITY'] + ', ' + local['STABBR'],
+                      telephone=local['GENTELE'],
+                    )
         
         self.write(result)
     
@@ -112,26 +148,29 @@ class CollegeInfoRankHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        result = {'rank': [
-                ['USnews', 'QS', '世界学术', 'TIMES'],
-                [{
-                    'rank': [[2009, 2010, 2011, 2012, 2013, 2014, 2015], [1, 2, 3, 4, 5, 6, 7]],
-                    'top':[['商科', '计算机', '电子'], [123, 22, 88]]
-                },
-                    {
-                    'rank': [[2009, 2010, 2011, 2013, 2014, 2015], [1, 2, 3, 5, 6, 7]],
-                    'top':[['计算机', '电子', '商科'], [432, 11, 77]]
-                },
-                    {
-                    'rank': [[2009, 2010, 2011, 2012, 2013, 2014, 2015], [10, 21, 11, 12, 15, 16, 12]],
-                    'top':[['电子', '计算机', '商科'], [23, 22, 66]]
-                },
-                    {
-                    'rank': [[2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015], [6, 10, 2, 4, 3, 5, 6, 7, 10]],
-                    'top':[['电子', '商科', '计算机'], [123, 33, 55]]
-                }]
-            ]
-            }
+        cid = self.slug2id(slug)
+        
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+            
+        rank_type = [t[0] for t in client.submit('UnivRankTypeTask', dict(UNITID=cid))['rows']]
+        result = dict(rank=[[],[dict(rank=[[],[]], top=[[],[]]) for t in rank_type]])
+        for i, t in enumerate(rank_type):
+            result['rank'][0].append(t)
+            ranks = client.submit('UnivRankAllTask', dict(UNITID=cid, RANKTYPE=t))['rows']
+            tmp = result['rank'][1][i]
+            max_year = 0
+            for rank, year in ranks:
+                tmp['rank'][0].append(year)
+                tmp['rank'][1].append(rank)
+                max_year = year
+                
+            sub_ranks = client.submit('UnivSubRankTask', dict(UNITID=cid, RANKTYPE=t, YEAR=max_year))['rows']
+            for sub_rank, label in sub_ranks:
+                tmp['top'][0].append(label)
+                tmp['top'][1].append(sub_rank)
+        
+        print(result)
         
         self.write(result)
     
