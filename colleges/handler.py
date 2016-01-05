@@ -30,7 +30,6 @@ class CollegeHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        mservice = self.application.settings["media_service"]
         param = dict(
             slug=slug
         )
@@ -42,6 +41,11 @@ class CollegeInfoBasicHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
+        cid = self.slug2id(slug)
+        
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+            
         result = {'cover': self.static_url('img/college-header-example.jpg'),
                       'logo': self.static_url('img/college-logo-example.png'),
                       'name': '哥伦比亚大学',
@@ -59,6 +63,11 @@ class CollegeInfoIntroductionHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
+        cid = self.slug2id(slug)
+        
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+            
         result = {}
         
         self.write(result)
@@ -67,7 +76,21 @@ class CollegeInfoAdmissionHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        result = {'application': 1655, 'admission': 655, 'acceptance_rate': 0.06, 'enrollment': 655, 'application_url': 'www.yougoer.com/apply', 'requirement_url': 'www.yougoer.com/require'}
+        cid = self.slug2id(slug)
+        
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+    
+        urls = client.submit('UnivAdmiUrlTask', dict(UNITID=cid))
+        enrollment = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
+    
+        result = {'application': enrollment['APPLCN'], 
+                    'admission': enrollment['ADMSSN'], 
+                    'enrollment': enrollment['ENRLT'], 
+                    'application_url': urls['APPLURL'], 
+                    'requirement_url': urls['ADMINURL'], 
+                    'website_url': urls['WEBADDR']
+                    }
         
         self.write(result)
 
@@ -75,6 +98,11 @@ class CollegeInfoTutionHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
+        cid = self.slug2id(slug)
+        
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+    
         result = {'fee':[['学费', '水电费', '交通费', '伙食费'], [1200, 300, 200, 900]],'application':[['学士','硕士或以上'],[300, 350]]}
         
         self.write(result)
@@ -83,8 +111,29 @@ class CollegeInfoMajorHandler(CollegeBaseHandler):
 
 
     def get(self, slug):
-        result = {'amount': 38, 'cold': ['Science Social Sciences', 'History', 'Economics'], 'top': [['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]}
+        cid = self.slug2id(slug)
         
+        if cid == self._UNMAPPED_ID:
+            self.write('error slug')
+            
+        amount = client.submit('UnivMajorNumTask', dict(UNITID=cid))['MAJORNUM']
+        majors = client.submit('UnivMajorTask', dict(UNITID=cid))['rows']
+        
+        top = [[], []]
+        topn = 10
+        labels, counts = top
+        for i in range(topn):
+            major, count = majors[topn - 1 - i]
+            labels.append(major)
+            counts.append(count)
+            
+        cold = []
+        coldn = 3
+        for i in range(coldn):
+            cold.append(majors[i][0])
+        
+        result = {'amount': amount, 'cold': cold, 'top': top}
+        print(result)
         self.write(result)
 
 class CollegeInfoStudentHandler(CollegeBaseHandler):
@@ -169,8 +218,6 @@ class CollegeInfoRankHandler(CollegeBaseHandler):
             for sub_rank, label in sub_ranks:
                 tmp['top'][0].append(label)
                 tmp['top'][1].append(sub_rank)
-        
-        print(result)
         
         self.write(result)
     

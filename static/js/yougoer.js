@@ -221,7 +221,7 @@ function fillAdmissionInfo(data) {
     var session = $('section[data-section-id="admission"]');
     session.find('#data-apply-num').text(data.application);
     session.find('#data-admission-num').text(data.admission);
-    session.find('#data-accept-rate').text(data.acceptance_rate + ' %');
+    session.find('#data-accept-rate').text(data.application / data.admission  + ' %');
     session.find('#data-enrollment-num').text(data.enrollment);
 
     session.find('#data-application_url').text(data.application_url);
