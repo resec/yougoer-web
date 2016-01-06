@@ -148,7 +148,6 @@ class CollegeInfoMajorHandler(CollegeBaseHandler):
         topn = 10
         labels, counts = top
         for i in range(topn):
-<<<<<<< HEAD
             major = majors[topn - 1 - i]
             labels.append(major['CIPCODE'])
             counts.append(major['CTOTALT'])
@@ -158,17 +157,6 @@ class CollegeInfoMajorHandler(CollegeBaseHandler):
         for i in range(coldn):
             cold.append(majors[i]['CIPCODE'])
         
-=======
-            major, count = majors[topn - 1 - i]
-            labels.append(major)
-            counts.append(count)
-
-        cold = []
-        coldn = 3
-        for i in range(coldn):
-            cold.append(majors[i][0])
-
->>>>>>> a7c89f13d0df0a6651bead267371882e46c4d866
         result = {'amount': amount, 'cold': cold, 'top': top}
         self.write(result)
 
@@ -177,10 +165,9 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
 
     def get(self, slug):
         cid = self.slug2id(slug)
-        '''
+        
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
-<<<<<<< HEAD
         
         cats = client.submit('StatiCategoryL3', dict(ID='student'))['rows']
         result = dict(dict=dict(),
@@ -234,44 +221,8 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
         #                        [123, 123, 123]]
         #                      ]
         # )
-        
-=======
-
-        enrollment = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
-        ethnicity = client.submit('UnivEthnicityTask', dict(UNITID=cid))
-        ethnicity_state = client.submit(
-            'UnivEthnicityStateTask', dict(UNITID=cid))
-        gender = client.submit('UnivGenderTask', dict(UNITID=cid))
-        gender_state = client.submit('UnivGenderStateTask', dict(UNITID=cid))
-
-        eth_white = ethnicity['EFWHITT']
-        eth_black = ethnicity['EFBKAAT']
-        eth_asian = ethnicity['EFASIAT']
-        eth_other = ethnicity['EFTOTLT_TOTAL'] - \
-            eth_white - eth_black - eth_asian
-        eth_state_white = eth_state['EFWHITT']
-        eth_state_black = eth_state['EFBKAAT']
-        eth_state_asian = eth_state['EFASIAT']
-        eth_state_other = eth_state['EFTOTLT_TOTAL'] - \
-            eth_state_white - eth_state_black - eth_state_asian
-
-        result = dict(category=["人种", "性别"],
-                      detail=[[['白人', '黑人', '亚洲人', '其他'],
-                               [ethnicity_white, ethnicity_black,
-                                   ethnicity_asian, ethnicity_other],
-                               [ethnicity_state_white, ethnicity_state_black, ethnicity_state_asian, ethnicity_state_other]],
-                              [['男', '女'],
-                               [11, 22],
-                               [11, 22]]
-                              ],
-                      enrollment=[['研究生', '本科生', '新生入学'], [enrollment[
-                          'EFTOTLT_UNGR'], enrollment['EFTOTLT_GR'], enrollment['ENRLT']]],
-                      applicant=35023
-                      )
-
->>>>>>> a7c89f13d0df0a6651bead267371882e46c4d866
         self.write(result)
-        '''
+        
 
 
 class CollegeInfoLocalHandler(CollegeBaseHandler):
@@ -304,7 +255,6 @@ class CollegeInfoRankHandler(CollegeBaseHandler):
 
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
-<<<<<<< HEAD
             
         rank_type = client.submit('UnivRankTypeTask', dict(UNITID=cid))['rows']
         result = dict(rank=[[],[dict(rank=[[],[]], top=[[],[]]) for t in rank_type]])
@@ -322,29 +272,5 @@ class CollegeInfoRankHandler(CollegeBaseHandler):
             for srank in sub_ranks:
                 tmp['top'][0].append(srank['FIELDTYPE'])
                 tmp['top'][1].append(srank['RANK'])
-        
-=======
 
-        rank_type = [t[0] for t in client.submit(
-            'UnivRankTypeTask', dict(UNITID=cid))['rows']]
-        result = dict(
-            rank=[[], [dict(rank=[[], []], top=[[], []]) for t in rank_type]])
-        for i, t in enumerate(rank_type):
-            result['rank'][0].append(t)
-            ranks = client.submit('UnivRankAllTask', dict(
-                UNITID=cid, RANKTYPE=t))['rows']
-            tmp = result['rank'][1][i]
-            max_year = 0
-            for rank, year in ranks:
-                tmp['rank'][0].append(year)
-                tmp['rank'][1].append(rank)
-                max_year = year
-
-            sub_ranks = client.submit('UnivSubRankTask', dict(
-                UNITID=cid, RANKTYPE=t, YEAR=max_year))['rows']
-            for sub_rank, label in sub_ranks:
-                tmp['top'][0].append(label)
-                tmp['top'][1].append(sub_rank)
-
->>>>>>> a7c89f13d0df0a6651bead267371882e46c4d866
         self.write(result)
