@@ -1,8 +1,8 @@
 var yougoer_theme = {
     // 默认色板
     color: [
-        '#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
-        '#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+        '#23a9e7', '#57517a', '#6aacad', '#e85151', '#9cb87f',
+        '#ebc265', '#804452', '#97b552', '#95706d', '#dc69aa',
         '#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
         '#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
     ],
@@ -29,10 +29,11 @@ var yougoer_theme = {
 
     // 提示框
     tooltip: {
-        backgroundColor: 'rgba(255,255,255,0.7)', // 提示背景颜色，默认为透明度为0.7的黑色
+        backgroundColor: 'rgba(255,255,255)', // 提示背景颜色，默认为透明度为0.7的黑色
         borderWidth: '1',
-        borderColor: '#eee',
+        borderColor: '#d4d4d4',
         borderRadius: '0',
+        padding: [10, 15, 10, 15],
         textStyle: {
             color: '#000',
             fontWeight: 'bold',
@@ -40,13 +41,15 @@ var yougoer_theme = {
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
             type: 'line', // 默认为直线，可选为：'line' | 'shadow'
             lineStyle: { // 直线指示器样式设置
-                color: '#008acd'
+                color: '#d4d4d4'
             },
             crossStyle: {
                 color: '#008acd'
             },
             shadowStyle: { // 阴影指示器样式设置
-                color: 'rgba(200,200,200,0.2)'
+                color: 'rgba(255,255,255, 0.3)',
+                width: 'auto',
+                type: 'default'
             }
         }
     },
@@ -60,39 +63,34 @@ var yougoer_theme = {
 
     // 网格
     grid: {
-        borderColor: '#eee'
+        y:'10%',
+        x2:'5%',
+        backgroundColor:'#fff',
+        borderWidth:0,
+        borderColor:'#fff',
     },
 
     // 类目轴
     categoryAxis: {
+        axisTick:{show: false},
+        splitArea:{show: false},
+        splitLine:{show: false},
         axisLine: { // 坐标轴线
             lineStyle: { // 属性lineStyle控制线条样式
-                color: '#008acd'
+                width:2,
+                color: '#e1e1e1',
             }
         },
-        splitLine: { // 分隔线
-            lineStyle: { // 属性lineStyle（详见lineStyle）控制线条样式
-                color: ['#eee']
-            }
-        }
     },
 
     // 数值型坐标轴默认参数
     valueAxis: {
-        axisLine: { // 坐标轴线
-            lineStyle: { // 属性lineStyle控制线条样式
-                color: '#008acd'
-            }
-        },
-        splitArea: {
-            show: true,
-            areaStyle: {
-                color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
-            }
-        },
+        splitArea:{show: false},
+        axisLine:{show: false},
         splitLine: { // 分隔线
             lineStyle: { // 属性lineStyle（详见lineStyle）控制线条样式
-                color: ['#eee']
+                color: '#eee',
+                type: 'dashed',
             }
         }
     },
@@ -134,6 +132,7 @@ var yougoer_theme = {
 
     // 柱形图默认参数
     bar: {
+        clickable:false,
         itemStyle: {
             normal: {
                 barBorderRadius: 0
@@ -457,6 +456,7 @@ function buildEthnicityPieChartOption(enthnicity, count) {
     return option;
 }
 
+/* 条形图 */
 function drawFeeBarChart(id, category, fee) {
     var chart = echarts.init(document.getElementById(id), yougoer_theme);
     var option = buildFeeBarChartOption(category, fee);
@@ -464,72 +464,43 @@ function drawFeeBarChart(id, category, fee) {
     return chart;
 };
 
-function drawTuitionBarChart(id, category, fee) {
+function drawTotalBarChart(id, category, value) {
     var chart = echarts.init(document.getElementById(id), yougoer_theme);
-    var option = Bar3ChartOption(category, fee);
+    var option = TotalBarChartOption(category, value);
     chart.setOption(option);
     return chart;
 };
 
+function drawBarChart(id, category, value) {
+    var chart = echarts.init(document.getElementById(id), yougoer_theme);
+    var option = NormalBarChartOption(category, value);
+    chart.setOption(option);
+    return chart;
+};
 
-function Bar3ChartOption(category, fee) {
-    var oriCategory = category;
-    var relCategory = [],
-        l = oriCategory.length
-    relCategory[0] = '总费用'
-    while (l--) {
-        relCategory[l + 1] = oriCategory[l]
-    }
-
-    var oriData = fee;
-    var sum = 0,
-        l = oriData.length;
-    while (l--) {
-        sum += oriData[l];
-    }
-    var relData = [sum];
-    l = oriData.length;
-    while (l--) {
-        relData[l + 1] = oriData[l];
-    }
-    var marginData = [];
-    l = relData.length;
-    while (l--) {
-        sum -= relData[l];
-        marginData[l] = sum > 0 ? sum : 0;
-    }
-
+function NormalBarChartOption(category, value) {
     option = {
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            axisPointer:{type: 'shadow'},
         },
-        calculable: true,
-        xAxis: [{
+        xAxis: {
             type: 'value',
-            axisLine:{show: false},
-            splitArea:{show: false},
-            splitLine:{show: true},
-            splitNumber:3,
-        }],
-        yAxis: [{
+            name: '$ddd',
+        },
+        yAxis: {
             type: 'category',
-            data: relCategory.reverse(),
-            splitArea:{show: false},
-            axisTick:{show: false},
-            splitLine:{show: false},
-            axisLine:{
-                show: true,
-                lineStyle:{width:2, color: '#e1e1e1'},
-            },
-
-        }],
+            data: category.reverse(),
+        },
         series: [{
             type: 'bar',
-            data: relData.reverse(),
-        }, ],
+            data: value.reverse(),
+            stack: 'total',
+            clickable: false,
+        }],
         grid: {
             y: 0,
-            x2: 20,
+            x2: '8%',
             backgroundColor:'#fff',
             borderWidth:0,
             borderColor:'#fff',
@@ -537,6 +508,30 @@ function Bar3ChartOption(category, fee) {
     };
 
     return option;
+};
+
+function TotalBarChartOption(category, value) {
+    var oriCategory = category;
+    var relCategory = [],
+        l = oriCategory.length
+    relCategory[0] = '总费用'
+    while (l--) {relCategory[l + 1] = oriCategory[l]};
+
+    var oriData = value;
+    var sum = 0,
+        l = oriData.length;
+    while (l--) {sum += oriData[l];};
+    var relData = [sum];
+    l = oriData.length;
+    while (l--) {relData[l + 1] = oriData[l];};
+    var marginData = [];
+    l = relData.length;
+    while (l--) {
+        sum -= relData[l];
+        marginData[l] = sum > 0 ? sum : 0;
+    }
+
+    return NormalBarChartOption(relCategory, relData);
 };
 
 
@@ -583,19 +578,6 @@ function buildFeeBarChartOption(category, fee) {
         },
         xAxis: [{
             type: 'value',
-            axisLabel: {
-                textStyle: {
-                    fontWeight: 'bold'
-                },
-                formatter: function(v) {
-                    return '$' + v;
-                }
-            },
-            axisLine: {
-                lineStyle: {
-                    width: 0
-                }
-            },
         }],
         yAxis: [{
             type: 'category',
