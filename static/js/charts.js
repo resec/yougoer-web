@@ -506,10 +506,22 @@ function Bar3ChartOption(category, fee) {
         calculable: true,
         xAxis: [{
             type: 'value',
+            axisLine:{show: false},
+            splitArea:{show: false},
+            splitLine:{show: true},
+            splitNumber:3,
         }],
         yAxis: [{
             type: 'category',
             data: relCategory.reverse(),
+            splitArea:{show: false},
+            axisTick:{show: false},
+            splitLine:{show: false},
+            axisLine:{
+                show: true,
+                lineStyle:{width:2, color: '#e1e1e1'},
+            },
+
         }],
         series: [{
             type: 'bar',
