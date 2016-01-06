@@ -142,15 +142,15 @@ class CollegeInfoMajorHandler(CollegeBaseHandler):
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
 
-        amount = client.submit('UnivMajorNumTask', dict(UNITID=cid))[
-            'MAJORNUM']
+        amount = client.submit('UnivMajorNumTask', dict(UNITID=cid))['MAJORNUM']
         majors = client.submit('UnivMajorTask', dict(UNITID=cid))['rows']
 
+        lenm = len(majors)
         top = [[], []]
         topn = 10
         labels, counts = top
         for i in range(topn):
-            major = majors[topn - 1 - i]
+            major = majors[lenm - 1 - i]
             labels.append(major['CIPCODE'])
             counts.append(major['CTOTALT'])
             
