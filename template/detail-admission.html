@@ -41,7 +41,7 @@
                                                             <div class="viz stack-viz" style="">
                                                                 <div class="color" style="height:60%;"></div>
                                                             </div>
-                                                            <div class="val" id="data-admission-num">-</div>
+                                                            <div class="val" id="data-admiss-num">-</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -56,7 +56,7 @@
                                                                 <path class="color" d="M 50 10 A 40 40 0 1 1 12 35" stroke="#a8d76f" stroke-width="9" fill="none"></path>
                                                             </g>
                                                         </svg>
-                                                        <div class="val" id="data-accept-rate">- %</div>
+                                                        <div class="val" id="data-admiss-perc">- %</div>
                                                     </div>
                                                 </div>
                                                 <div style="width:25%" class="table-overview-box">
@@ -68,7 +68,7 @@
                                                             <div class="viz stack-viz" style="">
                                                                 <div class="color" style="height:60%;"></div>
                                                             </div>
-                                                            <div class="val" id="data-enrollment-num">-</div>
+                                                            <div class="val" id="data-enroll-num">-</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <div class="ds-content " style="display: none;">
+            <div class="ds-content ">
                 <div class="dsc-title">
                     <h3><span>录取要求</span></h3>
                 </div>
@@ -131,8 +131,22 @@
                 <div class="dsc-content-content">
                     <div class="property-list">
                         <ul>
-                            <li>网申地址<i class="demo-icon icon-link cblue">&#xe80c;</i><a href="#" class="right cblue"><span id="data-application_url">www.yougoer.com</span></a></li>
-                            <li>录取要求<i class="demo-icon icon-link cblue">&#xe80c;</i><a href="#" class="right cblue"><span id="data-requirement_url">www.yougoer.com</span></a></li>
+                            <li>网申地址<i class="demo-icon icon-link cblue">&#xe80c;</i><a href="" class="right cblue" id="data-apply-url"><span>www.yougoer.com</span></a></li>
+                            <li>录取要求<i class="demo-icon icon-link cblue">&#xe80c;</i><a href="" class="right cblue" id="data-requi-url"><span>www.yougoer.com</span></a></li>
+                            <li>录取要求<i class="demo-icon icon-link cblue">&#xe80c;</i><a href="" class="right cblue" id="data-site-url"><span>www.yougoer.com</span></a></li>
+                        </ul>
+                    </div>
+                    <!-- End property-list -->
+                </div>
+            </div>
+            <div class="ds-content">
+                <div class="dsc-title">
+                    <h3><span>申请费用</span></h3>
+                </div>
+                <div class="dsc-content-content">
+                    <div class="property-list">
+                        <ul>
+                            <li id='data-application-row'>~application.label~<span class="right cblue">~application.amount~</span></li>
                         </ul>
                     </div>
                     <!-- End property-list -->

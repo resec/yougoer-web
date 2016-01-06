@@ -234,13 +234,34 @@ function fillIntroductionInfo(data) {
 
 function fillAdmissionInfo(data) {
     var session = $('section[data-section-id="admission"]');
-    session.find('#data-apply-num').text(data.application);
-    session.find('#data-admission-num').text(data.admission);
-    session.find('#data-accept-rate').text(data.application / data.admission + ' %');
-    session.find('#data-enrollment-num').text(data.enrollment);
+    var admiss_perc = data.admiss_num / data.apply_num;
+    var enroll_perc = data.enroll_num / data.admiss_num;
+    if (enroll_perc >= 10) {
+        admiss_perc = admiss_perc.toFixed(2);
+    } else {
+        admiss_perc = admiss_perc.toFixed(4);
+    };
 
-    session.find('#data-application_url').text(data.application_url);
-    session.find('#data-requirement_url').text(data.requirement_url);
+    session.find('#data-apply-num').text(data.apply_num);
+    session.find('#data-admiss-num').text(data.admiss_num);
+    session.find('#data-admiss-perc').text(admiss_perc * 100 + ' %');
+    session.find('#data-enroll-num').text(data.enroll_num);
+
+    session.find('#data-apply-url').attr('href', 'http://' + data.apply_url);
+    session.find('#data-requi-url').attr('href', 'http://' + data.requi_url);
+    session.find('#data-site-url').attr('href', 'http://' + data.site_url);
+
+    session.find('#data-apply-url').text(splitUrlLength(data.apply_url));
+    session.find('#data-requi-url').text(splitUrlLength(data.requi_url));
+    session.find('#data-site-url').text(splitUrlLength(data.site_url));
+
+    function splitUrlLength(URL) {
+        if (URL.length <= 28) {
+            return URL;
+        } else {
+            return URL.substr(0, 28) + '...';
+        };
+    };
 };
 
 function fillRankInfo(data) {
@@ -313,40 +334,6 @@ function fillRankInfo(data) {
 
 
 function fillTuitionInfo(data) {
-    /*
-    var fee = data['fee'],
-        feeCategory = fee[0],
-        feeAmount = fee[1],
-        application = data['application'],
-        applicationCategory = application[0],
-        applicationAmount = application[1];
-
-    var session = $('section[data-section-id="tuition"]');
-
-    var feeTotal = 0,
-        len = feeCategory.length;
-    while (len--) {
-        feeTotal += feeAmount[len];
-    }
-
-    session.find('#data-fee-total').text(feeTotal);
-
-    var fees = [];
-    for (var i=0; i< feeCategory.length; i++) {
-        fees[i] = {label: feeCategory[i], amount: feeAmount[i]}
-    }
-    repeatElement(session.find('#data-fee-row'), fees, 'fee');
-
-    var applications = [];
-    for (var i=0; i< applicationCategory.length; i++) {
-        applications[i] = {label: applicationCategory[i], amount: applicationAmount[i]}
-    }
-    repeatElement(session.find('#data-application-row'), applications, 'application');
-
-    var chart = charts.drawFeeBarChart("tui-basic-chart", feeCategory, feeAmount);
-    $('#tui-basic-chart').data("chart", chart);
-    */
-
     var category = data['category'];
     var detail = data['details'];
     var compare = data['comparetui'];
@@ -380,7 +367,7 @@ function fillTuitionInfo(data) {
             }
         }
         repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
-        var detailChart = charts.drawFeeBarChart(categories[i].chartid, detail[i][0], detail[i][1]);
+        var detailChart = charts.drawTuitionBarChart(categories[i].chartid, detail[i][0], detail[i][1]);
         session.find('#' + categories[i].chartid).data("chart", detailChart);
     }
 

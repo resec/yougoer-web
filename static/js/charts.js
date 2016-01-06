@@ -462,7 +462,71 @@ function drawFeeBarChart(id, category, fee) {
     var option = buildFeeBarChartOption(category, fee);
     chart.setOption(option);
     return chart;
-}
+};
+
+function drawTuitionBarChart(id, category, fee) {
+    var chart = echarts.init(document.getElementById(id), yougoer_theme);
+    var option = Bar3ChartOption(category, fee);
+    chart.setOption(option);
+    return chart;
+};
+
+
+function Bar3ChartOption(category, fee) {
+    var oriCategory = category;
+    var relCategory = [],
+        l = oriCategory.length
+    relCategory[0] = '总费用'
+    while (l--) {
+        relCategory[l + 1] = oriCategory[l]
+    }
+
+    var oriData = fee;
+    var sum = 0,
+        l = oriData.length;
+    while (l--) {
+        sum += oriData[l];
+    }
+    var relData = [sum];
+    l = oriData.length;
+    while (l--) {
+        relData[l + 1] = oriData[l];
+    }
+    var marginData = [];
+    l = relData.length;
+    while (l--) {
+        sum -= relData[l];
+        marginData[l] = sum > 0 ? sum : 0;
+    }
+
+    option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        calculable: true,
+        xAxis: [{
+            type: 'value',
+        }],
+        yAxis: [{
+            type: 'category',
+            data: relCategory.reverse(),
+        }],
+        series: [{
+            type: 'bar',
+            data: relData.reverse(),
+        }, ],
+        grid: {
+            y: 0,
+            x2: 20,
+            backgroundColor:'#fff',
+            borderWidth:0,
+            borderColor:'#fff',
+        }
+    };
+
+    return option;
+};
+
 
 function buildFeeBarChartOption(category, fee) {
     var oriCategory = category;
