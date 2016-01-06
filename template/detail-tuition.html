@@ -8,18 +8,22 @@
                 <div class="tabnav-wrapper">
                     <div class="dsc-tabnav tabnav">
                         <nav class="tabnav-tabs">
-                            <a href="#" class="tabnav-tab selected" data-tabnav="tui-basic">基本费用</a>
-                            <a href="#" class="tabnav-tab" data-tabnav="tui-compare" style="display: none">费用对比</a>
+                            <div id='data-category-lable' class="tabnav-tab" data-bind-tab="tuition">~category.lable~</div>
+                            <!--
+                            <a href="#" class="tabnav-tab selected" data-tabnav="tui-basic">住校学费</a>
+                            <a class="tabnav-tab" data-tabnav="tui-basic">校外学费</a>
+                            <a href="#" class="tabnav-tab" data-tabnav="tui-compare" style="display: none">学费对比</a>
+                            -->
                         </nav>
                     </div>
                     <div class="tabnav-content">
-                        <div class="dsc-content-table">
+                        <div id="data-category-content" class="dsc-content-table hidden" data-bind-content="tuition">
                             <div class="half-col left">
                                 <table class="data-block-body">
                                     <tbody>
                                         <tr class="data-block-tr">
                                             <td colspan="2" class="data-block-td">
-                                                <div class="chart" id="tui-basic-chart" style="height:300px">
+                                                <div class="chart" id="~category.chartid~" style="height:300px">
                                                     <!--<img src="{{ static_url('img/cost-example.jpeg') }}" style="width:100%;">-->
                                                 </div>
                                             </td>
@@ -41,7 +45,7 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr id='data-fee-row' class="text-right">
+                                                            <tr id='data-fee-row-~category.hash~' class="text-right">
                                                                 <td class="dbt-cell">~fee.label~</td>
                                                                 <td class="dbt-cell">~fee.amount~</td>
                                                             </tr>

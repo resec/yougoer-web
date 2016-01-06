@@ -92,6 +92,9 @@ class CollegeInfoAdmissionHandler(CollegeBaseHandler):
 
 
 class CollegeInfoTutionHandler(CollegeBaseHandler):
+    '''
+    费用
+    '''
 
     def get(self, slug):
         cid = self.slug2id(slug)
@@ -99,8 +102,32 @@ class CollegeInfoTutionHandler(CollegeBaseHandler):
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
 
-        result = {'fee': [['学费', '水电费', '交通费', '伙食费'], [
-            1200, 300, 200, 900]], 'application': [['学士', '硕士或以上'], [300, 350]]}
+        tui_on_campus = client.submit(
+            'UnivTuitionOnCampusTask', {'UNITID': cid})
+        tui_off_campus = client.submit(
+            'UnivTuitionOffCampusTask', {'UNITID': cid})
+        tui_compare = client.submit(
+            'UnivTuitionCompareTask', {'UNITID': cid})
+
+        tui_on_campus_list = [tui_on_campus['CHG3AY3'], tui_on_campus['CHG4AY3'],
+                              tui_on_campus['CHG5AY3'], tui_on_campus['CHG6AY3']]
+        tui_off_campus_list = [tui_off_campus['CHG3AY3'], tui_off_campus['CHG4AY3'],
+                               tui_off_campus['CHG7AY3'], tui_off_campus['CHG8AY3']]
+
+        tui_campus_label = ['学费', '书杂费', '住宿伙食', '其他费用']
+        tui_on_campus_list = [x for x in tui_on_campus_list if x is not None]
+        tui_off_campus_list = [x for x in tui_off_campus_list if x is not None]
+        tui_on_campus_label = tui_campus_label[:len(tui_on_campus_list)]
+        tui_off_campus_label = tui_campus_label[:len(tui_off_campus_list)]
+
+        result = dict(category=["住校学费", "校外学费", "学费对比"],
+                      details=[
+            [tui_on_campus_label, tui_on_campus_list],
+            [tui_off_campus_label, tui_off_campus_list]],
+            comparetui=[['本校', '本州', '该地区', '全美'],
+                        [tui_on_campus['CHG3AY3'], tui_on_campus['CHG4AY3'],
+                         tui_on_campus['CHG5AY3'], tui_on_campus['CHG6AY3']]],
+        )
 
         self.write(result)
 
@@ -139,7 +166,7 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
 
     def get(self, slug):
         cid = self.slug2id(slug)
-
+        '''
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
 
@@ -176,6 +203,7 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
                       )
 
         self.write(result)
+        '''
 
 
 class CollegeInfoLocalHandler(CollegeBaseHandler):
@@ -190,7 +218,8 @@ class CollegeInfoLocalHandler(CollegeBaseHandler):
             self.write('error slug')
 
         local = client.submit('UnivLocateTask', dict(UNITID=cid))
-        #{'coordinate': [123, 213], 'address': 'Massachusetts Hall Cambridge, Massachusetts 02138', 'telephone': '(617) 495-1000'}
+        # EXAMPLE:
+        # {'coordinate': [123, 213], 'address': 'Massachusetts Hall Cambridge, Massachusetts 02138', 'telephone': '(617) 495-1000'}
         result = dict(coordinate=[local['LONGITUD'], local['LATITUDE']],
                       address=local['ADDR'] + ', ' +
                       local['CITY'] + ', ' + local['STABBR'],

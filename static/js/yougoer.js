@@ -82,6 +82,7 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
     var enrollmentChart = charts.drawFeeBarChart("student-enrollment-chart", enrollment[0], enrollment[1]);
+
     session.find('#student-enrollment-chart').data("chart", enrollmentChart);
 
     var categoryHash = [];
@@ -158,7 +159,7 @@ function bindTab(selector) {
             }
         });
     });
-    
+
     // var id = $(selector).data("bind-tab");
     // var tabs = $(selector).parent().find(selector);
     // var panels = $("*[data-bind-content=" + id + "]");
@@ -221,7 +222,7 @@ function fillAdmissionInfo(data) {
     var session = $('section[data-section-id="admission"]');
     session.find('#data-apply-num').text(data.application);
     session.find('#data-admission-num').text(data.admission);
-    session.find('#data-accept-rate').text(data.application / data.admission  + ' %');
+    session.find('#data-accept-rate').text(data.application / data.admission + ' %');
     session.find('#data-enrollment-num').text(data.enrollment);
 
     session.find('#data-application_url').text(data.application_url);
@@ -267,13 +268,18 @@ function fillRankInfo(data) {
     var categories = [];
     var details = [];
     for (var i = 0; i < rankType.length; i++) {
-        categories[i] = {lable:rankType[i]};
+        categories[i] = {
+            lable: rankType[i]
+        };
 
         var rankTop = rankData[i]['top'];
         var rankTopType = rankTop[0];
         var rank = '#' + rankData[i]['rank'][1][rankData[i]['rank'][1].length - 1];
         var rankLabel = rankData[i]['rank'][0][rankData[i]['rank'][0].length - 1] + '综排';
-        details[i] = {rank:rank, rankLabel:rankLabel}
+        details[i] = {
+            rank: rank,
+            rankLabel: rankLabel
+        }
         for (var j = 0; j < rankTopType.length; j++) {
             details[i]['top' + (j + 1)] = '#' + rankTop[1][j];
             details[i]['topLabel' + (j + 1)] = rankTopType[j];
@@ -291,7 +297,9 @@ function fillRankInfo(data) {
     bindTab($('section[data-section-id="rank"] #data-category-lable'));
 };
 
+
 function fillTuitionInfo(data) {
+    /*
     var fee = data['fee'],
         feeCategory = fee[0],
         feeAmount = fee[1],
@@ -323,8 +331,47 @@ function fillTuitionInfo(data) {
 
     var chart = charts.drawFeeBarChart("tui-basic-chart", feeCategory, feeAmount);
     $('#tui-basic-chart').data("chart", chart);
+    */
 
-}
+    var category = data['category'];
+    var detail = data['details'];
+    var compare = data['comparetui'];
+    var session = $('section[data-section-id="tuition"]');
+
+    var categoryHash = [];
+    for (var i = 0; i < category.length - 1; i++) {
+        categoryHash[i] = category[i].hash();
+    };
+
+    var categories = [];
+    for (var i = 0; i < category.length - 1; i++) {
+        categories[i] = {
+            lable: category[i],
+            chartid: 'tui-' + categoryHash[i] + '-chart',
+            hash: categoryHash[i],
+        };
+    };
+    repeatElement(session.find('#data-category-lable'), categories, 'category');
+    repeatElement(session.find('#data-category-content'), categories, 'category');
+
+    session.find('#data-category-lable').first().addClass('selected');
+    session.find('#data-category-content').first().removeClass('hidden');
+
+    for (var i = 0; i < category.length - 1; i++) {
+        var details = [];
+        for (var j = 0; j < detail[i][0].length; j++) {
+            details[j] = {
+                label: detail[i][0][j],
+                amount: detail[i][1][j],
+            }
+        }
+        repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
+        var detailChart = charts.drawFeeBarChart(categories[i].chartid, detail[i][0], detail[i][1]);
+        session.find('#' + categories[i].chartid).data("chart", detailChart);
+    }
+
+    bindTab($('section[data-section-id="tuition"] #data-category-lable'));
+};
 
 function fillBasicInfo(data) {
     var cover = data['cover'],
@@ -337,7 +384,7 @@ function fillBasicInfo(data) {
         tutionAmountLocal = data['tution_amount_local'];
 
     $('#data-title').text(name + ' - 有果儿');
-    
+
     var session = $('section[data-section-id="top"]');
 
     session.find('#data-cover').css("background-image", "url('" + cover + "')");
@@ -349,6 +396,6 @@ function fillBasicInfo(data) {
     session.find('#data-student-amount').text(studentAmount);
     session.find('#data-tution-amount').text(tutionAmount);
     session.find('#data-tution-amount-local').text('$' + tutionAmountLocal);
-}
+};
 
 var yougoer = this;
