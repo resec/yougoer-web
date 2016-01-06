@@ -42,16 +42,34 @@ class CollegeInfoBasicHandler(CollegeBaseHandler):
 
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
-
-        result = {'cover': self.static_url('img/college-header-example.jpg'),
-                  'logo': self.static_url('img/college-logo-example.png'),
-                  'name': '哥伦比亚大学',
-                  'name_local': 'Columbia University in the City of New York',
-                  'acceptance_rate': 0.074,
-                  'student_amount': 26957,
-                  'tution_amount': 3000000,
-                  'tution_amount_local': 51008,
-                  }
+        
+        names = client.submit('UnivNameTask', dict(UNITID=cid, LANG=['CN','EN']))['rows']
+        
+        for n in names:
+            if n['LANG'] == 'EN':
+                name_local = n['NAME']
+            elif n['LANG'] == 'CN':
+                name = n['NAME']
+        
+        admis = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
+        
+        acceptance_rate = admis['ADMSSN'] / admis['APPLCN']
+        student_amount = admis['EFTOTLT_TOTAL']
+        
+        tution = client.submit('UnivTuitionOnCampusTask', dict(UNITID=cid))
+        tution_amount_local = tution['CHG3AY3']
+        
+        mservice = self.application.settings["media_service"]
+        result = dict(cover=self.static_url(mservice.college_cover_src(slug)),
+                  logo=self.static_url(mservice.college_logo_src(slug)),
+                  name=name,
+                  name_local=name_local,
+                  acceptance_rate=acceptance_rate,
+                  student_amount=student_amount,
+                  tution_amount_local=tution_amount_local,
+        )  
+        
+        print(result)
 
         self.write(result)
 
