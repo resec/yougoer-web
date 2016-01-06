@@ -59,12 +59,24 @@ function fillMajorInfo(data) {
 }
 
 function fillStudentInfo(data) {
-    var category = data['category'],
-        detail = data['detail'],
-        enrollment = data['enrollment'],
-        application = data['application'];
-
-    //['Graduates','Undergraduates','Enrolled Freshmen']
+    var dict = data['dict'],
+        category = data['category'],
+        detail = data['detail'];
+        
+    var enrollmentID = -999, enrollmentIndex = -999;
+    
+    for (var i = 0; i < category.length; i++) {
+        if (dict[category[i]] == '招生') {
+            enrollmentID = category[i];
+            enrollmentIndex = i;
+            break;
+        }  
+    }
+    
+    var enrollment = detail[enrollmentIndex];
+    
+    for (var i = 0; i < category.length; i++)
+    
     var enrollmentTotal = enrollment[1][0] + enrollment[1][1];
     var graduatePrecentage = (enrollment[1][0] / enrollmentTotal * 100).toFixed(2);
     var undergraduatePrecentage = (enrollment[1][1] / enrollmentTotal * 100).toFixed(2);
@@ -78,7 +90,6 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-undergraduate").text(enrollment[1][1]);
     session.find("#data-enrollment-undergraduate-precentage").text(undergraduatePrecentage + '%');
     session.find("#data-enrollment-freshmen").text(enrollment[1][2]);
-    session.find("#data-application").text(application);
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
     var enrollmentChart = charts.drawFeeBarChart("student-enrollment-chart", enrollment[0], enrollment[1]);
@@ -87,13 +98,15 @@ function fillStudentInfo(data) {
 
     var categoryHash = [];
     for (var i = 0; i < category.length; i++) {
-        categoryHash[i] = category[i].hash();
+        if (i == enrollmentIndex) continue;
+        categoryHash[i] = dict[category[i]].hash();
     }
 
     var categories = [];
     for (var i = 0; i < category.length; i++) {
+        if (i == enrollmentIndex) continue;
         categories[i] = {
-            lable: category[i],
+            lable: dict[category[i]],
             chartid: 'student-' + categoryHash[i] + '-chart',
             hash: categoryHash[i]
         }
@@ -105,10 +118,11 @@ function fillStudentInfo(data) {
     session.find('#data-category-content').first().removeClass('hidden');
 
     for (var i = 0; i < category.length; i++) {
+        if (i == enrollmentIndex) continue;
         var details = [];
         for (var j = 0; j < detail[i][0].length; j++) {
             details[j] = {
-                lable: detail[i][0][j],
+                lable: dict[detail[i][0][j]],
                 school: detail[i][1][j],
                 city: detail[i][2][j]
             }
