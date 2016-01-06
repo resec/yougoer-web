@@ -19,33 +19,32 @@
     <script src="{{ static_url('js/charts.js') }}"></script>
     <script src="{{ static_url('js/yougoer.js') }}"></script>
     <script type="text/javascript">
-        jQuery(function($) {
+    jQuery(function($) {
         $(document).ready(function() {
             var slug = $('meta[name="slug"]').attr('content');
-            
-            yougoer.getColllegeInfo(slug, 'basic', {}, yougoer.fillBasicInfo)
-            .always(function() {
-                $('#detail-nav-sidebar').stickUp({
-                    parts: {
-                        0: 'ffect',
-                        1: 'rank',
-                        2: 'admission',
-                        3: 'tuition',
-                        4: 'major',
-                        5: 'student',
-                        6: 'local',
-                    },
-                    itemClass: 'dd-nav-item',
-                    itemHover: 'active'
-                });
-            })
-            .always(yougoer.getColllegeInfo(slug, 'introduction', {}, yougoer.fillIntroductionInfo))
-            .always(yougoer.getColllegeInfo(slug, 'rank', {}, yougoer.fillRankInfo))
-            .always(yougoer.getColllegeInfo(slug, 'admission', {}, yougoer.fillAdmissionInfo))
-            .always(yougoer.getColllegeInfo(slug, 'tution', {}, yougoer.fillTuitionInfo))
-            .always(yougoer.getColllegeInfo(slug, 'major', {}, yougoer.fillMajorInfo))
-            .always(yougoer.getColllegeInfo(slug, 'student', {}, yougoer.fillStudentInfo))
-            .always(yougoer.getColllegeInfo(slug, 'local', {}, yougoer.fillLocalInfo));
+
+            yougoer.getColllegeInfo(slug, 'basic', {}, yougoer.fillBasicInfo).always(function() {
+                    $('#detail-nav-sidebar').stickUp({
+                        parts: {
+                            0: 'ffect',
+                            1: 'rank',
+                            2: 'admission',
+                            3: 'tuition',
+                            4: 'major',
+                            5: 'student',
+                            6: 'local',
+                        },
+                        itemClass: 'dd-nav-item',
+                        itemHover: 'active'
+                    });
+                })
+                .always(yougoer.getColllegeInfo(slug, 'introduction', {}, yougoer.fillIntroductionInfo))
+                .always(yougoer.getColllegeInfo(slug, 'rank', {}, yougoer.fillRankInfo))
+                .always(yougoer.getColllegeInfo(slug, 'admission', {}, yougoer.fillAdmissionInfo))
+                .always(yougoer.getColllegeInfo(slug, 'tution', {}, yougoer.fillTuitionInfo))
+                .always(yougoer.getColllegeInfo(slug, 'major', {}, yougoer.fillMajorInfo))
+                .always(yougoer.getColllegeInfo(slug, 'student', {}, yougoer.fillStudentInfo))
+                .always(yougoer.getColllegeInfo(slug, 'local', {}, yougoer.fillLocalInfo));
         });
     });
     </script>
