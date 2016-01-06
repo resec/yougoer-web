@@ -6,13 +6,16 @@ _DEFAULT_COLLEGE_IMAGE_PATH = '/static/media/college/image'
 _DEFAULT_COLLEGE_LOGO_PATH = _DEFAULT_COLLEGE_IMAGE_PATH + '/default/logo/200x_logo'
 _DEFAULT_COLLEGE_COVER_PATH = _DEFAULT_COLLEGE_IMAGE_PATH + '/default/cover/cover'
 
+SIZE_COLLEGE_LOGO_SMALL = 1
+SIZE_COLLEGE_LOGO_MIDDLE = 2
+SIZE_COLLEGE_LOGO_BIG = 3
 
 class MediaService(object):
 
 
-    SIZE_COLLEGE_LOGO_SMALL = 1
-    SIZE_COLLEGE_LOGO_MIDDLE = 2
-    SIZE_COLLEGE_LOGO_BIG = 3
+    SIZE_COLLEGE_LOGO_SMALL = SIZE_COLLEGE_LOGO_SMALL
+    SIZE_COLLEGE_LOGO_MIDDLE = SIZE_COLLEGE_LOGO_MIDDLE
+    SIZE_COLLEGE_LOGO_BIG = SIZE_COLLEGE_LOGO_BIG
 
     _COLLEGE_LOGO_SIZE_MAP = {
         SIZE_COLLEGE_LOGO_SMALL:'45x',
@@ -26,7 +29,7 @@ class MediaService(object):
         self.college_image_src = os.path.join(media_src, 'college', 'image')
 
 
-    def college_logo_src(self, slug, size):
+    def college_logo_src(self, slug, size=SIZE_COLLEGE_LOGO_BIG):
         logo_size = self._COLLEGE_LOGO_SIZE_MAP[size]
         logo_name = os.path.join(slug, 'logo', logo_size + '_logo')
         logo_path = os.path.join(_DEFAULT_COLLEGE_IMAGE_PATH, logo_name)
