@@ -79,13 +79,15 @@ class CollegeInfoAdmissionHandler(CollegeBaseHandler):
 
         urls = client.submit('UnivAdmiUrlTask', dict(UNITID=cid))
         enrollment = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
+        requirement = client.submit('UnivAdmiReqTask', dict(UNITID=cid))
+        print(requirement)
 
-        result = {'application': enrollment['APPLCN'],
-                  'admission': enrollment['ADMSSN'],
-                  'enrollment': enrollment['ENRLT'],
-                  'application_url': urls['APPLURL'],
-                  'requirement_url': urls['ADMINURL'],
-                  'website_url': urls['WEBADDR']
+        result = {'apply_num': enrollment['APPLCN'],
+                  'admiss_num': enrollment['ADMSSN'],
+                  'enroll_num': enrollment['ENRLT'],
+                  'apply_url': urls['APPLURL'],
+                  'requi_url': urls['ADMINURL'],
+                  'site_url': urls['WEBADDR'],
                   }
 
         self.write(result)
