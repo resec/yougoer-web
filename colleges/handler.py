@@ -1,9 +1,8 @@
 # coding: UTF-8
 from dsl_client import client
-
 import tornado.web
-
 import os.path
+from const.us_basic import *
 
 
 class CollegeBaseHandler(tornado.web.RequestHandler):
@@ -42,23 +41,23 @@ class CollegeInfoBasicHandler(CollegeBaseHandler):
 
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
-        
+
         names = client.submit('UnivNameTask', dict(UNITID=cid, LANG=['CN','EN']))['rows']
-        
+
         for n in names:
             if n['LANG'] == 'EN':
                 name_local = n['NAME']
             elif n['LANG'] == 'CN':
                 name = n['NAME']
-        
+
         admis = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
-        
+
         acceptance_rate = admis['ADMSSN'] / admis['APPLCN']
         student_amount = admis['EFTOTLT_TOTAL']
-        
+
         tution = client.submit('UnivTuitionOnCampusTask', dict(UNITID=cid))
         tution_amount_local = tution['CHG3AY3']
-        
+
         mservice = self.application.settings["media_service"]
         result = dict(cover=self.static_url(mservice.college_cover_src(slug)),
                   logo=self.static_url(mservice.college_logo_src(slug)),
@@ -67,12 +66,42 @@ class CollegeInfoBasicHandler(CollegeBaseHandler):
                   acceptance_rate=acceptance_rate,
                   student_amount=student_amount,
                   tution_amount_local=tution_amount_local,
-        )  
-        
-        print(result)
+        )
 
+        #print(result)
         self.write(result)
 
+
+def find_DICT_KEY_LIST(dict_name, org_value):
+    if org_value:
+        for key, value in dict_name.items():
+            v_list = list(range(min(value), max(value)+1))
+            if org_value in v_list:
+                return key, org_value
+
+    return None, None
+
+def find_DICT_KEY(dict_name, org_value):
+    if org_value:
+        for key, value in dict_name.items():
+            if org_value == value:
+                return key, org_value
+
+    return None, None
+
+def find_DICT_COMPARE(dict_name, org_value):
+    if org_value:
+        if org_value > 115:
+            f_dict_v = 1
+        elif org_value < 85:
+            f_dict_v = 2
+        else:
+            f_dict_v = 3
+        for key, value in dict_name.items():
+            if f_dict_v == value:
+                return key, org_value
+
+    return None, None
 
 class CollegeInfoIntroductionHandler(CollegeBaseHandler):
 
@@ -82,8 +111,55 @@ class CollegeInfoIntroductionHandler(CollegeBaseHandler):
         if cid == self._UNMAPPED_ID:
             self.write('error slug')
 
-        result = {}
+        intro_infos = client.submit('UnivIntroTask', dict(UNITID=cid))
 
+        EFTOTLT_GR = intro_infos['EFTOTLT_GR']
+        EFTOTLT_UNGR = intro_infos['EFTOTLT_UNGR']
+        L4GR150 = intro_infos['L4GR150']
+        EFTOTLW =intro_infos['EFTOTLW']
+        EFTOTLM = intro_infos['EFTOTLM']
+        APPLCN = intro_infos['APPLCN']
+        ADMSSN = intro_infos['ADMSSN']
+        INSTSIZE = intro_infos['INSTSIZE']
+        CHG3AY3 = intro_infos['CHG3AY3']
+        LOCALE = intro_infos['LOCALE']
+        STUFACR = intro_infos['STUFACR']
+        LOCATE_V = intro_infos['LOCALE_V']
+        INSTSIZE_V = intro_infos['INSTSIZE_V']
+
+        stufacr_label, stufacr_value = find_DICT_KEY_LIST(STUDENTFACULTY, STUFACR)
+        tuition_label, tuition_value = find_DICT_KEY_LIST(TUITION, CHG3AY3)
+        locate_label, locate_value = find_DICT_KEY_LIST(LOCATE, LOCALE)
+        locate_value = LOCATE_V
+        insize_label, insize_value = find_DICT_KEY(INSIZE, INSTSIZE)
+        insize_value = INSTSIZE_V
+
+        admiss_v = (ADMSSN/APPLCN)*100
+        admiss_label, admiss_value = find_DICT_KEY_LIST(ADMISSION, int(admiss_v))
+        admiss_value = round((admiss_v), 2)
+
+        guaratedrate_label, guaratedrate_value = find_DICT_KEY(GUARATEDRATE, L4GR150)
+
+        stutype_v = int((EFTOTLT_UNGR/EFTOTLT_GR)*100)
+        stutype_label, stutype_value = find_DICT_COMPARE(STUDENTTYPE, stutype_v)
+        stutype_value = round((EFTOTLT_UNGR / (EFTOTLT_UNGR + EFTOTLT_GR)), 3) * 100
+
+        gender_v = int((EFTOTLW/EFTOTLM)*100)
+        gender_label, gender_value = find_DICT_COMPARE(GENDER, gender_v)
+        gender_value = round((EFTOTLW / (EFTOTLW + EFTOTLM)), 3) * 100
+
+        result = {'detail': [
+            {"id":1, "label":stufacr_label, "value":stufacr_value},
+            {"id":2, "label":tuition_label, "value":tuition_value},
+            {"id":3, "label":locate_label, "value":locate_value},
+            {"id":4, "label":admiss_label, "value":admiss_value},
+            {"id":5, "label":insize_label, "value":insize_value},
+            {"id":6, "label":stutype_label, "value":stutype_value},
+            {"id":7, "label":gender_label, "value":gender_value},
+            {"id":8, "label":guaratedrate_label, "value":guaratedrate_value},
+        ]}
+
+        print(result)
         self.write(result)
 
 
@@ -98,7 +174,7 @@ class CollegeInfoAdmissionHandler(CollegeBaseHandler):
         urls = client.submit('UnivAdmiUrlTask', dict(UNITID=cid))
         enrollment = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
         requirement = client.submit('UnivAdmiReqTask', dict(UNITID=cid))
-        print(requirement)
+        apply_fee = client.submit('UnivAdmiPayTask', dict(UNITID=cid))
 
         result = {'apply_num': enrollment['APPLCN'],
                   'admiss_num': enrollment['ADMSSN'],
@@ -106,6 +182,8 @@ class CollegeInfoAdmissionHandler(CollegeBaseHandler):
                   'apply_url': urls['APPLURL'],
                   'requi_url': urls['ADMINURL'],
                   'site_url': urls['WEBADDR'],
+                  'apply_fee_under': apply_fee['APPLFEEU'],
+                  'apply_fee_gradu': apply_fee['APPLFEEG'],
                   }
 
         self.write(result)
@@ -210,7 +288,7 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
 
         kvs = client.submit('StatiDictValue', dict(IDS=ids))['rows']
 
-        print(kvs)
+        #print(kvs)
         for kv in kvs:
             result['dict'][kv['KEY']] = kv['VALUE']
         # enrollment = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
