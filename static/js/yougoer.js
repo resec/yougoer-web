@@ -280,6 +280,9 @@ function fillAdmissionInfo(data) {
     session.find('#data-requi-url').text(splitUrlLength(data.requi_url));
     session.find('#data-site-url').text(splitUrlLength(data.site_url));
 
+    session.find('#data-apply-fee-under span').text('$ ' + data.apply_fee_under)
+    session.find('#data-apply-fee-gradu span').text('$ ' + data.apply_fee_gradu)
+
     function splitUrlLength(URL) {
         if (URL.length <= 28) {
             return URL;
