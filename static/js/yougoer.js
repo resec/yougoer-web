@@ -295,6 +295,18 @@ function fillAdmissionInfo(data) {
     var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
     var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
     var detailChart = charts.drawBarChart('admission-enrollment-chart', admiEnrollChart_c, admiEnrollChart_v);
+    
+    var indicator = [
+        { text: 'TOEFL成绩', max: 3 },
+        { text: '雅思成绩', max: 3 },
+        { text: '推荐信', max: 3 },
+        { text: '在校证明', max: 3 },
+        { text: '成绩单', max: 3 }
+    ]
+    
+    var value = [1, 2, 3, 3, 2]
+    
+    charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, value);
 };
 
 
@@ -334,8 +346,6 @@ function fillRankInfo(data) {
         var subs = rank['top'][0];
         var subRanks = rank['top'][1];
 
-        //console.log(years);
-        //console.log(sumRanks);
         var sumRankChart = charts.drawRankLineChart(details[i].rankchartid, years, sumRanks);
         session.find('#' + details[i].rankchartid).data("chart", sumRankChart);
 

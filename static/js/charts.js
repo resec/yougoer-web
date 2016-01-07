@@ -563,4 +563,38 @@ function buildFeeBarChartOption(category, fee) {
     return option;
 }
 
+function drawRadarChart(selector, indicator, value) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
+    var option = buildRadarChartOption(indicator, value);
+    chart.setOption(option);
+    selector.data('chart', chart);
+    return chart;
+};
+
+function buildRadarChartOption(indicator, value) {
+    var option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        polar: [
+            {
+                indicator: indicator
+            }
+        ],
+        series: [
+            {
+                type: 'radar',
+                data: [
+                    {
+                        value: value,
+                    }
+                ]
+            }
+        ]
+    };
+
+    return option;
+}
+
 var charts = this;
