@@ -40,7 +40,8 @@ img {
 #main-body {
     padding-bottom: 40px;
     margin: 0 auto;
-    max-width: 1280px;
+    /*max-width: 1280px;*/
+    max-width: 980px;
     overflow: hidden;
 }
 
@@ -112,7 +113,8 @@ img {
     height: 100%;
     padding-top: 15px;
     padding-bottom: 15px;
-    max-width: 1280px;
+    /*max-width: 1280px;*/
+    max-width: 980px;
     margin: 0 auto;
 }
 

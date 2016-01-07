@@ -10,7 +10,7 @@ class CollegeBaseHandler(tornado.web.RequestHandler):
     _UNMAPPED_ID = -1
     _SLUG_POOL = {}
 
-    def slug2id(self, slug):
+    def slug2id(self, slug):x
         if slug in self._SLUG_POOL:
             cid = self._SLUG_POOL[slug]
         else:
@@ -159,7 +159,7 @@ class CollegeInfoIntroductionHandler(CollegeBaseHandler):
             {"id":8, "label":guaratedrate_label, "value":guaratedrate_value},
         ]}
 
-        print(result)
+        #print(result)
         self.write(result)
 
 
@@ -291,7 +291,7 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
         #print(kvs)
         for kv in kvs:
             result['dict'][kv['KEY']] = kv['VALUE']
-            
+
         self.write(result)
 
 
