@@ -95,9 +95,7 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-freshmen").text(enrollment[1][2]);
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
-    var enrollmentChart = charts.drawFeeBarChart("student-enrollment-chart", enrollmentLabel, enrollment[1]);
-
-    session.find('#student-enrollment-chart').data("chart", enrollmentChart);
+    charts.drawFeeBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1]);
 
     var categoryHash = [];
     var categories = [];
@@ -133,8 +131,7 @@ function fillStudentInfo(data) {
         }
 
         repeatElement(session.find('#data-detail-row-' + categoryHash[i]), details, 'detail');
-        var detailChart = charts.drawEthnicityPieChart(categories[i].chartid, detailLable, detail[i][1]);
-        session.find('#' + categories[i].chartid).data("chart", detailChart);
+        charts.drawEthnicityPieChart(session.find('#' + categories[i].chartid), detailLable, detail[i][1]);
     }
 
     bindTab($('section[data-section-id="student"] #data-category-lable'));
@@ -242,6 +239,10 @@ function repeatElement(selector, objs, objName) {
     template.remove();
 };
 
+function fillElement(selector, obj, objName) {
+    repeatElement(selector, [obj], objName);
+}
+
 // function listUnique(array) {
 //     var result = [];
 //     label: for (var i = 0; i < array.length; i++) {
@@ -255,7 +256,19 @@ function repeatElement(selector, objs, objName) {
 // };
 
 function fillIntroductionInfo(data) {
-    //console.log(data);
+    console.log(data);
+    
+    var intro = data['introduction'];
+    
+    var session = $('section[data-section-id="ffect"]');
+    
+    console.log(session.find('#introduction-item-1'));
+    
+    for (var i = 0; i < intro.length; i++) {
+        console.log('#introduction-item-' + intro[i].id)
+        fillElement(session.find('#introduction-item-' + intro[i].id), intro[i], 'intro');
+    }
+    
 };
 
 function fillAdmissionInfo(data) {
@@ -294,7 +307,7 @@ function fillAdmissionInfo(data) {
 
     var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
     var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
-    var detailChart = charts.drawBarChart('admission-enrollment-chart', admiEnrollChart_c, admiEnrollChart_v);
+    charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v);
     
     var indicator = [
         { text: 'TOEFL成绩', max: 3 },
@@ -346,11 +359,8 @@ function fillRankInfo(data) {
         var subs = rank['top'][0];
         var subRanks = rank['top'][1];
 
-        var sumRankChart = charts.drawRankLineChart(details[i].rankchartid, years, sumRanks);
-        session.find('#' + details[i].rankchartid).data("chart", sumRankChart);
-
-        var subRankChart = charts.drawBarChart(details[i].subrankchartid, subs, subRanks);
-        session.find('#' + details[i].subrankchartid).data("chart", subRankChart);
+        charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
+        charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks);
     }
 
     bindTab($('section[data-section-id="rank"] #data-category-lable'));
@@ -391,8 +401,7 @@ function fillTuitionInfo(data) {
             }
         }
         repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
-        var detailChart = charts.drawTotalBarChart(categories[i].chartid, detail[i][0], detail[i][1]);
-        session.find('#' + categories[i].chartid).data("chart", detailChart);
+        charts.drawTotalBarChart(session.find('#' + categories[i].chartid), detail[i][0], detail[i][1]);
     }
 
     bindTab($('section[data-section-id="tuition"] #data-category-lable'));
