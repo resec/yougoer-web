@@ -10,7 +10,7 @@ class CollegeBaseHandler(tornado.web.RequestHandler):
     _UNMAPPED_ID = -1
     _SLUG_POOL = {}
 
-    def slug2id(self, slug):x
+    def slug2id(self, slug):
         if slug in self._SLUG_POOL:
             cid = self._SLUG_POOL[slug]
         else:
