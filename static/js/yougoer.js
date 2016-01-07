@@ -75,9 +75,9 @@ function fillStudentInfo(data) {
 
     var enrollment = detail[enrollmentIndex];
     var enrollmentLabel = []
-    
+
     for (var i = 0; i < enrollment[0].length; i++) {
-        enrollmentLabel[i] = dict[enrollment[0][i]]; 
+        enrollmentLabel[i] = dict[enrollment[0][i]];
     }
 
     var enrollmentTotal = enrollment[1][0] + enrollment[1][1];
@@ -126,12 +126,12 @@ function fillStudentInfo(data) {
                 city: detail[i][2][j]
             }
         }
-        
+
         var detailLable = [];
         for (var j = 0; j < detail[i][0].length; j++) {
-            detailLable[j] = dict[detail[i][0][j]]; 
+            detailLable[j] = dict[detail[i][0][j]];
         }
-        
+
         repeatElement(session.find('#data-detail-row-' + categoryHash[i]), details, 'detail');
         var detailChart = charts.drawEthnicityPieChart(categories[i].chartid, detailLable, detail[i][1]);
         session.find('#' + categories[i].chartid).data("chart", detailChart);
@@ -162,7 +162,8 @@ function fillLocalInfo(data) {
 
     googleMap.localposition = localposition;
 
-    loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAS-kxPndBgKczNzE4eSXgzfslPFL2fJ_M&callback=initMap',
+    //loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAS-kxPndBgKczNzE4eSXgzfslPFL2fJ_M&callback=initMap',
+    loadScript('http://maps.google.cn/maps/api/js?language=zh-CN&key=AIzaSyAS-kxPndBgKczNzE4eSXgzfslPFL2fJ_M&callback=initMap',
         function() {
             console.log('google-loader has been loaded, but not the maps-API ');
         }
@@ -302,7 +303,7 @@ function fillRankInfo(data) {
     var rankType = data.rank[0];
 
     var session = $('section[data-section-id="rank"]');
-    
+
     var categoryHash = [];
     var categories = [];
     var details = [];
@@ -311,7 +312,7 @@ function fillRankInfo(data) {
         categories[i] = {
             lable: rankType[i]
         };
-        
+
         var sumRank = rankData[i]['rank'];
         details[i] = {
             rank: '#' + sumRank[1][sumRank[1].length - 1],
@@ -324,20 +325,20 @@ function fillRankInfo(data) {
     repeatElement(session.find('#data-category-content'), details, 'detail');
     session.find('#data-category-lable').first().addClass('selected');
     session.find('#data-category-content').first().removeClass('hidden');
-    
+
     for (var i = 0; i < rankType.length; i++) {
         var rank = rankData[i]
         var years = rank['rank'][0];
         var sumRanks = rank['rank'][1];
-        
+
         var subs = rank['top'][0];
         var subRanks = rank['top'][1];
-        
+
         //console.log(years);
         //console.log(sumRanks);
         var sumRankChart = charts.drawRankLineChart(details[i].rankchartid, years, sumRanks);
         session.find('#' + details[i].rankchartid).data("chart", sumRankChart);
-        
+
         var subRankChart = charts.drawBarChart(details[i].subrankchartid, subs, subRanks);
         session.find('#' + details[i].subrankchartid).data("chart", subRankChart);
     }

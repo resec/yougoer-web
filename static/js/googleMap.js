@@ -105,6 +105,12 @@ function initMap() {
             position: google.maps.ControlPosition.RIGHT_CENTER
         },
     });
+    var marker = new google.maps.Marker({
+            position: localposition,
+            map: map,
+            icon: "/static/media/image/map_icon_blue.png",
+        });
+
     var centerControlDiv = document.createElement('div');
     var centerControl = new CenterControl(centerControlDiv, map);
 
