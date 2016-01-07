@@ -148,7 +148,7 @@ class CollegeInfoIntroductionHandler(CollegeBaseHandler):
         gender_label, gender_value = find_DICT_COMPARE(GENDER, gender_v)
         gender_value = round((EFTOTLW / (EFTOTLW + EFTOTLM)), 3) * 100
 
-        result = {'detail': [
+        result = {'introduction': [
             {"id":1, "label":stufacr_label, "value":stufacr_value},
             {"id":2, "label":tuition_label, "value":tuition_value},
             {"id":3, "label":locate_label, "value":locate_value},

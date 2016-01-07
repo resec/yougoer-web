@@ -265,10 +265,12 @@ var yougoer_theme = {
     }
 };
 
-function drawRankLineChart(id, year, rank) {
-    var chart = echarts.init(document.getElementById(id), yougoer_theme);
+function drawRankLineChart(selector, year, rank) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = buildRankLineChartOption(year, rank);
     chart.setOption(option);
+    selector.data('chart', chart);      
     return chart;
 }
 
@@ -310,10 +312,12 @@ function buildRankLineChartOption(year, rank) {
     return option;
 }
 
-function drawEthnicityPieChart(id, enthnicity, count) {
-    var chart = echarts.init(document.getElementById(id), yougoer_theme);
+function drawEthnicityPieChart(selector, enthnicity, count) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = buildEthnicityPieChartOption(enthnicity, count);
     chart.setOption(option);
+    selector.data('chart', chart);    
     return chart;
 }
 
@@ -379,24 +383,30 @@ function buildEthnicityPieChartOption(enthnicity, count) {
 }
 
 /* 条形图 */
-function drawFeeBarChart(id, category, fee) {
-    var chart = echarts.init(document.getElementById(id), yougoer_theme);
+function drawFeeBarChart(selector, category, fee) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = buildFeeBarChartOption(category, fee);
     chart.setOption(option);
+    selector.data('chart', chart);    
     return chart;
 };
 
-function drawTotalBarChart(id, category, value) {
-    var chart = echarts.init(document.getElementById(id), yougoer_theme);
+function drawTotalBarChart(selector, category, value) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = TotalBarChartOption(category, value);
     chart.setOption(option);
+    selector.data('chart', chart);    
     return chart;
 };
 
-function drawBarChart(id, category, value) {
-    var chart = echarts.init(document.getElementById(id), yougoer_theme);
+function drawBarChart(selector, category, value) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = NormalBarChartOption(category, value);
     chart.setOption(option);
+    selector.data('chart', chart);    
     return chart;
 };
 
