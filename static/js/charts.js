@@ -265,124 +265,46 @@ var yougoer_theme = {
     }
 };
 
-function drawRankLineChart(id, year, rankType, rank) {
+function drawRankLineChart(id, year, rank) {
     var chart = echarts.init(document.getElementById(id), yougoer_theme);
-    var option = buildRankLineChartOption(year, rankType, rank);
+    var option = buildRankLineChartOption(year, rank);
     chart.setOption(option);
     return chart;
 }
 
-function buildRankLineChartOption(year, rankType, rank) {
-    var markPointStyle = {
-        normal: {
-            label: {
-                show: true,
-                textStyle: {
-                    fontWeight: 'bold'
-                },
-                formatter: function(params) {
-                    return '#' + (-params.value)
-                }
-            },
-        }
-    };
-
-    var markPoint = {
-        clickable: false,
-        symbolSize: 15,
-        itemStyle: markPointStyle,
-        data: [{
-            type: 'max',
-            name: '最大值'
-        }, {
-            type: 'min',
-            name: '最小值'
-        }]
-    };
-
-    var series = [],
-        l = rankType.length;
-    while (l--) {
-        series[l] = {
-            name: rankType[l],
-            type: 'line',
-            symbolSize: 4,
-            clickable: false,
-            data: (function() {
-                var oriData = rank[l],
-                    len = oriData.length;
-                while (len--) {
-                    oriData[len] *= -1;
-                }
-                return oriData;
-            })(),
-            markPoint: markPoint,
-        };
-    };
-
-    option = {
+function buildRankLineChartOption(year, rank) {
+    var option = {
         tooltip: {
             trigger: 'axis',
-            textStyle: {
-                fontWeight: 'bold'
-            },
-            formatter: function(params) {
-                var text = params[0].name + '</br>',
-                    l = params.length;
-                while (l--) {
-                    text += params[l].seriesName + ': #' + -params[l].value + '</br>'
-                };
-                return text;
+            formatter: function(v) {
+                return '#' + -v[0].value;
             }
-        },
-        legend: {
-            y: 'bottom',
-            textStyle: {
-                color: 'auto',
-                fontWeight: 'bold'
-            },
-            itemWidth: 20 * 1.15,
-            itemHeight: 14 * 1.15,
-            itemGap: 20,
-            data: rankType
         },
         xAxis: [{
             type: 'category',
-            axisLabel: {
-                textStyle: {
-                    fontWeight: 'bold'
-                }
-            },
-            axisTick: {
-                show: false
-            },
-            splitLine: {
-                show: false
-            },
             data: year,
-            axisLine: {
-                lineStyle: {
-                    width: 0
-                }
-            },
         }],
         yAxis: [{
             type: 'value',
             axisLabel: {
-                textStyle: {
-                    fontWeight: 'bold'
-                },
                 formatter: function(v) {
                     return '#' + -v;
                 }
             },
-            axisLine: {
-                lineStyle: {
-                    width: 0
-                }
-            },
         }],
-        series: series.reverse()
+        series: [{
+            name: 'rank',
+            type: 'line',
+            clickable: false,
+            data: (function() {
+                    var oriData = rank,
+                        len = oriData.length;
+                    while (len--) {
+                        oriData[len] *= -1;
+                    }
+                    return oriData;
+            })(),
+        }]
     };
 
     return option;
@@ -425,7 +347,7 @@ function buildEthnicityPieChartOption(enthnicity, count) {
         };
     };
 
-    option = {
+    var option = {
         tooltip: {
             trigger: 'item',
             textStyle: {
@@ -479,7 +401,7 @@ function drawBarChart(id, category, value) {
 };
 
 function NormalBarChartOption(category, value) {
-    option = {
+    var option = {
         tooltip: {
             trigger: 'axis',
             axisPointer:{type: 'shadow'},
@@ -562,7 +484,7 @@ function buildFeeBarChartOption(category, fee) {
         marginData[l] = sum > 0 ? sum : 0;
     }
 
-    option = {
+    var option = {
         tooltip: {
             trigger: 'axis',
             axisPointer: {

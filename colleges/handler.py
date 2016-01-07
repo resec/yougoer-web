@@ -213,34 +213,7 @@ class CollegeInfoStudentHandler(CollegeBaseHandler):
         print(kvs)
         for kv in kvs:
             result['dict'][kv['KEY']] = kv['VALUE']
-        # enrollment = client.submit('UnivEnrolAdmisTask', dict(UNITID=cid))
-        # ethnicity = client.submit('UnivEthnicityTask', dict(UNITID=cid))
-        # ethnicity_state = client.submit('UnivEthnicityStateTask', dict(UNITID=cid))
-        # gender = client.submit('UnivGenderTask', dict(UNITID=cid))
-        # gender_state = client.submit('UnivGenderStateTask', dict(UNITID=cid))
-
-        # eth_white = ethnicity['EFWHITT']
-        # eth_black = ethnicity['EFBKAAT']
-        # eth_asian = ethnicity['EFASIAT']
-        # eth_other = ethnicity['EFTOTLT_TOTAL'] - eth_white - eth_black - eth_asian
-        # eth_state_white = eth_state['EFWHITT']
-        # eth_state_black = eth_state['EFBKAAT']
-        # eth_state_asian = eth_state['EFASIAT']
-        # eth_state_other = eth_state['EFTOTLT_TOTAL'] - eth_state_white - eth_state_black - eth_state_asian
-
-
-        # result = dict(category=["人种", "性别", "录取"],
-        #               detail=[[['白人', '黑人', '亚洲人', '其他'],
-        #                        [ethnicity_white, ethnicity_black, ethnicity_asian, ethnicity_other],
-        #                        [ethnicity_state_white, ethnicity_state_black, ethnicity_state_asian, ethnicity_state_other]],
-        #                       [['男', '女'],
-        #                        [11, 22],
-        #                        [11, 22]],
-        #                       [['研究生', '本科生', '新生入学'],
-        #                        [123, 123, 123],
-        #                        [123, 123, 123]]
-        #                      ]
-        # )
+            
         self.write(result)
 
 
