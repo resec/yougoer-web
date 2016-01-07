@@ -74,8 +74,11 @@ function fillStudentInfo(data) {
     }
 
     var enrollment = detail[enrollmentIndex];
-
-    for (var i = 0; i < category.length; i++)
+    var enrollmentLabel = []
+    
+    for (var i = 0; i < enrollment[0].length; i++) {
+        enrollmentLabel[i] = dict[enrollment[0][i]]; 
+    }
 
     var enrollmentTotal = enrollment[1][0] + enrollment[1][1];
     var graduatePrecentage = (enrollment[1][0] / enrollmentTotal * 100).toFixed(2);
@@ -92,7 +95,7 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-freshmen").text(enrollment[1][2]);
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
-    var enrollmentChart = charts.drawFeeBarChart("student-enrollment-chart", enrollment[0], enrollment[1]);
+    var enrollmentChart = charts.drawFeeBarChart("student-enrollment-chart", enrollmentLabel, enrollment[1]);
 
     session.find('#student-enrollment-chart').data("chart", enrollmentChart);
 
@@ -123,8 +126,14 @@ function fillStudentInfo(data) {
                 city: detail[i][2][j]
             }
         }
+        
+        var detailLable = [];
+        for (var j = 0; j < detail[i][0].length; j++) {
+            detailLable[j] = dict[detail[i][0][j]]; 
+        }
+        
         repeatElement(session.find('#data-detail-row-' + categoryHash[i]), details, 'detail');
-        var detailChart = charts.drawEthnicityPieChart(categories[i].chartid, detail[i][0], detail[i][1]);
+        var detailChart = charts.drawEthnicityPieChart(categories[i].chartid, detailLable, detail[i][1]);
         session.find('#' + categories[i].chartid).data("chart", detailChart);
     }
 
@@ -232,17 +241,17 @@ function repeatElement(selector, objs, objName) {
     template.remove();
 };
 
-function listUnique(array) {
-    var result = [];
-    label: for (var i = 0; i < array.length; i++) {
-        for (var j = 0; j < result.length; j++) {
-            if (result[j] == array[i])
-                continue label;
-        }
-        result[result.length] = array[i];
-    }
-    return result.sort();
-};
+// function listUnique(array) {
+//     var result = [];
+//     label: for (var i = 0; i < array.length; i++) {
+//         for (var j = 0; j < result.length; j++) {
+//             if (result[j] == array[i])
+//                 continue label;
+//         }
+//         result[result.length] = array[i];
+//     }
+//     return result.sort();
+// };
 
 function fillIntroductionInfo(data) {
     //console.log(data);
@@ -288,36 +297,6 @@ function fillAdmissionInfo(data) {
 function fillRankInfo(data) {
     var rankData = data.rank[1];
     var rankType = data.rank[0];
-    // var timelineAll = []
-    // var ranklineAll = []
-
-    // /* ranking chart */
-    // for (i = 0; i < rankData.length; i++) {
-    //     var timeline = rankData[i].rank[0];
-    //     timelineAll = timelineAll.concat(timeline);
-    // };
-    // timelineAll = listUnique(timelineAll);
-
-    // for (i = 0; i < rankData.length; i++) {
-    //     var timeline = rankData[i].rank[0];
-    //     var rankline = rankData[i].rank[1];
-    //     var rankline_temp = [];
-
-    //     if (timeline.length != timelineAll.length) {
-    //         for (var j = 0; j < timelineAll.length; j++) {
-    //             rankline_temp[j] = '-';
-    //             for (var k = 0; k < timeline.length; k++) {
-
-    //                 if (timeline[k] == timelineAll[j]) {
-    //                     rankline_temp[j] = rankline[k];
-    //                 }
-    //             };
-    //         };
-    //     } else {
-    //         rankline_temp = rankData[i].rank[1];
-    //     };
-    //     ranklineAll[i] = rankline_temp;
-    // };
 
     var session = $('section[data-section-id="rank"]');
     
@@ -359,15 +338,6 @@ function fillRankInfo(data) {
         var subRankChart = charts.drawBarChart(details[i].subrankchartid, subs, subRanks);
         session.find('#' + details[i].subrankchartid).data("chart", subRankChart);
     }
-    // var rankTop = rankData[i]['top'];
-    // var rankTopType = rankTop[0];
-    // for (var j = 0; j < rankTopType.length; j++) {
-    //     details[i]['top' + (j + 1)] = '#' + rankTop[1][j];
-    //     details[i]['topLabel' + (j + 1)] = rankTopType[j];
-    // };
-    
-    //var rankChart = charts.drawRankLineChart("rank-ranking-chart", timelineAll, rankType, ranklineAll);
-    //session.find('#rank-ranking-chart').data("chart", rankChart);
 
     bindTab($('section[data-section-id="rank"] #data-category-lable'));
 };
