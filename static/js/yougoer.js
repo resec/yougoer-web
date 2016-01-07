@@ -62,21 +62,21 @@ function fillStudentInfo(data) {
     var dict = data['dict'],
         category = data['category'],
         detail = data['detail'];
-        
+
     var enrollmentID = -999, enrollmentIndex = -999;
-    
+
     for (var i = 0; i < category.length; i++) {
         if (dict[category[i]] == '招生') {
             enrollmentID = category[i];
             enrollmentIndex = i;
             break;
-        }  
+        }
     }
-    
+
     var enrollment = detail[enrollmentIndex];
-    
+
     for (var i = 0; i < category.length; i++)
-    
+
     var enrollmentTotal = enrollment[1][0] + enrollment[1][1];
     var graduatePrecentage = (enrollment[1][0] / enrollmentTotal * 100).toFixed(2);
     var undergraduatePrecentage = (enrollment[1][1] / enrollmentTotal * 100).toFixed(2);
@@ -134,17 +134,37 @@ function fillStudentInfo(data) {
 
     bindTab($('section[data-section-id="student"] #data-category-lable'));
 }
-
 function fillLocalInfo(data) {
-    var coordinate = data['coordinate'],
-        address = data['address'],
-        telephone = data['telephone'];
+    var address = data['address'];
+    var telephone = data['telephone'];
 
     var session = $('section[data-section-id="local"]');
-
     session.find('#data-address').text(address);
     session.find('#data-telephone').text(telephone);
-}
+
+    var localposition = {
+        lat: data['LAT'],
+        lng: data['LON'],
+    };
+    console.log(localposition);
+
+    function loadScript(src, callback) {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        if (callback) script.onload = callback;
+        document.getElementsByTagName("head")[0].appendChild(script);
+        script.src = src;
+    }
+
+    googleMap.localposition = localposition;
+
+    loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyAS-kxPndBgKczNzE4eSXgzfslPFL2fJ_M&callback=initMap',
+    function() {
+        console.log('google-loader has been loaded, but not the maps-API ');
+    });
+};
+
+
 
 function bindTab(selector) {
     $(function() {
@@ -262,7 +282,12 @@ function fillAdmissionInfo(data) {
             return URL.substr(0, 28) + '...';
         };
     };
+
+    var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
+    var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
+    var detailChart = charts.drawBarChart('admission-enrollment-chart', admiEnrollChart_c, admiEnrollChart_v);
 };
+
 
 function fillRankInfo(data) {
     var rankData = data.rank[1];
@@ -367,7 +392,7 @@ function fillTuitionInfo(data) {
             }
         }
         repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
-        var detailChart = charts.drawTuitionBarChart(categories[i].chartid, detail[i][0], detail[i][1]);
+        var detailChart = charts.drawTotalBarChart(categories[i].chartid, detail[i][0], detail[i][1]);
         session.find('#' + categories[i].chartid).data("chart", detailChart);
     }
 

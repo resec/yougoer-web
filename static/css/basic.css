@@ -39,7 +39,9 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-
+.fred{
+    color: red;
+}
 a,
 .link {
     color: #23a9e7;
@@ -891,3 +893,4 @@ p.dbt-p {
     font-size: 14px;
     padding: 10px 20px;
 }
+
