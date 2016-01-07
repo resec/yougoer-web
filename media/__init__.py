@@ -2,7 +2,7 @@ import os
 import os.path
 
 
-_DEFAULT_COLLEGE_IMAGE_PATH = '/static/media/college/image'
+_DEFAULT_COLLEGE_IMAGE_PATH = 'media/college/image'
 _DEFAULT_COLLEGE_LOGO_PATH = _DEFAULT_COLLEGE_IMAGE_PATH + '/default/logo/200x_logo'
 _DEFAULT_COLLEGE_COVER_PATH = _DEFAULT_COLLEGE_IMAGE_PATH + '/default/cover/cover'
 

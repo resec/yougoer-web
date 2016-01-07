@@ -20,7 +20,7 @@
                                             <div class="table-overview">
                                                 <div style="width:25%" class="table-overview-box">
                                                     <div class="table-overview-label-wrap">
-                                                        <div class="table-overview-label">~detail.rankLabel~</div>
+                                                        <div class="table-overview-label">~detail.label~</div>
                                                     </div>
                                                     <div class="viz-wrap">
                                                         <svg class="smart-viz" style="margin:4px;" width="81" height="81">
@@ -32,47 +32,8 @@
                                                         </svg>
                                                     </div>
                                                 </div>
-                                                <div style="width:25%" class="table-overview-box">
-                                                    <div class="table-overview-label-wrap">
-                                                        <div class="table-overview-label">~detail.topLabel1~</div>
-                                                    </div>
-                                                    <div class="viz-wrap">
-                                                        <svg class="smart-viz" style="margin:4px;" width="81" height="81">
-                                                            <g transform="scale(0.9418604651162791)">
-                                                                <circle class="color" cx="43" cy="43" r="36" fill="#a8d76f"></circle>
-                                                                <circle class="ring" cx="43" cy="43" r="32" fill="#fff"></circle>
-                                                                <text x="43" y="51" text-anchor="middle" fill="#4d4d4d">~detail.top1~</text>
-                                                            </g>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div style="width:25%" class="table-overview-box">
-                                                    <div class="table-overview-label-wrap">
-                                                        <div class="table-overview-label">~detail.topLabel2~</div>
-                                                    </div>
-                                                    <div class="viz-wrap">
-                                                        <svg class="smart-viz" style="margin:4px;" width="81" height="81">
-                                                            <g transform="scale(0.9418604651162791)">
-                                                                <circle class="color" cx="43" cy="43" r="36" fill="#a8d76f"></circle>
-                                                                <circle class="ring" cx="43" cy="43" r="32" fill="#fff"></circle>
-                                                                <text x="43" y="51" text-anchor="middle" fill="#4d4d4d">~detail.top2~</text>
-                                                            </g>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div style="width:25%" class="table-overview-box">
-                                                    <div class="table-overview-label-wrap">
-                                                        <div class="table-overview-label">~detail.topLabel3~</div>
-                                                    </div>
-                                                    <div class="viz-wrap">
-                                                        <svg class="smart-viz" style="margin:4px;" width="81" height="81">
-                                                            <g transform="scale(0.9418604651162791)">
-                                                                <circle class="color" cx="43" cy="43" r="36" fill="#a8d76f"></circle>
-                                                                <circle class="ring" cx="43" cy="43" r="32" fill="#fff"></circle>
-                                                                <text x="43" y="51" text-anchor="middle" fill="#4d4d4d">~detail.top3~</text>
-                                                            </g>
-                                                        </svg>
-                                                    </div>
+                                                <div style="width:75%" class="table-overview-box">
+                                                    <div class='chart' id="~detail.rankchartid~" style="height:300px"></div>
                                                 </div>
                                             </div>
                                         </td>
@@ -80,13 +41,10 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.dsct-table-wrapper -->
+                        <div class="dsc-content">
+                            <div class='chart' id="~detail.subrankchartid~" style="height:300px"></div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="dsc-content">
-                <div class='chart' id="rank-ranking-chart" style="height:300px">
-                    <!--<img src="{{ static_url('img/ranking-example.jpeg') }}" style="max-width: 100%;">-->
                 </div>
             </div>
         </div>
