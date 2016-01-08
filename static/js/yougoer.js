@@ -44,7 +44,7 @@ function fillMajorInfo(data) {
             hot: hot[i],
             cold: cold[i]
         };
-    repeatElement(session.find('#data-left-row'), lefts, 'left');
+    jgulary.repeatElement(session.find('#data-left-row'), lefts, 'left');
 
     session.find('#data-top-amount').text(topLable.length);
 
@@ -54,7 +54,7 @@ function fillMajorInfo(data) {
             name: topLable[i],
             amount: topAmount[i]
         };
-    repeatElement(session.find('#data-top-row'), topMajors, 'major');
+    jgulary.repeatElement(session.find('#data-top-row'), topMajors, 'major');
 
 }
 
@@ -108,8 +108,8 @@ function fillStudentInfo(data) {
             hash: categoryHash[i]
         }
     }
-    repeatElement(session.find('#data-category-lable'), categories, 'category');
-    repeatElement(session.find('#data-category-content'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-lable'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-content'), categories, 'category');
 
     session.find('#data-category-lable').first().addClass('selected');
     session.find('#data-category-content').first().removeClass('hidden');
@@ -134,8 +134,9 @@ function fillStudentInfo(data) {
         charts.drawEthnicityPieChart(session.find('#' + categories[i].chartid), detailLable, detail[i][1]);
     }
 
-    bindTab($('section[data-section-id="student"] #data-category-lable'));
-}
+    jgulary.bindTab($('section[data-section-id="student"] #data-category-lable'));
+};
+
 function fillLocalInfo(data) {
     var address = data['address'];
     var telephone = data['telephone'];
@@ -167,108 +168,13 @@ function fillLocalInfo(data) {
     );
 };
 
-
-
-function bindTab(selector) {
-    $(function() {
-        $(selector).click(function(e) {
-            if (e.target == this) {
-                if ($(this).hasClass("selected")) {
-                    return
-                }
-
-                var id = $(this).data("bind-tab");
-                var tabs = $(this).parent().find(selector);
-                var panels = $("*[data-bind-content=" + id + "]");
-                var index = $.inArray(this, tabs);
-                if (panels.eq(index)[0]) {
-                    tabs.removeClass("selected")
-                        .eq(index).addClass("selected");
-                    panels.addClass("hidden")
-                        .eq(index).removeClass("hidden");
-
-                    panels.eq(index).find(".chart").each(function(){
-                        var chart = $(this).data("chart");
-                        chart.resize();
-                        chart.restore();
-                    });
-                }
-            }
-        });
-    });
-
-    // var id = $(selector).data("bind-tab");
-    // var tabs = $(selector).parent().find(selector);
-    // var panels = $("*[data-bind-content=" + id + "]");
-
-    // tabs.removeClass('selected');
-    // panels.addClass('hidden');
-
-    // tabs.first().addClass('selected');
-    // panels.first().removeClass('hidden');
-}
-
-function repeatElement(selector, objs, objName) {
-    var template = $(selector);
-    if (template.length <= 0) {
-        console.log('warning: no element found with selector ' + selector);
-        return
-    }
-
-    var parent = template.parent(),
-        html = template.prop("outerHTML"),
-        matches = html.match(new RegExp('~.+?~', 'g')),
-        delRegexp = new RegExp('(^~)|(~$)', 'g');
-
-    var assignment = 'var ' + objName + ' = obj';
-    for (var $index = 0; $index < objs.length; $index++) {
-        var tmp = html,
-            obj = objs[$index];
-        eval(assignment);
-        for (var j = 0; j < matches.length; j++) {
-            var match = matches[j].trim(),
-                sentence = match.replace(delRegexp, '');
-
-            try {
-                var value = eval(sentence),
-                    tmp = tmp.replace(match, value);
-            } catch (e) {}
-        }
-        parent.append(tmp);
-    }
-    template.remove();
-};
-
-function fillElement(selector, obj, objName) {
-    repeatElement(selector, [obj], objName);
-}
-
-// function listUnique(array) {
-//     var result = [];
-//     label: for (var i = 0; i < array.length; i++) {
-//         for (var j = 0; j < result.length; j++) {
-//             if (result[j] == array[i])
-//                 continue label;
-//         }
-//         result[result.length] = array[i];
-//     }
-//     return result.sort();
-// };
-
 function fillIntroductionInfo(data) {
-    console.log(data);
-    
     var intro = data['introduction'];
-    
     var session = $('section[data-section-id="ffect"]');
     
-    console.log(session.find('#introduction-item-1'));
-    
     for (var i = 0; i < intro.length; i++) {
-        console.log('#introduction-item-' + intro[i].id)
-        fillElement(session.find('#introduction-item-' + intro[i].id), intro[i], 'intro');
+        jgulary.fillElement(session.find('#introduction-item-' + intro[i].id), intro[i], 'intro');
     }
-    
 };
 
 function fillAdmissionInfo(data) {
@@ -346,8 +252,8 @@ function fillRankInfo(data) {
             subrankchartid: 'rank-sub-' + categoryHash[i] + '-chart'
         }
     };
-    repeatElement(session.find('#data-category-lable'), categories, 'category');
-    repeatElement(session.find('#data-category-content'), details, 'detail');
+    jgulary.repeatElement(session.find('#data-category-lable'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-content'), details, 'detail');
     session.find('#data-category-lable').first().addClass('selected');
     session.find('#data-category-content').first().removeClass('hidden');
 
@@ -363,9 +269,8 @@ function fillRankInfo(data) {
         charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks);
     }
 
-    bindTab($('section[data-section-id="rank"] #data-category-lable'));
+    jgulary.bindTab($('section[data-section-id="rank"] #data-category-lable'));
 };
-
 
 function fillTuitionInfo(data) {
     var category = data['category'];
@@ -386,8 +291,8 @@ function fillTuitionInfo(data) {
             hash: categoryHash[i],
         };
     };
-    repeatElement(session.find('#data-category-lable'), categories, 'category');
-    repeatElement(session.find('#data-category-content'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-lable'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-content'), categories, 'category');
 
     session.find('#data-category-lable').first().addClass('selected');
     session.find('#data-category-content').first().removeClass('hidden');
@@ -400,11 +305,11 @@ function fillTuitionInfo(data) {
                 amount: detail[i][1][j],
             }
         }
-        repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
+        jgulary.repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
         charts.drawTotalBarChart(session.find('#' + categories[i].chartid), detail[i][0], detail[i][1]);
     }
 
-    bindTab($('section[data-section-id="tuition"] #data-category-lable'));
+    jgulary.bindTab($('section[data-section-id="tuition"] #data-category-lable'));
 };
 
 function fillBasicInfo(data) {
