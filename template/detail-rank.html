@@ -41,13 +41,31 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="ds-content">
+                        <div class="ds-content" id="rank-sub-content-~detail.subrankchartid~">
                             <div class="dsc-title">
                                 <h3><span>细分领域排名</span></h3>
                             </div>
                             <div class="dsc-content">
                                 <div class="dsc-content-table">
-                                    <div class='chart' id="~detail.subrankchartid~" style="height:300px"></div>
+                                    <div class="half-col left">
+                                        <div class='chart' id="~detail.subrankchartid~" style="height:300px"></div>
+                                    </div>
+                                    <div class="half-col right">
+                                        <table class="dbt-widget" cellspacing="0" cellpadding="0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="dbt-widget-th">细分领域</th>
+                                                    <th class="dbt-widget-th">排名</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id='data-sub-rank-row-~detail.subrankchartid~' class="text-right">
+                                                    <td class="dbt-cell">~subrank.label~</td>
+                                                    <td class="dbt-cell">#~subrank.value~</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

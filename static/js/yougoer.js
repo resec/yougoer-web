@@ -174,7 +174,11 @@ function fillIntroductionInfo(data) {
     var session = $('section[data-section-id="ffect"]');
 
     for (var i = 0; i < intro.length; i++) {
-        jgulary.fillElement(session.find('#introduction-item-' + intro[i].id), intro[i], 'intro');
+        if (intro[i].value == null) {
+            session.find('#introduction-item-' + intro[i].id).remove();
+        } else {
+            jgulary.fillElement(session.find('#introduction-item-' + intro[i].id), intro[i], 'intro');
+        }
     }
 };
 
@@ -218,8 +222,8 @@ function fillAdmissionInfo(data) {
 
     /*录取情况 */
     var labelDict = {
-        1:'考虑',
-        2:'不推荐',
+        1:'需要',
+        2:'推荐',
         3:'不需要亦不推荐',
     }
     var requ_datas = data.requirement;
@@ -231,12 +235,12 @@ function fillAdmissionInfo(data) {
         if (requ_datas.hasOwnProperty(key)) {
             indicator[i] = {
                 text: key,
-                max: 3
+                max: 4
             };
             indicator_value[i] = requ_datas[key];
             details[i] = {
                 label: key,
-                amount: labelDict[requ_datas[key]],
+                amount: labelDict[4 - requ_datas[key]],
             }
             i++;
         };
@@ -280,17 +284,43 @@ function fillRankInfo(data) {
         var years = rank['rank'][0];
         var sumRanks = rank['rank'][1];
 
-        var subs = rank['top'][0];
+        var subLabels = rank['top'][0];
         var subRanks = rank['top'][1];
+        var maxSubRank = -1;
+        for (var j = 0; j < subLabels.length && j < 7; j++) {
+            if (subRanks[j] > maxSubRank) {
+                maxSubRank = subRanks[j];
+            }
+        };
+
+        var subIndicator = [];
+        var subValue = [];
+        for (var j = 0; j < subLabels.length && j < 7; j++) {
+            subIndicator[j] = {
+                text: subLabels[j],
+                max: maxSubRank
+            }
+            subValue[j] = maxSubRank - subRanks[j];
+        };
 
         charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
 
-        if (subs.length > 0) {
-            charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks, 'normal');
+        var subs = [];
+        for (var j = 0; j < subLabels.length; j++) {
+            subs[j] = {
+                label : subLabels[j],
+                value : subRanks[j]
+            };
+        };
+
+        if (subLabels.length > 0) {
+            console.log(subs);
+            jgulary.repeatElement(session.find('#data-sub-rank-row-' + details[i].subrankchartid), subs, 'subrank');
+            charts.drawRadarChart(session.find('#' + details[i].subrankchartid), subIndicator, subValue);
         } else {
-            session.find('#' + details[i].subrankchartid).parent().remove();
-        }
-    }
+            session.find('#rank-sub-content-' + details[i].subrankchartid).remove();
+        };
+    };
 
     jgulary.bindTab($('section[data-section-id="rank"] #data-category-lable'));
 };
@@ -358,11 +388,9 @@ function fillBasicInfo(data) {
     session.find('#data-student-amount').text(studentAmount);
     session.find('#data-tution-amount').text(tutionAmount);
     session.find('#data-tution-amount-local').text('$' + tutionAmountLocal);
-    console.log(format_number(35023));
+    //console.log(format_number(35023));
 };
 
 var yougoer = this;
 
-function format_number(value){
-    return numeral(value).format('0,0');
-};
+

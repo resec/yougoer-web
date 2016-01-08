@@ -26,17 +26,6 @@ var yougoer_theme = {
         itemHeight: 15,
         itemGap: 10,
     },
-    // 值域
-    dataRange: {
-        itemWidth: 15,
-        color: ['#5ab1ef', '#e0ffff']
-    },
-
-    // 工具箱
-    toolbox: {
-        color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
-        effectiveColor: '#ff4500'
-    },
 
     // 提示框
     tooltip: {
@@ -65,13 +54,6 @@ var yougoer_theme = {
                 type: 'default'
             }
         }
-    },
-
-    // 区域缩放控制器
-    dataZoom: {
-        dataBackgroundColor: '#efefff', // 数据背景颜色
-        fillerColor: 'rgba(182,162,222,0.2)', // 填充颜色
-        handleColor: '#008acd' // 手柄颜色
     },
 
     // 网格
@@ -342,7 +324,72 @@ function TotalBarChartOption(category, value, type) {
     return MoneyBarChartOption(relCategory, relData);
 };
 
-function barChartOption(category, value, add_option){
+function drawSubRankBarChart(selector, category, value) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
+    var option = buildSubRankBarChartOption(category, value);
+    chart.setOption(option);
+    selector.data('chart', chart);
+    return chart;
+}
+
+function buildSubRankBarChartOption(category, value) {
+    var option = {
+        tooltip: {
+            trigger: 'item',
+            axisPointer: { type: 'shadow' },
+            formatter: function(v) {
+                return '#' + -v[0].value;
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: category,
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: function(v) {
+                    return '#' + -v;
+                }
+            },
+        },
+        series: [{
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        var color = [
+                            '#23a9e7', '#57517a', '#9cb87f', '#a8d76f'
+                        ];
+                        return color[params.dataIndex % color.length]
+                    },
+                }
+            },
+            data: (function() {
+                    var oriData = value,
+                        len = oriData.length;
+                    while (len--) {
+                        oriData[len] *= -1;
+                    }
+                    return oriData;
+            })(),
+            stack: 'total',
+            clickable: false,
+        }],
+        grid: {
+            y: 0,
+            x2: '8%',
+            backgroundColor: '#fff',
+            borderWidth: 0,
+            borderColor: '#fff',
+        }
+    };
+
+    return option;
+}
+
+function NormalBarChartOption(category, value) {
     var option = {
         xAxis: {
             type: 'value',
@@ -392,6 +439,34 @@ function NormalBarChartOption(category, value) {
     var myoption = barChartOption(category, value, add_option);
     return myoption;
 };
+
+function barChartOption(category, value, add_option){
+    var option = {
+        xAxis: {
+            type: 'value',
+        },
+        yAxis: {
+            type: 'category',
+            data: category.reverse(),
+        },
+        series: [{
+            type: 'bar',
+            data: value.reverse(),
+            stack: 'total',
+            clickable: false,
+            barMaxWidth: 40,
+        }],
+        grid: {
+            y: 0,
+            x2: '8%',
+            backgroundColor:'#fff',
+            borderWidth:0,
+            borderColor:'#fff',
+        }
+    };
+    option[add_option[0]] = add_option[1];
+    return option;
+}
 
 /***************** 雷达图 *******************/
 function drawRadarChart(selector, indicator, value) {

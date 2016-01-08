@@ -9,7 +9,12 @@ function repeatElement(selector, objs, objName) {
         html = template.prop("outerHTML"),
         matches = html.match(new RegExp('~.+?~', 'g')),
         delRegexp = new RegExp('(^~)|(~$)', 'g');
-
+    
+    if (matches == null) {
+        console.log('warning: no matches from the element');
+        return
+    }
+    
     var assignment = 'var ' + objName + ' = obj';
     for (var $index = 0; $index < objs.length; $index++) {
         var tmp = html,
