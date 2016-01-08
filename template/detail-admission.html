@@ -93,25 +93,29 @@
                 <div class="dsc-title">
                     <h3><span>录取要求</span></h3>
                 </div>
-                <div class="dsc-content">
-                    <div class="dsc-content-table">
-                        <div class="half-col left">
-                            <div class="chart" id="admission-requirement-chart" style="height:300px"></div>
-                        </div>
-                        <div class="half-col right">
-                            <div class="property-list">
-                                <ul>
-                                    <li>TOEFL成绩<i class="demo-icon icon-ok-circled">&#xe800;</i></li>
-                                    <li>雅思成绩<i class="demo-icon icon-cancel-circled">&#xe801;</i></li>
-                                    <li>TOEFL成绩<i class="demo-icon icon-ok-circled">&#xe800;</i></li>
-                                    <li>推荐信<i class="demo-icon icon-ok-circled">&#xe800;</i></li>
-                                    <li>在校证明<i class="demo-icon icon-cancel-circled">&#xe801;</i></li>
-                                    <li>成绩单<i class="demo-icon icon-cancel-circled">&#xe801;</i></li>
-                                </ul>
+                    <div class="dsc-content">
+                        <div class="dsc-content-table">
+                            <div class="half-col left">
+                                <div class="chart" id="admission-requirement-chart" style="height:300px"></div>
+                            </div>
+                            <div class="half-col right">
+                                <table class="dbt-widget" cellspacing="0" cellpadding="0">
+                                    <thead>
+                                        <tr>
+                                            <th class="dbt-widget-th">材料</th>
+                                            <th class="dbt-widget-th">要求</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id='data-requirement-row' class="text-right">
+                                            <td class="dbt-cell">~requirement.label~</td>
+                                            <td class="dbt-cell">~requirement.amount~</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
             <!--
             <div class="ds-content " style="display: none">
@@ -134,7 +138,7 @@
             -->
             <div class="ds-content ">
                 <div class="dsc-title">
-                    <h3><span>申请信息</span></h3>
+                    <h3><span>申请链接</span></h3>
                 </div>
                 <div class="dsc-content-content">
                     <div class="property-list">

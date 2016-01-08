@@ -239,7 +239,7 @@ function repeatElement(selector, objs, objName) {
         }
         parent.append(tmp);
     }
-    template.remove();
+    template.remove()
 };
 
 // function listUnique(array) {
@@ -295,18 +295,31 @@ function fillAdmissionInfo(data) {
     var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
     var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
     var detailChart = charts.drawBarChart('admission-enrollment-chart', admiEnrollChart_c, admiEnrollChart_v);
-    
-    var indicator = [
-        { text: 'TOEFL成绩', max: 3 },
-        { text: '雅思成绩', max: 3 },
-        { text: '推荐信', max: 3 },
-        { text: '在校证明', max: 3 },
-        { text: '成绩单', max: 3 }
-    ]
-    
-    var value = [1, 2, 3, 3, 2]
-    
-    charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, value);
+
+    /*录取情况 */
+    var requ_datas = data.requirement;
+    var keys = []
+    var indicator = []
+    var indicator_value = []
+    var details = []
+    var i = 0;
+    for (var key in requ_datas) {
+        if (requ_datas.hasOwnProperty(key)) {
+            i++;
+            indicator.push({
+                text: key,
+                max: 3
+            });
+            indicator_value.push(requ_datas[key]);
+            details[i] = {
+                label: key,
+                amount: requ_datas[key],
+            }
+        };
+    };
+
+    repeatElement(session.find('#data-requirement-row'), details, 'requirement');
+    charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, indicator_value);
 };
 
 

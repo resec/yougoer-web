@@ -100,7 +100,8 @@ ul {
     min-width: 80px;
 }
 
-.property-list {
+.property-list,
+.property-list-one {
     padding: 10px 5px;
     display: inline-block;
     width: 100%;
@@ -113,6 +114,7 @@ ul {
 
 .row-list ul,
 .property-list ul,
+.property-list-one ul,
 .property-fastfect ul {
     display: inline-block;
     color: #707070;
@@ -141,29 +143,43 @@ ul {
     width: 48%;
 }
 
+.property-list-one li {
+    display: block;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+    float: left;
+    list-style: none;
+    line-height: 32px;
+    width: 98%;
+}
+
 .property-list li:nth-child(even) {
     float: right;
 }
 
-.property-list i {
+.property-list i,
+.property-list-one i {
     float: right;
     font-size: 15px;
     line-height: 28px;
 }
 
-.property-list i.icon-ok-circled {
+.property-list i.icon-ok-circled,
+.property-list-one i.icon-ok-circled {
     color: #5cb85c;
 }
 
-.property-list i.icon-cancel-circled {
+.property-list i.icon-cancel-circled,
+.property-list-one i.icon-cancel-circled{
     color: #d9534f;
 }
 
-.property-list i.icon-info-circled {
+.property-list i.icon-info-circled,
+.property-list-one i.icon-info-circled {
     color: #5CB85C;
 }
 
 .property-list li strong,
+.property-list-one li strong,
 .property-fastfect-info li strong {
     color: #4d4d4d;
     font-weight: 600;

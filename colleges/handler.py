@@ -163,8 +163,19 @@ class CollegeInfoIntroductionHandler(CollegeBaseHandler):
         self.write(result)
 
 
-class CollegeInfoAdmissionHandler(CollegeBaseHandler):
+def AdmiRequreFormat(dict_name):
+    new_dict = {}
+    for key, value in dict_name.items():
+        if value not in [-2, -1, None]:
+            new_key = ADREQ[key]
+            new_dict[new_key] = 4 - value
+    return new_dict
 
+
+class CollegeInfoAdmissionHandler(CollegeBaseHandler):
+    '''
+    录取
+    '''
     def get(self, slug):
         cid = self.slug2id(slug)
 
@@ -184,6 +195,7 @@ class CollegeInfoAdmissionHandler(CollegeBaseHandler):
                   'site_url': urls['WEBADDR'],
                   'apply_fee_under': apply_fee['APPLFEEU'],
                   'apply_fee_gradu': apply_fee['APPLFEEG'],
+                  'requirement': AdmiRequreFormat(requirement),
                   }
 
         self.write(result)
@@ -321,7 +333,9 @@ class CollegeInfoLocalHandler(CollegeBaseHandler):
 
 
 class CollegeInfoRankHandler(CollegeBaseHandler):
-
+    '''
+    排名
+    '''
     def get(self, slug):
         cid = self.slug2id(slug)
 
