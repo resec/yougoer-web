@@ -20,14 +20,14 @@
                                             <div class="table-overview">
                                                 <div style="width:25%" class="table-overview-box">
                                                     <div class="table-overview-label-wrap">
-                                                        <div class="table-overview-label">~detail.label~</div>
+                                                        <div class="table-overview-label">~detail.label~综排</div>
                                                     </div>
                                                     <div class="viz-wrap">
                                                         <svg class="smart-viz" style="margin:4px;" width="81" height="81">
                                                             <g transform="scale(0.9418604651162791)">
                                                                 <circle class="color" cx="43" cy="43" r="42" fill="#a8d76f"></circle>
                                                                 <circle class="ring" cx="43" cy="43" r="38" fill="#fff"></circle>
-                                                                <text x="43" y="51" text-anchor="middle" fill="#4d4d4d" class="text-bold">~detail.rank~</text>
+                                                                <text x="43" y="51" text-anchor="middle" fill="#4d4d4d" class="text-bold">#~detail.rank~</text>
                                                             </g>
                                                         </svg>
                                                     </div>
@@ -41,8 +41,15 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="dsc-content">
-                            <div class='chart' id="~detail.subrankchartid~" style="height:300px"></div>
+                        <div class="ds-content">
+                            <div class="dsc-title">
+                                <h3><span>细分领域排名</span></h3>
+                            </div>
+                            <div class="dsc-content">
+                                <div class="dsc-content-table">
+                                    <div class='chart' id="~detail.subrankchartid~" style="height:300px"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
