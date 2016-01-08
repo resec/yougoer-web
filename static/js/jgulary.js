@@ -15,10 +15,10 @@ function repeatElement(selector, objs, objName) {
         var tmp = html,
             obj = objs[$index];
         eval(assignment);
-        for (var j = 0; j < matches.length; j++) {
+        for (var j = 0; j < matches.length; j++) {            
             var match = matches[j].trim(),
                 sentence = match.replace(delRegexp, '');
-
+                
             try {
                 var value = eval(sentence),
                     tmp = tmp.replace(match, value);
@@ -42,7 +42,7 @@ function bindTab(selector) {
                 }
 
                 var id = $(this).data("bind-tab");
-                var tabs = $(this).parent().find(selector);
+                var tabs = $("*[data-bind-tab=" + id + "]");
                 var panels = $("*[data-bind-content=" + id + "]");
                 var index = $.inArray(this, tabs);
                 if (panels.eq(index)[0]) {
