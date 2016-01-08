@@ -235,7 +235,7 @@ function fillAdmissionInfo(data) {
         if (requ_datas.hasOwnProperty(key)) {
             indicator[i] = {
                 text: key,
-                max: 4
+                max: 3
             };
             indicator_value[i] = requ_datas[key];
             details[i] = {
