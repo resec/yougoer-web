@@ -132,7 +132,7 @@ function fillStudentInfo(data) {
         }
 
         repeatElement(session.find('#data-detail-row-' + categoryHash[i]), details, 'detail');
-        charts.drawEthnicityPieChart(session.find('#' + categories[i].chartid), detailLable, detail[i][1]);
+        charts.drawPieChart(session.find('#' + categories[i].chartid), detailLable, detail[i][1]);
     }
 
     jgulary.bindTab($('section[data-section-id="student"] #data-category-lable'));
@@ -241,7 +241,7 @@ function fillAdmissionInfo(data) {
             i++;
         };
     };
-        
+
     jgulary.repeatElement(session.find('#data-requirement-row'), details, 'requirement');
     charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, indicator_value);
 };
@@ -304,9 +304,13 @@ function fillRankInfo(data) {
         };
 
         charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
-        
+
         if (subs.length > 0) {
+<<<<<<< HEAD
             charts.drawRadarChart(session.find('#' + details[i].subrankchartid), subIndicator, subValue);    
+=======
+            charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks);
+>>>>>>> 976897cedf8e24ce6e8e41214e76348a76a919b1
         } else {
             session.find('#' + details[i].subrankchartid).parent().remove();
         }
