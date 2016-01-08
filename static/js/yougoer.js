@@ -96,7 +96,7 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-freshmen").text(enrollment[1][2]);
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
-    charts.drawBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1]);
+    charts.drawBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1], 'normal');
 
     var categoryHash = [];
     var categories = [];
@@ -214,7 +214,7 @@ function fillAdmissionInfo(data) {
 
     var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
     var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
-    charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v);
+    charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v, 'normal');
 
     /*录取情况 */
     var labelDict = {
@@ -286,7 +286,7 @@ function fillRankInfo(data) {
         charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
 
         if (subs.length > 0) {
-            charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks);
+            charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks, 'normal');
         } else {
             session.find('#' + details[i].subrankchartid).parent().remove();
         }
@@ -329,7 +329,7 @@ function fillTuitionInfo(data) {
             }
         }
         jgulary.repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
-        charts.drawTotalBarChart(session.find('#' + categories[i].chartid), detail[i][0], detail[i][1]);
+        charts.drawBarChart(session.find('#' + categories[i].chartid), detail[i][0], detail[i][1], 'money');
     }
 
     jgulary.bindTab($('section[data-section-id="tuition"] #data-category-lable'));
