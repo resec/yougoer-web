@@ -410,6 +410,71 @@ function drawBarChart(selector, category, value) {
     return chart;
 };
 
+function drawSubRankBarChart(selector, category, value) {
+    var sel = $(selector);
+    var chart = echarts.init(sel.first()[0], yougoer_theme);
+    var option = buildSubRankBarChartOption(category, value);
+    chart.setOption(option);
+    selector.data('chart', chart);    
+    return chart;
+}
+
+function buildSubRankBarChartOption(category, value) {
+    var option = {
+        tooltip: {
+            trigger: 'item',
+            axisPointer: { type: 'shadow' },
+            formatter: function(v) {
+                return '#' + -v[0].value;
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: category,
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: function(v) {
+                    return '#' + -v;
+                }
+            },
+        },
+        series: [{
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function (params) {
+                        var color = [
+                            '#23a9e7', '#57517a', '#9cb87f', '#a8d76f' 
+                        ];
+                        return color[params.dataIndex % color.length]
+                    },
+                }
+            },
+            data: (function() {
+                    var oriData = value,
+                        len = oriData.length;
+                    while (len--) {
+                        oriData[len] *= -1;
+                    }
+                    return oriData;
+            })(),
+            stack: 'total',
+            clickable: false,
+        }],
+        grid: {
+            y: 0,
+            x2: '8%',
+            backgroundColor: '#fff',
+            borderWidth: 0,
+            borderColor: '#fff',
+        }
+    };
+
+    return option;
+}
+
 function NormalBarChartOption(category, value) {
     var option = {
         tooltip: {

@@ -47,7 +47,25 @@
                             </div>
                             <div class="dsc-content">
                                 <div class="dsc-content-table">
-                                    <div class='chart' id="~detail.subrankchartid~" style="height:300px"></div>
+                                    <div class="half-col left">
+                                        <div class='chart' id="~detail.subrankchartid~" style="height:300px"></div>
+                                    </div>
+                                    <div class="half-col right">
+                                        <table class="dbt-widget" cellspacing="0" cellpadding="0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="dbt-widget-th">细分领域</th>
+                                                    <th class="dbt-widget-th">排名</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id='data-requirement-row' class="text-right">
+                                                    <td class="dbt-cell">~requirement.label~</td>
+                                                    <td class="dbt-cell">~requirement.amount~</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
