@@ -218,8 +218,8 @@ function fillAdmissionInfo(data) {
 
     /*录取情况 */
     var labelDict = {
-        1:'考虑',
-        2:'不推荐',
+        1:'需要',
+        2:'推荐',
         3:'不需要亦不推荐',
     }
     var requ_datas = data.requirement;
@@ -282,6 +282,26 @@ function fillRankInfo(data) {
 
         var subs = rank['top'][0];
         var subRanks = rank['top'][1];
+        
+        console.log(subs);
+        console.log(subRanks);
+        
+        var maxSubRank = -1;        
+        for (var j = 0; j < subs.length && j < 7; j++) {
+            if (subRanks[j] > maxSubRank) {
+                maxSubRank = subRanks[j];
+            }
+        };
+        
+        var subIndicator = [];
+        var subValue = [];
+        for (var j = 0; j < subs.length && j < 7; j++) {
+            subIndicator[j] = {
+                text: subs[j],
+                max: maxSubRank
+            }
+            subValue[j] = maxSubRank - subRanks[j];
+        };
 
         charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
 
