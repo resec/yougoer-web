@@ -8,10 +8,6 @@ var yougoer_theme = {
         '#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
     ],
 
-    textStyle: {
-        fontWeight: 'bold',
-    },
-
     // 图表标题
     title: {
         textStyle: {
@@ -147,11 +143,6 @@ var yougoer_theme = {
         },
     },
 
-    //雷达图
-    radar:{
-        tooltip: {show:false},
-    },
-
     // 折线图默认参数
     line: {
         smooth: true,
@@ -162,6 +153,7 @@ var yougoer_theme = {
 
     // 雷达图默认参数
     radar: {
+        tooltip: {show:false},
         symbol: 'emptyCircle', // 图形类型
         symbolSize: 3
             //symbol: null,         // 拐点图形类型
@@ -170,6 +162,7 @@ var yougoer_theme = {
 
 
     textStyle: {
+        fontWeight: 'bold',
         fontFamily: '微软雅黑, Arial, Verdana, sans-serif'
     }
 };
@@ -386,34 +379,6 @@ function buildSubRankBarChartOption(category, value) {
         }
     };
 
-    return option;
-}
-
-function NormalBarChartOption(category, value) {
-    var option = {
-        xAxis: {
-            type: 'value',
-        },
-        yAxis: {
-            type: 'category',
-            data: category.reverse(),
-        },
-        series: [{
-            type: 'bar',
-            data: value.reverse(),
-            stack: 'total',
-            clickable: false,
-            barMaxWidth: 40,
-        }],
-        grid: {
-            y: 0,
-            x2: '8%',
-            backgroundColor:'#fff',
-            borderWidth:0,
-            borderColor:'#fff',
-        }
-    };
-    option[add_option[0]] = add_option[1];
     return option;
 }
 

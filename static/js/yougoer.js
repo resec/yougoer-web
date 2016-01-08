@@ -287,7 +287,7 @@ function fillRankInfo(data) {
         var subLabels = rank['top'][0];
         var subRanks = rank['top'][1];
         var maxSubRank = -1;
-        for (var j = 0; j < subLabels.length && j < 7; j++) {
+        for (var j = 0; j < subLabels.length; j++) {
             if (subRanks[j] > maxSubRank) {
                 maxSubRank = subRanks[j];
             }
@@ -295,7 +295,7 @@ function fillRankInfo(data) {
 
         var subIndicator = [];
         var subValue = [];
-        for (var j = 0; j < subLabels.length && j < 7; j++) {
+        for (var j = 0; j < subLabels.length; j++) {
             subIndicator[j] = {
                 text: subLabels[j],
                 max: maxSubRank
