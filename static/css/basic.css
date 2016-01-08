@@ -454,7 +454,7 @@ thead {
 }
 
 .smart-viz text {
-    font-size: 25px;
+    font-size: 32px;
 }
 
 .dsc-content .val {
@@ -650,7 +650,7 @@ table.data-block-body .srp-table {
 
 .table-overview-box {
     display: inline-block;
-    vertical-align: top;
+    vertical-align: middle;
     min-height: 148px;
     border-left: 1px solid #eee;
     margin: 0 -2px 13px;
