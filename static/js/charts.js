@@ -8,10 +8,14 @@ var yougoer_theme = {
         '#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
     ],
 
+    textStyle: {
+        fontWeight: 'bold',
+    },
+
     // 图表标题
     title: {
         textStyle: {
-            fontWeight: 'normal',
+            fontWeight: 'bold',
             color: '#008acd' // 主标题文字颜色
         }
     },
@@ -90,6 +94,9 @@ var yougoer_theme = {
                 color: '#e1e1e1',
             }
         },
+        axisLabel:{
+            textStyle:{fontWeight: 'bold'},
+        },
     },
 
     // 数值型坐标轴默认参数
@@ -120,7 +127,8 @@ var yougoer_theme = {
             lineStyle: {
                 color: '#ddd'
             }
-        }
+        },
+
     },
 
     // 柱形图默认参数
@@ -143,13 +151,12 @@ var yougoer_theme = {
                 labelLine: {
                     length: 0,
                     lineStyle: {
-                        color: '#000'
+                        color: '#3E3E3E'
                     }
                 },
                 label: {
                     show: true,
-                    textStyle:{color: '#000'},
-
+                    textStyle:{color: '#3E3E3E', fontWeight:'bold'},
                     formatter: function(params) {
                         return params.percent + '%'
                     }
@@ -161,7 +168,6 @@ var yougoer_theme = {
     //雷达图
     radar:{
         tooltip: {show:false},
-
     },
 
     // 折线图默认参数
@@ -281,14 +287,18 @@ function buildEthnicityPieChartOption(enthnicity, count) {
         },
         legend: {
             y: 'bottom',
-            data: enthnicity
+            data: enthnicity,
+            textStyle: {
+                color: '#444444',
+                fontWeight: 'bold',
+            },
         },
         series: [{
             name: 'People',
             type: 'pie',
             radius: ['38%', '65%'],
             clickable: false,
-            data: data.reverse()
+            data: data.reverse(),
         }]
     };
 
@@ -405,7 +415,7 @@ function buildRadarChartOption(indicator, value) {
                 }
             },
             splitArea: {
-                show: false
+                show: false,
             },
         }],
         series: [{

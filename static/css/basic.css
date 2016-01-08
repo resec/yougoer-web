@@ -538,20 +538,21 @@ thead {
     border-bottom: 1px solid #fff;
     border-left: 1px solid #fff;
     background: #f5f5f5;
-    text-align: left;
+    text-align: center;
     margin-left: 5px;
 }
 
-.dbt-widget .dbt-widget-th:first-child {
-    min-width: 90px;
+.dbt-widget .dbt-widget-th{
+    width: 33%;
 }
+
 
 .dbt-widget .dbt-cell {
     font-size: 14px;
     font-weight: 300;
     color: #7a7a7a;
     border-bottom: 1px solid #ededed;
-    text-align: left;
+    text-align: center;
 }
 
 .dbt-widget tr:hover {

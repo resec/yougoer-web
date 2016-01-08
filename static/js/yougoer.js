@@ -358,6 +358,11 @@ function fillBasicInfo(data) {
     session.find('#data-student-amount').text(studentAmount);
     session.find('#data-tution-amount').text(tutionAmount);
     session.find('#data-tution-amount-local').text('$' + tutionAmountLocal);
+    console.log(format_number(35023));
 };
 
 var yougoer = this;
+
+function format_number(value){
+    return numeral(value).format('0,0');
+};
