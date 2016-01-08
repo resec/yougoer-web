@@ -17,15 +17,16 @@
                                         <td colspan="2" class="data-block-td">
                                             <div style="width:100%" class="overview-box">
                                                 <div class="overview-label-wrap">
-                                                    <div class="overview-label">专业数</div>
+                                                    <div class="overview-label">专业总数</div>
                                                 </div>
-                                                <div class="viz-temp">
-                                                    <div class="viz-wrap">
-                                                        <div class="viz meter-viz">
-                                                            <div class="color" style="width:60%;"></div>
-                                                        </div>
-                                                        <div class="top-val" id="data-amount"></div>
-                                                    </div>
+                                                <div class="viz-wrap">
+                                                    <svg class="smart-viz" style="margin:4px;" width="81" height="81">
+                                                        <g transform="scale(0.9418604651162791)">
+                                                            <circle class="color" cx="43" cy="43" r="42" fill="#a8d76f"></circle>
+                                                            <circle class="ring" cx="43" cy="43" r="38" fill="#fff"></circle>
+                                                            <text x="43" y="51" text-anchor="middle" fill="#4d4d4d" class="text-bold" id="data-amount"></text>
+                                                        </g>
+                                                    </svg>
                                                 </div>
                                             </div>
                                         </td>
@@ -60,12 +61,18 @@
                                 <tbody>
                                     <tr class="data-block-tr">
                                         <td colspan="2" class="data-block-td">
-                                            <span class="data-block-title">前&nbsp;<span id='data-top-amount'></span>&nbsp;热门专业列表</span>
+                                            <span class="data-block-title">排名前<span id='data-top-amount'></span>热门专业</span>
                                             <div class="data-block-in-td db-table-div scrollbar-style scroll-light">
                                                 <table class="dbt-widget" style="width: 100%; table-layout: auto;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="dbt-widget-th">专业</th>
+                                                            <th class="dbt-widget-th">统计人数</th>
+                                                        </tr>
+                                                    </thead>
                                                     <tbody>
                                                         <tr class="item_row" id='data-top-row'>
-                                                            <td class="dbt-cell" ><span class="fred">~major.name~</span></td>
+                                                            <td class="dbt-cell" >~major.name~</td>
                                                             <td class="dbt-cell" >~major.amount~</td>
                                                         </tr>
                                                     </tbody>

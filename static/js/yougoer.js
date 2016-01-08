@@ -39,21 +39,22 @@ function fillMajorInfo(data) {
     session.find('#data-amount').text(amount);
 
     var lefts = [];
-    for (var i = 0; i < hot.length; i++)
+    for (var i = 0; i < hot.length && i < 3; i++) {
         lefts[i] = {
             hot: hot[i],
             cold: cold[i]
         };
+    };
     jgulary.repeatElement(session.find('#data-left-row'), lefts, 'left');
 
-    session.find('#data-top-amount').text(topLable.length);
-
     var topMajors = [];
-    for (var i = 0; i < topLable.length; i++)
+    for (var i = 0; i < topLable.length && i < 7; i++) {
         topMajors[i] = {
             name: topLable[i],
             amount: topAmount[i]
         };
+    };
+    session.find('#data-top-amount').text(topMajors.length);
     jgulary.repeatElement(session.find('#data-top-row'), topMajors, 'major');
 
 }
@@ -95,7 +96,7 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-freshmen").text(enrollment[1][2]);
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
-    charts.drawFeeBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1]);
+    charts.drawBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1]);
 
     var categoryHash = [];
     var categories = [];
@@ -121,7 +122,7 @@ function fillStudentInfo(data) {
             details[j] = {
                 lable: dict[detail[i][0][j]],
                 school: detail[i][1][j],
-                city: detail[i][2][j]
+                city: detail[i][2][j] >> 0
             }
         }
 
@@ -216,27 +217,31 @@ function fillAdmissionInfo(data) {
     charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v);
 
     /*录取情况 */
+    var labelDict = {
+        1:'考虑',
+        2:'不推荐',
+        3:'不需要亦不推荐',
+    }
     var requ_datas = data.requirement;
-    var keys = []
     var indicator = []
     var indicator_value = []
     var details = []
     var i = 0;
     for (var key in requ_datas) {
         if (requ_datas.hasOwnProperty(key)) {
-            i++;
-            indicator.push({
+            indicator[i] = {
                 text: key,
                 max: 3
-            });
-            indicator_value.push(requ_datas[key]);
+            };
+            indicator_value[i] = requ_datas[key];
             details[i] = {
                 label: key,
-                amount: requ_datas[key],
+                amount: labelDict[requ_datas[key]],
             }
+            i++;
         };
     };
-
+        
     jgulary.repeatElement(session.find('#data-requirement-row'), details, 'requirement');
     charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, indicator_value);
 };
@@ -259,8 +264,8 @@ function fillRankInfo(data) {
 
         var sumRank = rankData[i]['rank'];
         details[i] = {
-            rank: '#' + sumRank[1][sumRank[1].length - 1],
-            label: sumRank[0][sumRank[0].length - 1] + '综排',
+            rank: sumRank[1][sumRank[1].length - 1],
+            label: sumRank[0][sumRank[0].length - 1],
             rankchartid: 'rank-' + categoryHash[i] + '-chart',
             subrankchartid: 'rank-sub-' + categoryHash[i] + '-chart'
         }
@@ -279,7 +284,12 @@ function fillRankInfo(data) {
         var subRanks = rank['top'][1];
 
         charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
-        charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks);
+        
+        if (subs.length > 0) {
+            charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks);    
+        } else {
+            session.find('#' + details[i].subrankchartid).parent().remove();
+        }
     }
 
     jgulary.bindTab($('section[data-section-id="rank"] #data-category-lable'));
