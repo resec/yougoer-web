@@ -171,7 +171,7 @@ function fillLocalInfo(data) {
 function fillIntroductionInfo(data) {
     var intro = data['introduction'];
     var session = $('section[data-section-id="ffect"]');
-    
+
     for (var i = 0; i < intro.length; i++) {
         jgulary.fillElement(session.find('#introduction-item-' + intro[i].id), intro[i], 'intro');
     }
@@ -214,18 +214,31 @@ function fillAdmissionInfo(data) {
     var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
     var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
     charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v);
-    
-    var indicator = [
-        { text: 'TOEFL成绩', max: 3 },
-        { text: '雅思成绩', max: 3 },
-        { text: '推荐信', max: 3 },
-        { text: '在校证明', max: 3 },
-        { text: '成绩单', max: 3 }
-    ]
-    
-    var value = [1, 2, 3, 3, 2]
-    
-    charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, value);
+
+    /*录取情况 */
+    var requ_datas = data.requirement;
+    var keys = []
+    var indicator = []
+    var indicator_value = []
+    var details = []
+    var i = 0;
+    for (var key in requ_datas) {
+        if (requ_datas.hasOwnProperty(key)) {
+            i++;
+            indicator.push({
+                text: key,
+                max: 3
+            });
+            indicator_value.push(requ_datas[key]);
+            details[i] = {
+                label: key,
+                amount: requ_datas[key],
+            }
+        };
+    };
+
+    jgulary.repeatElement(session.find('#data-requirement-row'), details, 'requirement');
+    charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, indicator_value);
 };
 
 
