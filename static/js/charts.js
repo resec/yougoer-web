@@ -1,4 +1,5 @@
 var yougoer_theme = {
+    animationDuration: 500,
     // 默认色板
     color: [
         '#23a9e7', '#57517a', '#6aacad', '#e85151', '#9cb87f',
@@ -15,6 +16,12 @@ var yougoer_theme = {
         }
     },
 
+    legend:{
+        textStyle:{color: 'auto',fontWeight:'bold'},
+        itemWidth: 20,
+        itemHeight: 15,
+        itemGap: 10,
+    },
     // 值域
     dataRange: {
         itemWidth: 15,
@@ -34,6 +41,8 @@ var yougoer_theme = {
         borderColor: '#d4d4d4',
         borderRadius: '0',
         padding: [10, 15, 10, 15],
+        showDelay: 0,
+        transitionDuration:1,
         textStyle: {
             color: '#000',
             fontWeight: 'bold',
@@ -114,22 +123,6 @@ var yougoer_theme = {
         }
     },
 
-    timeline: {
-        lineStyle: {
-            color: '#008acd'
-        },
-        controlStyle: {
-            normal: {
-                color: '#008acd'
-            },
-            emphasis: {
-                color: '#008acd'
-            }
-        },
-        symbol: 'emptyCircle',
-        symbolSize: 3
-    },
-
     // 柱形图默认参数
     bar: {
         clickable:false,
@@ -143,6 +136,34 @@ var yougoer_theme = {
         }
     },
 
+    pie: {
+        clickable: false,
+        itemStyle: {
+            normal: {
+                labelLine: {
+                    length: 0,
+                    lineStyle: {
+                        color: '#000'
+                    }
+                },
+                label: {
+                    show: true,
+                    textStyle:{color: '#000'},
+
+                    formatter: function(params) {
+                        return params.percent + '%'
+                    }
+                },
+            }
+        },
+    },
+
+    //雷达图
+    radar:{
+        tooltip: {show:false},
+
+    },
+
     // 折线图默认参数
     line: {
         smooth: true,
@@ -150,25 +171,6 @@ var yougoer_theme = {
         symbolSize: 3 // 拐点图形大小
     },
 
-    // K线图默认参数
-    k: {
-        itemStyle: {
-            normal: {
-                color: '#d87a80', // 阳线填充颜色
-                color0: '#2ec7c9', // 阴线填充颜色
-                lineStyle: {
-                    color: '#d87a80', // 阳线边框颜色
-                    color0: '#2ec7c9' // 阴线边框颜色
-                }
-            }
-        }
-    },
-
-    // 散点图默认参数
-    scatter: {
-        symbol: 'circle', // 图形类型
-        symbolSize: 4 // 图形大小，半宽（半径）参数，当图形为方向或菱形则总宽度为symbolSize * 2
-    },
 
     // 雷达图默认参数
     radar: {
@@ -178,87 +180,6 @@ var yougoer_theme = {
             //symbolRotate : null,  // 图形旋转控制
     },
 
-    map: {
-        itemStyle: {
-            normal: {
-                areaStyle: {
-                    color: '#ddd'
-                },
-                label: {
-                    textStyle: {
-                        color: '#d87a80'
-                    }
-                }
-            },
-            emphasis: { // 也是选中样式
-                areaStyle: {
-                    color: '#fe994e'
-                }
-            }
-        }
-    },
-
-    force: {
-        itemStyle: {
-            normal: {
-                linkStyle: {
-                    color: '#1e90ff'
-                }
-            }
-        }
-    },
-
-    chord: {
-        itemStyle: {
-            normal: {
-                borderWidth: 1,
-                borderColor: 'rgba(128, 128, 128, 0.5)',
-                chordStyle: {
-                    lineStyle: {
-                        color: 'rgba(128, 128, 128, 0.5)'
-                    }
-                }
-            },
-            emphasis: {
-                borderWidth: 1,
-                borderColor: 'rgba(128, 128, 128, 0.5)',
-                chordStyle: {
-                    lineStyle: {
-                        color: 'rgba(128, 128, 128, 0.5)'
-                    }
-                }
-            }
-        }
-    },
-
-    gauge: {
-        axisLine: { // 坐标轴线
-            lineStyle: { // 属性lineStyle控制线条样式
-                color: [
-                    [0.2, '#2ec7c9'],
-                    [0.8, '#5ab1ef'],
-                    [1, '#d87a80']
-                ],
-                width: 10
-            }
-        },
-        axisTick: { // 坐标轴小标记
-            splitNumber: 10, // 每份split细分多少段
-            length: 15, // 属性length控制线长
-            lineStyle: { // 属性lineStyle控制线条样式
-                color: 'auto'
-            }
-        },
-        splitLine: { // 分隔线
-            length: 22, // 属性length控制线长
-            lineStyle: { // 属性lineStyle（详见lineStyle）控制线条样式
-                color: 'auto'
-            }
-        },
-        pointer: {
-            width: 5
-        }
-    },
 
     textStyle: {
         fontFamily: '微软雅黑, Arial, Verdana, sans-serif'
@@ -270,7 +191,7 @@ function drawRankLineChart(selector, year, rank) {
     var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = buildRankLineChartOption(year, rank);
     chart.setOption(option);
-    selector.data('chart', chart);      
+    selector.data('chart', chart);
     return chart;
 }
 
@@ -312,68 +233,39 @@ function buildRankLineChartOption(year, rank) {
     return option;
 }
 
-function drawEthnicityPieChart(selector, enthnicity, count) {
+/* 饼图 */
+function drawPieChart(selector, enthnicity, count) {
     var sel = $(selector);
     var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = buildEthnicityPieChartOption(enthnicity, count);
     chart.setOption(option);
-    selector.data('chart', chart);    
+    selector.data('chart', chart);
     return chart;
 }
 
 function buildEthnicityPieChartOption(enthnicity, count) {
-    var itemStyle = {
-        normal: {
-            label: {
-                show: true,
-                textStyle: {
-                    fontWeight: 'bold'
-                },
-                formatter: function(params) {
-                    return params.percent + '%'
-                }
-            },
-            labelLine: {
-                lineStyle: {
-                    width: 1.7
-                }
-            }
-        }
-    };
-
     var data = [],
         l = enthnicity.length;
     while (l--) {
         data[l] = {
             value: count[l],
             name: enthnicity[l],
-            itemStyle: itemStyle
         };
     };
 
     var option = {
         tooltip: {
             trigger: 'item',
-            textStyle: {
-                fontWeight: 'bold'
-            },
-            formatter: "{b} : {c} ({d}%)"
+            formatter: "{b} : ({d}%)"
         },
         legend: {
             y: 'bottom',
-            textStyle: {
-                color: 'auto',
-                fontWeight: 'bold'
-            },
-            itemWidth: 20 * 1.25,
-            itemHeight: 14 * 1.25,
-            itemGap: 20,
             data: enthnicity
         },
         series: [{
             name: 'People',
             type: 'pie',
-            radius: ['45%', '70%'],
+            radius: ['38%', '65%'],
             clickable: false,
             data: data.reverse()
         }]
@@ -388,7 +280,7 @@ function drawFeeBarChart(selector, category, fee) {
     var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = buildFeeBarChartOption(category, fee);
     chart.setOption(option);
-    selector.data('chart', chart);    
+    selector.data('chart', chart);
     return chart;
 };
 
@@ -397,7 +289,7 @@ function drawTotalBarChart(selector, category, value) {
     var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = TotalBarChartOption(category, value);
     chart.setOption(option);
-    selector.data('chart', chart);    
+    selector.data('chart', chart);
     return chart;
 };
 
@@ -406,7 +298,7 @@ function drawBarChart(selector, category, value) {
     var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = NormalBarChartOption(category, value);
     chart.setOption(option);
-    selector.data('chart', chart);    
+    selector.data('chart', chart);
     return chart;
 };
 
@@ -415,6 +307,7 @@ function NormalBarChartOption(category, value) {
         tooltip: {
             trigger: 'axis',
             axisPointer:{type: 'shadow'},
+            formatter: "{b} : ${c}(美元)"
         },
         xAxis: {
             type: 'value',
@@ -429,6 +322,7 @@ function NormalBarChartOption(category, value) {
             data: value.reverse(),
             stack: 'total',
             clickable: false,
+            barMaxWidth: 40,
         }],
         grid: {
             y: 0,
@@ -584,14 +478,10 @@ function drawRadarChart(selector, indicator, value) {
 
 function buildRadarChartOption(indicator, value) {
     var option = {
-        tooltip: {
-            trigger: 'axis'
-        },
-        polar: [
-            {
-                indicator: indicator
-            }
-        ],
+        polar: [{
+                indicator: indicator,
+                splitNumber: 3,
+            }],
         series: [
             {
                 type: 'radar',
