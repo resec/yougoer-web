@@ -44,7 +44,7 @@ function fillMajorInfo(data) {
             hot: hot[i],
             cold: cold[i]
         };
-    repeatElement(session.find('#data-left-row'), lefts, 'left');
+    jgulary.repeatElement(session.find('#data-left-row'), lefts, 'left');
 
     session.find('#data-top-amount').text(topLable.length);
 
@@ -54,7 +54,7 @@ function fillMajorInfo(data) {
             name: topLable[i],
             amount: topAmount[i]
         };
-    repeatElement(session.find('#data-top-row'), topMajors, 'major');
+    jgulary.repeatElement(session.find('#data-top-row'), topMajors, 'major');
 
 }
 
@@ -95,9 +95,7 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-freshmen").text(enrollment[1][2]);
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
-    var enrollmentChart = charts.drawFeeBarChart("student-enrollment-chart", enrollmentLabel, enrollment[1]);
-
-    session.find('#student-enrollment-chart').data("chart", enrollmentChart);
+    charts.drawFeeBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1]);
 
     var categoryHash = [];
     var categories = [];
@@ -110,8 +108,8 @@ function fillStudentInfo(data) {
             hash: categoryHash[i]
         }
     }
-    repeatElement(session.find('#data-category-lable'), categories, 'category');
-    repeatElement(session.find('#data-category-content'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-lable'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-content'), categories, 'category');
 
     session.find('#data-category-lable').first().addClass('selected');
     session.find('#data-category-content').first().removeClass('hidden');
@@ -133,12 +131,12 @@ function fillStudentInfo(data) {
         }
 
         repeatElement(session.find('#data-detail-row-' + categoryHash[i]), details, 'detail');
-        var detailChart = charts.drawEthnicityPieChart(categories[i].chartid, detailLable, detail[i][1]);
-        session.find('#' + categories[i].chartid).data("chart", detailChart);
+        charts.drawEthnicityPieChart(session.find('#' + categories[i].chartid), detailLable, detail[i][1]);
     }
 
-    bindTab($('section[data-section-id="student"] #data-category-lable'));
-}
+    jgulary.bindTab($('section[data-section-id="student"] #data-category-lable'));
+};
+
 function fillLocalInfo(data) {
     var address = data['address'];
     var telephone = data['telephone'];
@@ -170,6 +168,7 @@ function fillLocalInfo(data) {
     );
 };
 
+<<<<<<< HEAD
 
 
 function bindTab(selector) {
@@ -254,8 +253,15 @@ function repeatElement(selector, objs, objName) {
 //     return result.sort();
 // };
 
+=======
+>>>>>>> yougoer-org/master
 function fillIntroductionInfo(data) {
-    //console.log(data);
+    var intro = data['introduction'];
+    var session = $('section[data-section-id="ffect"]');
+    
+    for (var i = 0; i < intro.length; i++) {
+        jgulary.fillElement(session.find('#introduction-item-' + intro[i].id), intro[i], 'intro');
+    }
 };
 
 function fillAdmissionInfo(data) {
@@ -294,6 +300,7 @@ function fillAdmissionInfo(data) {
 
     var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
     var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
+<<<<<<< HEAD
     var detailChart = charts.drawBarChart('admission-enrollment-chart', admiEnrollChart_c, admiEnrollChart_v);
 
     /*录取情况 */
@@ -320,6 +327,21 @@ function fillAdmissionInfo(data) {
 
     repeatElement(session.find('#data-requirement-row'), details, 'requirement');
     charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, indicator_value);
+=======
+    charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v);
+    
+    var indicator = [
+        { text: 'TOEFL成绩', max: 3 },
+        { text: '雅思成绩', max: 3 },
+        { text: '推荐信', max: 3 },
+        { text: '在校证明', max: 3 },
+        { text: '成绩单', max: 3 }
+    ]
+    
+    var value = [1, 2, 3, 3, 2]
+    
+    charts.drawRadarChart(session.find('#admission-requirement-chart'), indicator, value);
+>>>>>>> yougoer-org/master
 };
 
 
@@ -346,8 +368,8 @@ function fillRankInfo(data) {
             subrankchartid: 'rank-sub-' + categoryHash[i] + '-chart'
         }
     };
-    repeatElement(session.find('#data-category-lable'), categories, 'category');
-    repeatElement(session.find('#data-category-content'), details, 'detail');
+    jgulary.repeatElement(session.find('#data-category-lable'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-content'), details, 'detail');
     session.find('#data-category-lable').first().addClass('selected');
     session.find('#data-category-content').first().removeClass('hidden');
 
@@ -359,16 +381,12 @@ function fillRankInfo(data) {
         var subs = rank['top'][0];
         var subRanks = rank['top'][1];
 
-        var sumRankChart = charts.drawRankLineChart(details[i].rankchartid, years, sumRanks);
-        session.find('#' + details[i].rankchartid).data("chart", sumRankChart);
-
-        var subRankChart = charts.drawBarChart(details[i].subrankchartid, subs, subRanks);
-        session.find('#' + details[i].subrankchartid).data("chart", subRankChart);
+        charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
+        charts.drawBarChart(session.find('#' + details[i].subrankchartid), subs, subRanks);
     }
 
-    bindTab($('section[data-section-id="rank"] #data-category-lable'));
+    jgulary.bindTab($('section[data-section-id="rank"] #data-category-lable'));
 };
-
 
 function fillTuitionInfo(data) {
     var category = data['category'];
@@ -389,8 +407,8 @@ function fillTuitionInfo(data) {
             hash: categoryHash[i],
         };
     };
-    repeatElement(session.find('#data-category-lable'), categories, 'category');
-    repeatElement(session.find('#data-category-content'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-lable'), categories, 'category');
+    jgulary.repeatElement(session.find('#data-category-content'), categories, 'category');
 
     session.find('#data-category-lable').first().addClass('selected');
     session.find('#data-category-content').first().removeClass('hidden');
@@ -403,12 +421,11 @@ function fillTuitionInfo(data) {
                 amount: detail[i][1][j],
             }
         }
-        repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
-        var detailChart = charts.drawTotalBarChart(categories[i].chartid, detail[i][0], detail[i][1]);
-        session.find('#' + categories[i].chartid).data("chart", detailChart);
+        jgulary.repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
+        charts.drawTotalBarChart(session.find('#' + categories[i].chartid), detail[i][0], detail[i][1]);
     }
 
-    bindTab($('section[data-section-id="tuition"] #data-category-lable'));
+    jgulary.bindTab($('section[data-section-id="tuition"] #data-category-lable'));
 };
 
 function fillBasicInfo(data) {
