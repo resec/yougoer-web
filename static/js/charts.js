@@ -8,10 +8,14 @@ var yougoer_theme = {
         '#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
     ],
 
+    textStyle: {
+        fontWeight: 'bold',
+    },
+
     // 图表标题
     title: {
         textStyle: {
-            fontWeight: 'normal',
+            fontWeight: 'bold',
             color: '#008acd' // 主标题文字颜色
         }
     },
@@ -72,6 +76,9 @@ var yougoer_theme = {
                 color: '#e1e1e1',
             }
         },
+        axisLabel:{
+            textStyle:{fontWeight: 'bold'},
+        },
     },
 
     // 数值型坐标轴默认参数
@@ -102,7 +109,8 @@ var yougoer_theme = {
             lineStyle: {
                 color: '#ddd'
             }
-        }
+        },
+
     },
 
     // 柱形图默认参数
@@ -125,13 +133,12 @@ var yougoer_theme = {
                 labelLine: {
                     length: 0,
                     lineStyle: {
-                        color: '#000'
+                        color: '#3E3E3E'
                     }
                 },
                 label: {
                     show: true,
-                    textStyle:{color: '#000'},
-
+                    textStyle:{color: '#3E3E3E', fontWeight:'bold'},
                     formatter: function(params) {
                         return params.percent + '%'
                     }
@@ -143,7 +150,6 @@ var yougoer_theme = {
     //雷达图
     radar:{
         tooltip: {show:false},
-
     },
 
     // 折线图默认参数
@@ -168,6 +174,7 @@ var yougoer_theme = {
     }
 };
 
+/***************** 排名 *******************/
 function drawRankLineChart(selector, year, rank) {
     var sel = $(selector);
     var chart = echarts.init(sel.first()[0], yougoer_theme);
@@ -182,15 +189,31 @@ function buildRankLineChartOption(year, rank) {
         tooltip: {
             trigger: 'axis',
             formatter: function(v) {
-                return '#' + -v[0].value;
+                console.log(v);
+                return v[0].name + ': #' + -v[0].value;
             }
         },
         xAxis: [{
             type: 'category',
             data: year,
+            axisLine: {show: false},
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: '#eee',
+                    type: 'dashed',
+                }
+            }
         }],
         yAxis: [{
             type: 'value',
+            splitLine:{show: false},
+            axisLine: {
+                lineStyle: {
+                    width:2,
+                    color: '#e1e1e1',
+                }
+            },
             axisLabel: {
                 formatter: function(v) {
                     return '#' + -v;
@@ -201,6 +224,10 @@ function buildRankLineChartOption(year, rank) {
             name: 'rank',
             type: 'line',
             clickable: false,
+            markPoint:{
+                clickable:false,
+                data:[0,0,0,0,0,0],
+            },
             data: (function() {
                     var oriData = rank,
                         len = oriData.length;
@@ -215,7 +242,7 @@ function buildRankLineChartOption(year, rank) {
     return option;
 }
 
-/* 饼图 */
+/***************** 饼图 *******************/
 function drawPieChart(selector, enthnicity, count) {
     var sel = $(selector);
     var chart = echarts.init(sel.first()[0], yougoer_theme);
@@ -242,46 +269,59 @@ function buildEthnicityPieChartOption(enthnicity, count) {
         },
         legend: {
             y: 'bottom',
-            data: enthnicity
+            data: enthnicity,
+            textStyle: {
+                color: '#444444',
+                fontWeight: 'bold',
+            },
         },
         series: [{
             name: 'People',
             type: 'pie',
             radius: ['38%', '65%'],
             clickable: false,
-            data: data.reverse()
+            data: data.reverse(),
         }]
     };
 
     return option;
 }
 
-/* 条形图 */
-function drawFeeBarChart(selector, category, fee) {
+/***************** BAR图 *******************/
+function drawBarChart(selector, category, value, type) {
     var sel = $(selector);
     var chart = echarts.init(sel.first()[0], yougoer_theme);
-    var option = buildFeeBarChartOption(category, fee);
+    if(type == 'money'){
+        var option = TotalBarChartOption(category, value);
+    }else{
+        var option = NormalBarChartOption(category, value);
+    }
     chart.setOption(option);
     selector.data('chart', chart);
     return chart;
 };
 
-function drawTotalBarChart(selector, category, value) {
-    var sel = $(selector);
-    var chart = echarts.init(sel.first()[0], yougoer_theme);
-    var option = TotalBarChartOption(category, value);
-    chart.setOption(option);
-    selector.data('chart', chart);
-    return chart;
-};
+function TotalBarChartOption(category, value, type) {
+    var oriCategory = category;
+    var relCategory = [],
+        l = oriCategory.length
+    relCategory[0] = '总费用'
+    while (l--) {relCategory[l + 1] = oriCategory[l]};
 
-function drawBarChart(selector, category, value) {
-    var sel = $(selector);
-    var chart = echarts.init(sel.first()[0], yougoer_theme);
-    var option = NormalBarChartOption(category, value);
-    chart.setOption(option);
-    selector.data('chart', chart);
-    return chart;
+    var oriData = value;
+    var sum = 0,
+        l = oriData.length;
+    while (l--) {sum += oriData[l];};
+    var relData = [sum];
+    l = oriData.length;
+    while (l--) {relData[l + 1] = oriData[l];};
+    var marginData = [];
+    l = relData.length;
+    while (l--) {
+        sum -= relData[l];
+        marginData[l] = sum > 0 ? sum : 0;
+    }
+    return MoneyBarChartOption(relCategory, relData);
 };
 
 function drawSubRankBarChart(selector, category, value) {
@@ -289,7 +329,7 @@ function drawSubRankBarChart(selector, category, value) {
     var chart = echarts.init(sel.first()[0], yougoer_theme);
     var option = buildSubRankBarChartOption(category, value);
     chart.setOption(option);
-    selector.data('chart', chart);    
+    selector.data('chart', chart);
     return chart;
 }
 
@@ -320,7 +360,7 @@ function buildSubRankBarChartOption(category, value) {
                 normal: {
                     color: function (params) {
                         var color = [
-                            '#23a9e7', '#57517a', '#9cb87f', '#a8d76f' 
+                            '#23a9e7', '#57517a', '#9cb87f', '#a8d76f'
                         ];
                         return color[params.dataIndex % color.length]
                     },
@@ -351,14 +391,8 @@ function buildSubRankBarChartOption(category, value) {
 
 function NormalBarChartOption(category, value) {
     var option = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer:{type: 'shadow'},
-            formatter: "{b} : ${c}(美元)"
-        },
         xAxis: {
             type: 'value',
-            name: '$ddd',
         },
         yAxis: {
             type: 'category',
@@ -379,141 +413,62 @@ function NormalBarChartOption(category, value) {
             borderColor:'#fff',
         }
     };
-
-    return option;
-};
-
-function TotalBarChartOption(category, value) {
-    var oriCategory = category;
-    var relCategory = [],
-        l = oriCategory.length
-    relCategory[0] = '总费用'
-    while (l--) {relCategory[l + 1] = oriCategory[l]};
-
-    var oriData = value;
-    var sum = 0,
-        l = oriData.length;
-    while (l--) {sum += oriData[l];};
-    var relData = [sum];
-    l = oriData.length;
-    while (l--) {relData[l + 1] = oriData[l];};
-    var marginData = [];
-    l = relData.length;
-    while (l--) {
-        sum -= relData[l];
-        marginData[l] = sum > 0 ? sum : 0;
-    }
-
-    return NormalBarChartOption(relCategory, relData);
-};
-
-
-function buildFeeBarChartOption(category, fee) {
-    var oriCategory = category;
-    var relCategory = [],
-        l = oriCategory.length
-    relCategory[0] = '总费用'
-    while (l--) {
-        relCategory[l + 1] = oriCategory[l]
-    }
-
-    var oriData = fee;
-    var sum = 0,
-        l = oriData.length;
-    while (l--) {
-        sum += oriData[l];
-    }
-    var relData = [sum];
-    l = oriData.length;
-    while (l--) {
-        relData[l + 1] = oriData[l];
-    }
-    var marginData = [];
-    l = relData.length;
-    while (l--) {
-        sum -= relData[l];
-        marginData[l] = sum > 0 ? sum : 0;
-    }
-
-    var option = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
-            textStyle: {
-                fontWeight: 'bold'
-            },
-            formatter: function(params) {
-                var tar = params[1];
-                return tar.name + ' : $' + tar.value;
-            }
-        },
-        xAxis: [{
-            type: 'value',
-        }],
-        yAxis: [{
-            type: 'category',
-            axisLabel: {
-                textStyle: {
-                    fontWeight: 'bold'
-                }
-            },
-            axisTick: {
-                show: false
-            },
-            splitLine: {
-                show: false
-            },
-            data: relCategory.reverse(),
-            axisLine: {
-                lineStyle: {
-                    width: 0
-                }
-            },
-        }],
-        series: [{
-            name: 'margin',
-            type: 'bar',
-            stack: 'total',
-            clickable: false,
-            itemStyle: {
-                normal: {
-                    barBorderColor: 'rgba(0,0,0,0)',
-                    color: 'rgba(0,0,0,0)'
-                },
-                emphasis: {
-                    barBorderColor: 'rgba(0,0,0,0)',
-                    color: 'rgba(0,0,0,0)'
-                }
-            },
-            data: marginData.reverse(),
-        }, {
-            name: 'data',
-            type: 'bar',
-            stack: 'total',
-            clickable: false,
-            itemStyle: {
-                normal: {
-                    label: {
-                        show: true,
-                        textStyle: {
-                            fontWeight: 'bold'
-                        },
-                        position: 'inside',
-                        formatter: function(param) {
-                            return '$' + param.value;
-                        }
-                    }
-                }
-            },
-            data: relData.reverse()
-        }]
-    };
-
+    option[add_option[0]] = add_option[1];
     return option;
 }
 
+function MoneyBarChartOption(category, value) {
+    var add_option = [
+        'tooltip', {
+            trigger: 'axis',
+            axisPointer: {type: 'shadow'},
+            formatter: "{b} : {c}美金"
+        }];
+    var myoption = barChartOption(category, value, add_option);
+    return myoption;
+};
+
+
+function NormalBarChartOption(category, value) {
+    var add_option = [
+        'tooltip', {
+            trigger: 'axis',
+            axisPointer:{type: 'shadow'},
+            formatter: "{b} : {c}"
+        }];
+    var myoption = barChartOption(category, value, add_option);
+    return myoption;
+};
+
+function barChartOption(category, value, add_option){
+    var option = {
+        xAxis: {
+            type: 'value',
+        },
+        yAxis: {
+            type: 'category',
+            data: category.reverse(),
+        },
+        series: [{
+            type: 'bar',
+            data: value.reverse(),
+            stack: 'total',
+            clickable: false,
+            barMaxWidth: 40,
+        }],
+        grid: {
+            y: 0,
+            x2: '8%',
+            backgroundColor:'#fff',
+            borderWidth:0,
+            borderColor:'#fff',
+        }
+    };
+    option[add_option[0]] = add_option[1];
+    return option;
+}
+
+/***************** 雷达图 *******************/
 function drawRadarChart(selector, indicator, value) {
     var sel = $(selector);
     var chart = echarts.init(sel.first()[0], yougoer_theme);
@@ -526,22 +481,36 @@ function drawRadarChart(selector, indicator, value) {
 function buildRadarChartOption(indicator, value) {
     var option = {
         polar: [{
-                indicator: indicator,
-                splitNumber: 3,
-            }],
-        series: [
-            {
-                type: 'radar',
-                data: [
-                    {
-                        value: value,
+            indicator: indicator,
+            splitNumber: 3,
+            axisLine: {
+                lineStyle: {
+                    color: '#eee',
+                    type: 'dashed',
+                }
+            },
+            splitArea: {
+                show: false,
+            },
+        }],
+        series: [{
+            type: 'radar',
+            itemStyle: {
+                normal: {
+                    areaStyle: {
+                        color: 'rgba(35,169,231, 0.2)',
                     }
-                ]
-            }
-        ]
+                }
+            },
+            data: [{
+                value: value,
+            }]
+        }]
     };
 
     return option;
 }
+
+
 
 var charts = this;

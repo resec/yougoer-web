@@ -96,7 +96,7 @@ function fillStudentInfo(data) {
     session.find("#data-enrollment-freshmen").text(enrollment[1][2]);
     session.find("#data-enrollment-freshmen-precentage").text(freshmenPrecetage + '%');
 
-    charts.drawBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1]);
+    charts.drawBarChart(session.find("#student-enrollment-chart"), enrollmentLabel, enrollment[1], 'normal');
 
     var categoryHash = [];
     var categories = [];
@@ -218,7 +218,7 @@ function fillAdmissionInfo(data) {
 
     var admiEnrollChart_c = ['申请人数', '录取人数', '入学人数'];
     var admiEnrollChart_v = [data.apply_num, data.admiss_num, data.enroll_num];
-    charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v);
+    charts.drawBarChart(session.find('#admission-enrollment-chart'), admiEnrollChart_c, admiEnrollChart_v, 'normal');
 
     /*录取情况 */
     var labelDict = {
@@ -235,7 +235,7 @@ function fillAdmissionInfo(data) {
         if (requ_datas.hasOwnProperty(key)) {
             indicator[i] = {
                 text: key,
-                max: 4
+                max: 3
             };
             indicator_value[i] = requ_datas[key];
             details[i] = {
@@ -286,13 +286,13 @@ function fillRankInfo(data) {
 
         var subLabels = rank['top'][0];
         var subRanks = rank['top'][1];
-        var maxSubRank = -1;        
+        var maxSubRank = -1;
         for (var j = 0; j < subLabels.length && j < 7; j++) {
             if (subRanks[j] > maxSubRank) {
                 maxSubRank = subRanks[j];
             }
         };
-        
+
         var subIndicator = [];
         var subValue = [];
         for (var j = 0; j < subLabels.length && j < 7; j++) {
@@ -304,7 +304,7 @@ function fillRankInfo(data) {
         };
 
         charts.drawRankLineChart(session.find('#' + details[i].rankchartid), years, sumRanks);
-        
+
         var subs = [];
         for (var j = 0; j < subLabels.length; j++) {
             subs[j] = {
@@ -312,7 +312,7 @@ function fillRankInfo(data) {
                 value : subRanks[j]
             };
         };
-        
+
         if (subLabels.length > 0) {
             console.log(subs);
             jgulary.repeatElement(session.find('#data-sub-rank-row-' + details[i].subrankchartid), subs, 'subrank');
@@ -359,7 +359,7 @@ function fillTuitionInfo(data) {
             }
         }
         jgulary.repeatElement(session.find('#data-fee-row-' + categoryHash[i]), details, 'fee');
-        charts.drawTotalBarChart(session.find('#' + categories[i].chartid), detail[i][0], detail[i][1]);
+        charts.drawBarChart(session.find('#' + categories[i].chartid), detail[i][0], detail[i][1], 'money');
     }
 
     jgulary.bindTab($('section[data-section-id="tuition"] #data-category-lable'));
@@ -388,6 +388,9 @@ function fillBasicInfo(data) {
     session.find('#data-student-amount').text(studentAmount);
     session.find('#data-tution-amount').text(tutionAmount);
     session.find('#data-tution-amount-local').text('$' + tutionAmountLocal);
+    //console.log(format_number(35023));
 };
 
 var yougoer = this;
+
+
