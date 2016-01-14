@@ -24,10 +24,22 @@ class CollegeBaseHandler(tornado.web.RequestHandler):
         return cid
 
 
-class CollegeMapHandler(CollegeBaseHandler):
+class CollegeHandler(CollegeBaseHandler):
+
+
+    def get(self, slug):
+        param = dict(
+            slug=slug
+        )
+
+        self.render("college.html", error=None, **param)
+
+
+class CollegeMapHandler(tornado.web.RequestHandler):
+
 
     def get(self):
-        self.render("map/map.html", error=None, **param)
+        self.render("map/map.html", error=None)
 
 
 class CollegeInfoBasicHandler(CollegeBaseHandler):
