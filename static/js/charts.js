@@ -326,57 +326,39 @@ function drawSubRankBarChart(selector, category, value) {
     return chart;
 }
 
-function buildSubRankBarChartOption(category, value) {
+function buildSubRankBarChartOption(category, value) {    
     var option = {
-        tooltip: {
-            trigger: 'item',
-            axisPointer: { type: 'shadow' },
-            formatter: function(v) {
-                return '#' + -v[0].value;
+        xAxis : [
+            {
+                type : 'value',
+                scale:true,
             }
-        },
-        xAxis: {
-            type: 'category',
-            data: category,
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                scale:true,
+                axisLabel: {
                 formatter: function(v) {
                     return '#' + -v;
                 }
             },
-        },
-        series: [{
-            type: 'bar',
-            itemStyle: {
-                normal: {
-                    color: function (params) {
-                        var color = [
-                            '#23a9e7', '#57517a', '#9cb87f', '#a8d76f'
-                        ];
-                        return color[params.dataIndex % color.length]
-                    },
-                }
-            },
-            data: (function() {
-                    var oriData = value,
-                        len = oriData.length;
-                    while (len--) {
-                        oriData[len] *= -1;
+            }
+        ],
+        series : [
+            {
+                type:'scatter',
+                data: (function(){
+                    var values = [];
+                    for (var j = 0; j < category.length; j++) {
+                        values[j] = [category[j].text, -value[j]]; 
                     }
-                    return oriData;
-            })(),
-            stack: 'total',
-            clickable: false,
-        }],
-        grid: {
-            y: 0,
-            x2: '8%',
-            backgroundColor: '#fff',
-            borderWidth: 0,
-            borderColor: '#fff',
-        }
+                    console.log(values);
+                    return values;
+                    
+                })()
+            }
+        ]
     };
 
     return option;
