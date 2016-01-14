@@ -59,7 +59,6 @@ function bindTab(selector) {
                     panels.eq(index).find(".chart").each(function(){
                         var chart = $(this).data("chart");
                         chart.resize();
-                        chart.restore();
                     });
                 }
             }

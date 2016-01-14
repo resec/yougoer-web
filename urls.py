@@ -11,6 +11,7 @@ handlers_list = [
     #(r"/college/sharp", handler_college.CollegeInfoMultipleSharpHandler),
     #(r"/college/compare", handler_college.CollegeCompareHandler),
     #(r"/college/compare/detail", handler_college.CollegeCompareDetailHandler),
+    (r"/college/map", handler_college.CollegeMapHandler),
     (r"/college/(?P<slug>[^/]+)", handler_college.CollegeHandler),
     (r"/college/(?P<slug>[^/]+)/info/basic", handler_college.CollegeInfoBasicHandler),
     (r"/college/(?P<slug>[^/]+)/info/introduction", handler_college.CollegeInfoIntroductionHandler),
